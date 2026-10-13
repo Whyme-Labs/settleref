@@ -1,83 +1,106 @@
 {
   "dateMalaysia": "2026-10-13",
-  "milestone": {
-    "id": "SR-01",
-    "status": "PASS",
-    "observedAt": "2026-10-13T04:13:31Z",
-    "sourceCommit": "6fd75f5c78a83c8d69cfe62e3dd8be3b33888799"
-  },
+  "completedMilestones": [
+    {
+      "id": "SR-01",
+      "status": "PASS",
+      "sourceCommit": "6fd75f5c78a83c8d69cfe62e3dd8be3b33888799",
+      "runId": 38345384941,
+      "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38345384941"
+    },
+    {
+      "id": "SR-02",
+      "status": "PASS",
+      "sourceCommit": "39a2fb59a999dd882141d02c55ff4b41136c362e",
+      "evidenceCommit": "478d17bbe6a8328188a9afd52fe48d714fa3afa4",
+      "runId": 38359156807,
+      "jobId": 115168971778,
+      "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38359156807"
+    }
+  ],
   "application": {
     "typecheck": "PASS",
     "productionBuild": "PASS",
     "nodeTests": {
       "passed": 53,
       "failed": 0,
-      "scope": "Domain tests and mocked-RPC/wallet boundary tests. No live Arc RPC or browser execution is claimed."
+      "scope": "Domain tests plus mocked RPC and wallet boundary tests."
     },
-    "browserE2E": "NOT_PART_OF_SR_01: tracked by SR-02"
-  },
-  "githubActions": {
-    "runNumber": 7,
-    "runId": 38345384941,
-    "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38345384941",
-    "jobId": 115125478687,
-    "status": "SUCCESS",
-    "runnerPool": "blacksmith-4vcpu-ubuntu-2404",
-    "runnerName": "blacksmith-4vcpu-ubuntu-2404-ez6ok3mekpfi7vfa",
-    "runnerOs": "Linux",
-    "runnerArch": "X64",
-    "evidenceLocation": "Immutable GitHub Actions job log. Artifact upload is omitted because the organization Actions artifact-storage quota is exhausted."
-  },
-  "toolchain": {
-    "arcFoundryRelease": "v0.8.0-2",
-    "forgeVersion": "1.7.1-dev",
-    "arcFoundryCommit": "d497beea7096ff2a8e583c8b307941f24a61b06b",
-    "solc": "0.8.30",
-    "node": "v22.16.0",
-    "npm": "10.9.2"
+    "browserE2E": {
+      "status": "PASS",
+      "passed": 17,
+      "failed": 0,
+      "browser": "Playwright 1.55.0 with headless Chromium 140.0.7339.16",
+      "viewportCoverage": ["1440 px desktop", "390 x 844 mobile"],
+      "screenshots": 8,
+      "machineReadableEvidence": "evidence/browser/browser-tests.json"
+    }
   },
   "contracts": {
     "testsWritten": 18,
-    "standardEvm": {
-      "passed": 18,
-      "failed": 0,
-      "skipped": 0,
-      "fuzzRuns": 256
-    },
-    "arcExecution": {
-      "profile": "arc",
-      "network": "arc",
-      "hardfork": "Zero8",
-      "passed": 18,
-      "failed": 0,
-      "skipped": 0,
-      "fuzzRuns": 256
-    },
-    "selectors": "PASS: static browser selectors match Solidity method identifiers",
-    "cleanTree": "PASS",
-    "arcTestnetSpecificBehavior": "NOT_APPLICABLE_IN_SR_01: the contract calls no Arc system contract or ERC-20 predeploy. It transfers native value only. Live network policy for chosen recipient addresses is part of the owner-controlled SR-03 deployment smoke test."
+    "standardEvm": {"passed": 18, "failed": 0, "fuzzRuns": 256},
+    "arcExecution": {"network": "arc", "hardfork": "Zero8", "passed": 18, "failed": 0, "fuzzRuns": 256},
+    "selectors": "PASS: browser constants match compiled Solidity method identifiers"
   },
-  "repairs": [
-    "Added an explicit Arc Foundry profile selecting network arc and hardfork arc:zero8.",
-    "Accepted Arc Foundry's canonical resolved hardfork value Zero8 without weakening the profile assertion.",
-    "Renamed testFailedTransferRollsBackAndAllowsRetry because current Foundry reserves the testFail prefix. Contract behavior was unchanged.",
-    "Moved CI to the active organization Blacksmith runner pool after home-ci-01 did not accept the job.",
-    "Replaced artifact uploads with durable job-log and step-summary evidence because the organization artifact quota is exhausted."
+  "sr02Evidence": {
+    "untrustedDeploymentFailsClosed": true,
+    "arcTestnetWalletConnection": {
+      "status": "PASS",
+      "chainId": 5042002,
+      "rpc": "https://rpc.testnet.arc.io",
+      "transactionSubmitted": false,
+      "writesEnabled": false
+    },
+    "localArcExecution": {
+      "status": "PASS",
+      "chainId": 31337,
+      "runtime": "Arc Anvil using Arc execution semantics",
+      "wallet": "Ephemeral private-key-backed EIP-1193 provider",
+      "signedTransactions": 1,
+      "transactionHash": "0x19d46ccb783933a31ff1ed01e9c994b4d468feb688ec4c450b9e81388160674f",
+      "receiptReconciledAgainstRpc": true,
+      "duplicateFlagObserved": true,
+      "pendingRecoveryAfterReload": true,
+      "independentSecondBrowserVerification": true
+    },
+    "negativeCases": {
+      "wrongAccountRejectedBeforeSigning": true,
+      "wrongNetworkRejectedBeforeSigning": true,
+      "simulationRejectedByLiveReceiptImporter": true,
+      "htmlReferenceRenderedAsText": true,
+      "sevenDecimalAmountRejectedWithoutRounding": true,
+      "csvFormulaNeutralized": true,
+      "browserJavaScriptErrors": 0,
+      "mobileHorizontalOverflow": false
+    }
+  },
+  "sr02Repairs": [
+    "Moved browser validation to an active Blacksmith Chromium runner after the initial environment blocked local navigation.",
+    "Added an identified RPC client header for Arc testnet requests.",
+    "Updated the Playwright wait helper to the current keyword-only argument API and added exact status diagnostics.",
+    "Aligned the browser harness with the shipped Export instruction action.",
+    "Normalized signed raw-transaction prefixes and checksum-formatted transaction targets in the ephemeral test wallet adapter.",
+    "Persisted screenshots, exported files and the machine-readable pass report under evidence/browser."
   ],
-  "arcTestnet": "NOT_DEPLOYED: SR-03",
-  "arcMainnet": "NOT_DEPLOYED: SR-03",
-  "publicHosting": "NOT_DEPLOYED: SR-04",
-  "grantSubmission": "NOT_SUBMITTED: SR-04",
+  "networkStatus": {
+    "arcTestnetDeployment": "NOT_DEPLOYED: SR-03",
+    "arcTestnetTransaction": "NOT_SUBMITTED: SR-02 used connectivity-only wallet evidence",
+    "arcMainnetDeployment": "NOT_DEPLOYED: SR-03",
+    "arcMainnetTransaction": "NOT_SUBMITTED",
+    "publicHosting": "NOT_DEPLOYED: SR-04",
+    "grantSubmission": "NOT_SUBMITTED: SR-04"
+  },
   "claims": {
-    "testnetDeployment": false,
-    "mainnetDeployment": false,
-    "livePayment": false,
+    "localDevelopmentTransaction": true,
+    "arcTestnetDeployment": false,
+    "arcTestnetPayment": false,
+    "arcMainnetDeployment": false,
+    "arcMainnetPayment": false,
     "securityAudit": false
   },
   "nextRequiredEvidence": [
-    "Browser end-to-end and real wallet validation under SR-02",
-    "Owner-controlled Arc testnet smoke under SR-03",
-    "Mainnet deployment, payment, reconciliation and duplicate rejection under SR-03",
-    "Public repository, public app and DoraHacks submission under SR-04"
+    "Owner-controlled Arc testnet deployment, wallet payment, receipt reconciliation and duplicate rejection under SR-03",
+    "Reviewed Arc mainnet deployment and tiny self-funded payment under SR-03",
+    "Public repository, public HTTPS app and DoraHacks submission under SR-04"
   ]
 }
