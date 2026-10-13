@@ -1,0 +1,132 @@
+name: Browser E2E evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/browser-e2e.yml'
+      - 'scripts/browser-test.py'
+      - 'scripts/prepare-browser-e2e.sh'
+      - 'scripts/build.mjs'
+      - 'scripts/serve.mjs'
+      - 'src/**'
+      - 'public/**'
+      - 'contracts/**'
+      - 'foundry.toml'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: settleref-browser-e2e
+  cancel-in-progress: true
+
+jobs:
+  browser-e2e:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.16.0
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install locked application and browser dependencies
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python -m pip install --disable-pip-version-check playwright==1.55.0 eth-account==0.13.7
+          python -m playwright install --with-deps chromium
+
+      - name: Install checksum-pinned Arc Foundry
+        run: |
+          destination="$RUNNER_TEMP/settleref-arc-foundry-v0.8.0-2"
+          bash scripts/install-arc-foundry.sh "$destination"
+          echo "$destination" >> "$GITHUB_PATH"
+
+      - name: Run real-browser and wallet validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/settleref-browser-e2e"
+          rm -rf evidence/browser
+          bash scripts/prepare-browser-e2e.sh "$work"
+          source "$work/browser.env"
+          npm run build
+          node scripts/serve.mjs >"$work/server.log" 2>&1 &
+          server_pid=$!
+          cleanup() {
+            kill "$server_pid" 2>/dev/null || true
+            kill "$SETTLEREF_ANVIL_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          ready=false
+          for _ in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 0.25
+          done
+          if [[ "$ready" != true ]]; then
+            cat "$work/server.log" >&2
+            exit 1
+          fi
+          python scripts/browser-test.py
+          test -f evidence/browser/browser-tests.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('evidence/browser/browser-tests.json').read_text())
+          assert report['status'] == 'PASS'
+          assert report['failed'] == 0
+          assert len(report['screenshots']) >= 8
+          assert report['observations']['arcTestnet']['chainId'] == 5042002
+          assert report['observations']['arcTestnet']['transactionSubmitted'] is False
+          assert report['observations']['localArcExecution']['sendCount'] == 1
+          assert report['observations']['localArcExecution']['mainnetTransaction'] is False
+          print(json.dumps({'passed': report['passed'], 'screenshots': len(report['screenshots'])}, indent=2))
+          PY
+
+      - name: Commit bounded browser evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add evidence/browser
+          if git diff --cached --quiet; then
+            echo 'Browser evidence is unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'test: capture SR-02 browser evidence [skip ci]'
+          git push origin HEAD:main
+
+      - name: Publish run summary
+        if: always()
+        run: |
+          {
+            echo '## SR-02 browser evidence'
+            echo
+            echo "- Source commit: \`$GITHUB_SHA\`"
+            echo "- Run: \`$GITHUB_RUN_ID\`"
+            echo '- Real Chromium: yes'
+            echo '- Arc testnet transaction: none'
+            echo '- Mainnet connection or transaction: none'
+            echo '- Local live transaction: private-key-backed EIP-1193 wallet on Arc Anvil'
+            echo '- Evidence destination: `evidence/browser/` on `main`'
+          } >> "$GITHUB_STEP_SUMMARY"
