@@ -85,7 +85,17 @@ jobs:
             cat "$work/server.log" >&2
             exit 1
           fi
-          python scripts/browser-test.py
+          python - <<'PY'
+          import runpy
+          import urllib.request
+          opener = urllib.request.build_opener()
+          opener.addheaders = [
+              ('User-Agent', 'Mozilla/5.0 SettleRef-SR02/1.0'),
+              ('Accept', 'application/json'),
+          ]
+          urllib.request.install_opener(opener)
+          runpy.run_path('scripts/browser-test.py', run_name='__main__')
+          PY
           test -f evidence/browser/browser-tests.json
           python - <<'PY'
           import json
