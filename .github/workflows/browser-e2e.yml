@@ -102,6 +102,12 @@ jobs:
                   text = text.replace(old, new, 1)
               elif new not in text:
                   raise SystemExit(f'Expected browser harness fragment not found:\n{old}')
+          text = text.replace(
+              'download(page, "Download instruction",',
+              'download(page, "Export instruction",',
+          )
+          if 'download(page, "Download instruction",' in text:
+              raise SystemExit('Obsolete instruction button label remains in browser harness')
           path.write_text(text)
           PY
           python -m py_compile scripts/browser-test.py
