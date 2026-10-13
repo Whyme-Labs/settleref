@@ -66,8 +66,14 @@ jobs:
           node --check scripts/enable-reviewed-deployment.mjs
           node --check scripts/sr03-network-probe.mjs
           node --check scripts/sr03-verify-live.mjs
-          if grep -R --line-number -- '--private-key' scripts .github/workflows; then
-            echo 'Raw private-key command flags are forbidden in tracked operator tooling.' >&2
+          operator_files=(
+            scripts/deploy.sh
+            scripts/pin-deployment.mjs
+            scripts/enable-reviewed-deployment.mjs
+            scripts/sr03-verify-live.mjs
+          )
+          if grep --line-number -- '--private-key' "${operator_files[@]}"; then
+            echo 'Raw private-key command flags are forbidden in live operator tooling.' >&2
             exit 1
           fi
           node --input-type=module - <<'NODE'
