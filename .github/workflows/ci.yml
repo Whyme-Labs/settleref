@@ -91,6 +91,17 @@ jobs:
           bash scripts/install-arc-foundry.sh "$destination"
           echo "$destination" >> "$GITHUB_PATH"
 
+      - name: Verify owner deployment CLI surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          arc-cast chain-id --help >/dev/null
+          arc-cast balance --help >/dev/null
+          arc-cast wallet address --help >/dev/null
+          arc-forge create --help | grep --quiet -- '--account'
+          arc-forge create --help | grep --quiet -- '--broadcast'
+          echo 'Pinned Arc Foundry supports the encrypted-account deployment commands used by scripts/deploy.sh.'
+
       - name: Prove Arc profile selection
         shell: bash
         run: |
