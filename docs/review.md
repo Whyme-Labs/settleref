@@ -50,10 +50,29 @@ The transaction target in the test wallet required checksum formatting for `eth-
 
 Evidence lives in `evidence/browser/browser-tests.json`, `evidence/browser/*.png` and the exported files under `evidence/browser/downloads/`.
 
+## SR-03 network and deployment review
+
+SR-03 remains open because no owner-controlled Arc deployment or public-network payment has been made.
+
+Completed evidence and tooling:
+
+- `evidence/sr03/network-probe.json` records no-key RPC preflight against candidate Arc endpoints. Reachable testnet and mainnet endpoints returned chain IDs `5042002` and `5042` respectively. The probe signed and submitted nothing.
+- The same probe observed the expected native-USDC system runtime at `0x3600000000000000000000000000000000000000` on the reachable Arc networks.
+- A real Chromium attempt reached Circle's public faucet and requested Arc testnet USDC for a fresh ephemeral address. The address remained at zero balance during the bounded wait, so the workflow stopped before deployment. Screenshots and the `BLOCKED_FAUCET` report remain under `evidence/sr03/testnet/`.
+- No CAPTCHA bypass, alternate public key or customer funding was used.
+- The one-off transient-key experiment code was removed after evidence capture. Tracked operator tooling now rejects raw `--private-key` command flags in CI.
+- `scripts/deploy.sh` accepts only a locally encrypted Arc Foundry account alias, verifies the chain and expected public address, reruns all tests, and requires a separate exact confirmation for mainnet.
+- `scripts/pin-deployment.mjs` checks exact deployed runtime bytecode and writes a configuration with `writesEnabled: false`.
+- `scripts/enable-reviewed-deployment.mjs` rechecks the pinned runtime and reads the deployed `MAX_NATIVE` value. It enables writes only when the cap is exactly one native USDC and an explicit network-specific confirmation is present.
+- `scripts/sr03-verify-live.mjs` is read-only. It validates the deployment receipt, exact creation bytecode, exact runtime bytecode, payment receipt, event, canonical block, instruction commitment, duplicate flag and the approved `0.10 USDC` smoke ceiling.
+- The production CSP now permits the current Arc testnet RPC hostname as well as the legacy Arc endpoints.
+
+The remaining SR-03 work is intentionally outside unattended automation. A human owner must fund and unlock the encrypted testnet wallet, approve the testnet deployment and payment, then review the evidence before any mainnet signing. Mainnet still requires both `CONFIRM_MAINNET=DEPLOY_CAPPED_EXPERIMENT` and the separate write-enable confirmation.
+
 ## Scope and remaining risk
 
 The implementation covers the approved payment-instruction, duplicate-protection and reconciliation flow. ISO 20022 XML and the Arc Memo wrapper remain deferred. The app makes no fiat, FX, bank-network or certification claim.
 
-SR-02 did not deploy to Arc testnet or submit a public-network transaction. It proved testnet wallet and RPC connectivity, then executed the financial flow on an isolated Arc-local chain with ephemeral credentials. SR-03 must now deploy the reviewed contract to Arc testnet, perform an owner-controlled payment, pin runtime bytecode and independently reconcile the receipt before any mainnet action.
+SR-02 and the SR-03 preflight do not prove a public-network settlement. Only genuine owner-controlled deployment and payment transaction hashes, plus a passing independent verifier report, can close SR-03.
 
-The organizer's live-mainnet and public-submission requirements are not met. The repository remains private. No mainnet deployment, public host, customer payment or grant submission is claimed.
+The organizer's live-mainnet and public-submission requirements are not met. The repository remains private. No testnet deployment, mainnet deployment, customer payment, public host or grant submission is claimed.
