@@ -4,7 +4,7 @@ Payment to proof. A small experiment in cross-border payment operations on Arc.
 
 SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer and instruction identity within one deployment, and exports independently recheckable reconciliation records.
 
-**Current status: SR-01 contract validation and SR-02 real-browser validation are complete. SR-03 network preflight and owner tooling are complete, but no Arc testnet or mainnet deployment has been made. The repository remains private, live writes remain disabled, and no audit or grant submission is claimed.**
+**Current status: SR-01 and SR-02 are complete. A genuine Arc testnet deployment and 0.10-USDC payment now pass independent verification under SR-03. Mainnet verification and publication remain. The repository remains private, tracked live writes stay disabled, and no audit or grant submission is claimed.**
 
 ## Run
 

@@ -5,7 +5,7 @@ Verified on October 13, 2026, Malaysia time. Recheck before submitting because t
 Primary organizer source: https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq
 Submission destination: https://dorahacks.io/hackathon/arc-microgrants/detail
 
-The DoraHacks detail page returned HTTP 405 to the research tool. Requirements below come from the organizer's Arc House page. The actual logged-in form, upload limits, and any additional form-specific questions have not been inspected. Do not claim that a video, logo, pitch deck or additional form field is mandatory without checking it there.
+The research tool returned HTTP 405, but the detail page and logged-in Build wizard were inspected in Chrome on October 13. The detail page repeats the working-mainnet requirement and rejects testnet-only builds. The Profile step requires a logo, accepts PNG/JPEG under 2 MB and recommends 480 x 480 px. A repository URL is required; project website and demo video fields are optional. At least one social link is required. The wizard also includes Details, Team, Contact and Submission steps. A mandatory transaction-hash field has not yet been observed; that does not waive the working-mainnet requirement.
 
 ## Required by the organizer
 
@@ -33,7 +33,7 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 ## Current readiness
 
-NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. Application, contract CI and browser E2E validation passed under SR-01 and SR-02. No public app, mainnet contract or mainnet transaction is recorded. SR-03 still needs owner-controlled funding, signing and independent public-network evidence.
+NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. Application, contract CI and browser E2E validation passed under SR-01 and SR-02. The genuine owner-approved Arc testnet deployment and 0.10-USDC payment now pass independent verification. The owner-funded payer has 2 USDC on Arc mainnet. No public app or verified mainnet SettleRef transaction is recorded yet.
 
 Repository: https://github.com/Whyme-Labs/settleref. Make it public before inserting it into `submission.json`. The connected builder profile resolves to https://github.com/wms2537.
 

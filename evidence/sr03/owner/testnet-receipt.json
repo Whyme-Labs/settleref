@@ -1,0 +1,33 @@
+{
+  "schema": "settleref.bundle.v1",
+  "instruction": {
+    "schema": "settleref.instruction.v1",
+    "chainId": 5042002,
+    "endToEndId": "63f9e5ed-0093-4129-a042-908c9c21bc4c",
+    "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+    "beneficiary": "0xe6e31c4551e86f4d695b3569ddd44f3b4de6ef18",
+    "asset": "USDC",
+    "amount": "0.100000",
+    "reference": "SR03-OWNER-TESTNET-001",
+    "expiresAt": 1791969485,
+    "privacySalt": "0xadacf9014f004b34918b85773c128b6dea733c9dc1f2be03cc80c6f7e62310eb"
+  },
+  "transactionHash": "0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f",
+  "receipt": {
+    "schema": "settleref.receipt.v1",
+    "kind": "rpc-verified",
+    "chainId": 5042002,
+    "contractAddress": "0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4",
+    "transactionHash": "0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f",
+    "blockHash": "0x3a8880886878528dba20a1944fb9f021b8195f2e24bdde143cc99ed1a213c0b4",
+    "blockNumber": "66966772",
+    "timestamp": 1791883231,
+    "instructionId": "0xf08d3a98f70886f7d39e774349866e6ad202935b04e4324cfc37ed57986a6eb9",
+    "contentHash": "0xe20e19c7c21c94177078dd2bc0d0f329590c1f13efaea72c6c3736ebecefd826",
+    "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+    "beneficiary": "0xe6e31c4551e86f4d695b3569ddd44f3b4de6ef18",
+    "amount": "0.100000",
+    "asset": "USDC",
+    "reference": "SR03-OWNER-TESTNET-001"
+  }
+}

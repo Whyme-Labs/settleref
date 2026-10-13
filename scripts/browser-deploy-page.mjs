@@ -5,6 +5,7 @@ const el = id => document.getElementById(id);
 const key = `settleref.deploy.${config.chainId}.${config.runtimeCodeSha256}`;
 let review = null;
 let report = null;
+let operationInFlight = false;
 let pending = JSON.parse(sessionStorage.getItem(key) ?? 'null');
 el('network').textContent = `${config.network} · chain ${config.chainId} · source ${config.sourceCommit}`;
 if (pending) {
@@ -28,10 +29,17 @@ async function rpc(method, params) {
 
 function displayError(error) { el('status').textContent = error.message ?? String(error); }
 function save() { sessionStorage.setItem(key, JSON.stringify(pending)); }
+function setBusy(value) {
+  operationInFlight = value;
+  for (const id of ['connect', 'verify', 'owner', 'hash']) el(id).disabled = value;
+  el('deploy').disabled = value || !review || pending !== null;
+  el('export').disabled = value || !report;
+}
 
 el('connect').onclick = async () => {
+  if (operationInFlight) return;
   review = null;
-  el('deploy').disabled = true;
+  setBusy(true);
   try {
     if (!window.ethereum?.request) throw new Error('Open this page in the browser where your EVM wallet is installed.');
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -39,15 +47,15 @@ el('connect').onclick = async () => {
     const fee = BigInt(review.feeCeilingWei);
     const decimal = `${fee / 10n ** 18n}.${(fee % (10n ** 18n)).toString().padStart(18, '0')}`;
     el('review').textContent = `Network: ${config.network}\nOwner: ${review.owner}\nContract: SettleRef, capped at 1 USDC per payment\nDeployment value: 0 USDC\nMaximum gas cost: ${decimal} USDC\nSource: ${config.sourceCommit}\nRuntime SHA-256: ${config.runtimeCodeSha256}`;
-    el('deploy').disabled = pending !== null;
     el('status').textContent = pending ? 'An earlier wallet request exists. Check its receipt.' : 'Review complete. The deployment button opens one wallet signing request.';
   } catch (error) { displayError(error); }
+  finally { setBusy(false); }
 };
 
 el('deploy').onclick = async () => {
-  if (!review || pending) return;
+  if (!review || pending || operationInFlight) return;
   const selectedReview = review;
-  el('deploy').disabled = true;
+  setBusy(true);
   try {
     const transactionHash = await submitDeployment(window.ethereum, rpc, config, selectedReview, () => {
       // Save before requesting a signature. A reload during the request must not resend.
@@ -64,26 +72,37 @@ el('deploy').onclick = async () => {
       sessionStorage.removeItem(key);
       review = null;
       el('status').textContent = 'Wallet rejected the request. No retry. Connect and review again if you choose to continue.';
-    } else { displayError(error); }
+    } else {
+      if (!pending) review = null;
+      displayError(error);
+    }
+  } finally {
+    setBusy(false);
   }
 };
 
 el('owner').oninput = () => { review = null; el('deploy').disabled = true; };
 
 el('verify').onclick = async () => {
+  if (operationInFlight) return;
   report = null;
-  el('export').disabled = true;
+  setBusy(true);
   try {
     if (pending && el('owner').value.toLowerCase() !== pending.owner) throw new Error('Keep the original deployment owner when recovering.');
     if (pending?.transactionHash && el('hash').value.toLowerCase() !== pending.transactionHash) throw new Error('Keep the original deployment hash when recovering.');
     report = await verifyDeployment(rpc, config, el('hash').value, el('owner').value);
+    if (report) {
+      pending = { owner: report.deployer, transactionHash: report.transactionHash, status: 'VERIFIED' };
+      save();
+      el('hash').value = report.transactionHash;
+    }
     el('status').textContent = report ? JSON.stringify(report, null, 2) : 'Receipt is pending. Check again later. Do not deploy again.';
-    el('export').disabled = !report;
   } catch (error) { displayError(error); }
+  finally { setBusy(false); }
 };
 
 el('export').onclick = () => {
-  if (!report) return;
+  if (!report || operationInFlight) return;
   const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2) + '\n'], { type: 'application/json' }));
   const link = document.createElement('a');
   link.href = url;

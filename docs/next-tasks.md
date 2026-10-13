@@ -43,7 +43,7 @@ Machine-readable evidence is in `evidence/browser/browser-tests.json`.
 
 ## SR-03: Deploy the capped Arc experiment
 
-Status: in progress. Reversible engineering work is complete. Owner-controlled signing and funding remain.
+Status: in progress. The genuine Arc testnet deployment and 0.10-USDC payment passed independent verification. Mainnet deployment and payment remain.
 
 Completed preparation:
 
@@ -62,7 +62,19 @@ Completed preparation:
 - Added CI gates that reject raw `--private-key` command flags in tracked operator tooling and require the tracked deployment configuration to fail closed.
 - Updated the CSP to permit the current Arc testnet RPC hostname.
 
-Remaining testnet gate:
+Completed testnet gate on October 13, 2026:
+
+- Owner-funded wallet: `0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e`, funded with 20 testnet USDC through Circle's faucet.
+- Contract: `0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4`.
+- Deployment: `0x6bdfc211f18d148cdfc948ac5cd11b7e2277230a98aeaaee05c98f369522ae85`.
+- Payment: `0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f`, exactly 0.10 USDC to the second owner-controlled wallet.
+- Exact creation/runtime bytecode, receipt, calldata, event, canonical block and consumed state independently verified in `evidence/sr03/owner/testnet-verified.json`.
+- Original instruction identity and submitted hash survived reload before receipt verification.
+- Actual JSON and CSV exports were captured; a separate Chromium browser without a wallet imported and verified the receipt.
+- An `eth_call` replay produced the exact `DuplicateInstruction()` revert, without another transaction.
+- Independent Standards and Spec reviews found and resolved operator-page concurrency/recovery issues. Four permanent page regressions pass. No contract source changed.
+
+Testnet reproduction:
 
 1. Fund an owner-controlled Arc testnet wallet through Circle's interactive faucet.
 2. Deploy with the browser wallet using `npm run sr03:deploy:browser -- testnet`, or with a locally encrypted keystore using `scripts/deploy.sh`.
@@ -92,7 +104,7 @@ Do not close SR-03 or claim a public-network deployment until these owner action
 
 ## SR-04: Publish and submit
 
-Status: blocked by SR-03.
+Status: submission preparation in progress; final eligibility remains gated by SR-03 mainnet evidence.
 
 Change the repository from private to public, host the static app, inspect the actual DoraHacks form, complete ownership and prior-funding attestations truthfully, and validate every public link while signed out.
 
