@@ -5,8 +5,8 @@
   "targetChainId": 5042,
   "deadlineUtc": "2026-10-15T03:59:00Z",
   "deadlineMalaysia": "2026-10-15T11:59:00+08:00",
-  "publicRepo": null,
-  "liveApp": null,
+  "publicRepo": "https://github.com/Whyme-Labs/settleref",
+  "liveApp": "https://settleref.pages.dev/",
   "builderProfile": "https://github.com/wms2537",
   "deploymentTransactionHash": "0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
   "paymentTransactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
@@ -14,8 +14,12 @@
   "arcTestnetSmokePassed": true,
   "duplicateRejectionEvidence": "evidence/sr03/owner/mainnet-duplicate-proof.json",
   "mainnetReceiptVerified": true,
-  "submissionStatus": "NOT_READY",
+  "submissionStatus": "SUBMITTED_UNDER_REVIEW",
   "rightsToSubmitConfirmed": true,
   "priorCircleOrArcFundingConfirmedAbsent": true,
-  "programRulesSource": "https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq"
+  "programRulesSource": "https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq",
+  "demoVideo": "https://settleref.pages.dev/demo.mp4",
+  "demoPage": "https://settleref.pages.dev/demo.html",
+  "submissionUrl": "https://dorahacks.io/build/49693",
+  "grantApproved": false
 }

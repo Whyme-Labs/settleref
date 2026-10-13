@@ -1,0 +1,20 @@
+{
+  "schema": "settleref.demo-video.v1",
+  "status": "PASS",
+  "generator": "Remotion 4.0.535",
+  "durationSeconds": 55.787,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "bytes": 14478067,
+  "sha256": "295fc706ad3a0183f58f2e1d4b23c803e39bb973ef6c192510e71eb48adc4ab3",
+  "captions": "settleref-demo.srt",
+  "source": "settleref-remotion-source.zip",
+  "mainnetPaymentTransactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+  "recordingScope": "Read-only verification of an already executed owner-funded payment, settled-flag check and actual exports in a browser without a wallet.",
+  "newPaymentSentForRecording": false,
+  "visualReview": "Six scene frames inspected from the final MP4.",
+  "audioReview": "AAC stream detected, max volume -1.9 dB, no clipping."
+}

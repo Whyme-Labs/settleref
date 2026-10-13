@@ -107,13 +107,15 @@ The owner actions produced genuine transaction hashes and verifier reports. No s
 
 ## SR-04: Publish and submit
 
-Status: submission preparation in progress. Mainnet evidence is complete. Public repository, hosting and final submission authorization remain.
+Status: completed on October 13, 2026. The owner authorized publication and final submission. The repository is public, the HTTPS app and Remotion demo are live, and DoraHacks confirmed Build Submitted and under review.
 
-Change the repository from private to public, host the static app, inspect the actual DoraHacks form, complete ownership and prior-funding attestations truthfully, and validate every public link while signed out.
+Publication: https://settleref.pages.dev/ . Demo: https://settleref.pages.dev/demo.html . DoraHacks Build: https://dorahacks.io/build/49693 . Public browser verification imported and reconciled the actual mainnet receipt without a wallet, played the video and passed the mobile layout check with no page errors. Staff-only contact values are excluded from public artifacts. Evidence: `evidence/sr04/publication.json`, `demo-video.json`, `submission.json` and `dorahacks-submitted.png`.
 
 Deadline: October 15, 2026 at 11:59 Asia/Kuala_Lumpur.
 
 Acceptance: public source, public HTTPS app, genuine Arc deployment evidence and successful submission confirmation.
+
+All acceptance checks passed. Organizer review is pending; no grant approval or funding is claimed.
 
 ## Product stopping rule
 

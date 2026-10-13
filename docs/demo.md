@@ -1,5 +1,9 @@
 # Demonstration
 
+Published Remotion demo: https://settleref.pages.dev/demo.html . The 56-second 1080p video has narration and captions, and records read-only verification of the genuine owner-funded mainnet payment in a browser without a wallet. It includes the consumed flag, actual JSON/CSV downloads and the independent `DuplicateInstruction()` replay result. No additional payment was broadcast to make the video.
+
+Reproducible Remotion source with recorded assets: https://settleref.pages.dev/remotion-source.zip . The watch page provides the public receipt bundle for repeating the verification.
+
 ## The story
 
 A buyer has a small supplier invoice. They need to pay the exact recipient once and give finance a receipt that can be matched back to the instruction. The invoice is illustrative. Both wallets settle in USDC on Arc; there is no simulated fiat conversion or bank account.

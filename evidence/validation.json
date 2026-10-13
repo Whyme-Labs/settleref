@@ -23,12 +23,18 @@
       "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
       "evidence": "evidence/sr03/owner/mainnet-verified.json",
       "review": "evidence/sr03/owner/operator-independent-review.json"
+    },
+    {
+      "id": "SR-04",
+      "status": "PASS",
+      "publicationEvidence": "evidence/sr04/publication.json",
+      "submissionEvidence": "evidence/sr04/submission.json"
     }
   ],
   "currentMilestone": {
     "id": "SR-04",
-    "status": "IN_PROGRESS_PUBLICATION_AUTHORIZATION_REQUIRED",
-    "reason": "Verified owner testnet/mainnet deployments and payments are complete. Public source, HTTPS hosting and final DoraHacks submission remain."
+    "status": "PASS",
+    "reason": "Public source, HTTPS app, mainnet receipt verification, Remotion demo and DoraHacks submission verified. Organizer review is pending."
   },
   "application": {
     "typecheck": "PASS",
@@ -153,8 +159,8 @@
     "arcTestnetTransaction": "PASS: owner-funded 0.10-USDC payment",
     "arcMainnetDeployment": "PASS: exact creation/runtime and canonical receipt verified",
     "arcMainnetTransaction": "PASS: owner-funded 0.10-USDC payment independently verified",
-    "publicHosting": "NOT_DEPLOYED: SR-04",
-    "grantSubmission": "NOT_SUBMITTED: SR-04"
+    "publicHosting": "PASS: https://settleref.pages.dev/",
+    "grantSubmission": "SUBMITTED_UNDER_REVIEW: https://dorahacks.io/build/49693"
   },
   "claims": {
     "localDevelopmentTransaction": true,
@@ -164,10 +170,7 @@
     "arcMainnetPayment": true,
     "securityAudit": false
   },
-  "nextRequiredEvidence": [
-    "Public repository and public HTTPS app, verified while signed out",
-    "Successful DoraHacks Submit for Review confirmation under SR-04"
-  ],
+  "nextRequiredEvidence": [],
   "sr03OwnerEvidence": {
     "status": "PASS",
     "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",

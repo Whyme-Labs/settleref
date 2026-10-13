@@ -1,0 +1,94 @@
+{
+  "schema": "settleref.sr04-publication.v1",
+  "status": "PASS",
+  "hostingProvider": "Cloudflare Pages",
+  "project": "settleref",
+  "deploymentUrl": "https://6606956d.settleref.pages.dev",
+  "repository": "https://github.com/Whyme-Labs/settleref",
+  "publicRepoHttpStatus": 200,
+  "reviewedCompiledSource": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
+  "mergedCommit": "9a90046d56267ca5baf5447e1267b8f0c1fafe65",
+  "mergedCi": "https://github.com/Whyme-Labs/settleref/actions/runs/38395599955",
+  "mergedBrowserCi": "https://github.com/Whyme-Labs/settleref/actions/runs/38395600220",
+  "http": {
+    "schema": "settleref.public-publication-verification.v1",
+    "generatedAt": "2026-10-13T12:34:04.693Z",
+    "status": "PASS",
+    "origin": "https://settleref.pages.dev",
+    "urls": [
+      {
+        "path": "/",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+      },
+      {
+        "path": "/demo.html",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+      },
+      {
+        "path": "/demo.css",
+        "status": 200,
+        "contentType": "text/css; charset=utf-8",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+      },
+      {
+        "path": "/deployment.json",
+        "status": 200,
+        "contentType": "application/json",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        "deployment": {
+          "chainId": 5042,
+          "rpcUrl": "https://rpc.mainnet.arc.io/",
+          "explorerUrl": "https://explorer.arc.io",
+          "contractAddress": "0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4",
+          "runtimeCodeSha256": "0x9b574e04f88f06a0a3b116c3d919ae0cd1e6b4f13025928e4cc8ce411cb36a96",
+          "writesEnabled": true
+        }
+      },
+      {
+        "path": "/example-receipt.json",
+        "status": 200,
+        "contentType": "application/json",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+      },
+      {
+        "path": "/demo.vtt",
+        "status": 200,
+        "contentType": "text/vtt; charset=utf-8",
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://rpc.mainnet.arc.io https://rpc.testnet.arc.io https://rpc.testnet.arc.network; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+      }
+    ],
+    "video": {
+      "status": 200,
+      "bytes": 14478067,
+      "sha256": "295fc706ad3a0183f58f2e1d4b23c803e39bb973ef6c192510e71eb48adc4ab3",
+      "matchesLocalArtifact": true,
+      "rangeRequestResponseStatus": 200,
+      "rangeRequestResponse": "FULL_ASSET"
+    }
+  },
+  "browser": {
+    "status": "PASS",
+    "origin": "https://settleref.pages.dev",
+    "playback": {
+      "duration": 55.787,
+      "width": 1920,
+      "height": 1080,
+      "currentTime": 1.009398,
+      "readyState": 4,
+      "error": null
+    },
+    "receipt": {
+      "status": "RPC verified",
+      "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+      "walletProviderPresent": false
+    },
+    "mobileOverflow": false,
+    "pageErrors": []
+  },
+  "operatorPagesPublished": false,
+  "staffContactsPublished": false
+}

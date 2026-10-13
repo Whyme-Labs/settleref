@@ -4,7 +4,9 @@ Payment to proof. A small experiment in cross-border payment operations on Arc.
 
 SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer and instruction identity within one deployment, and exports independently recheckable reconciliation records.
 
-**Current status: SR-01, SR-02 and SR-03 are complete. Owner-approved testnet and mainnet deployments and 0.10-USDC payments passed independent verification, reload recovery and duplicate-rejection checks. Publication and final submission remain. The repository is private, tracked live writes stay disabled, and no security audit or grant submission is claimed.**
+**Current status: SR-01 through SR-04 are complete. Owner-approved testnet and mainnet deployments and 0.10-USDC payments passed independent verification, reload recovery and duplicate-rejection checks. The source and app are public. DoraHacks confirmed submission on October 13, 2026; organizer review is pending. No security audit or grant approval is claimed. Tracked live writes stay disabled by default.**
+
+[Open the app](https://settleref.pages.dev/) · [Watch the 56-second demo](https://settleref.pages.dev/demo.html) · [DoraHacks submission](https://dorahacks.io/build/49693)
 
 ## Run
 
@@ -117,7 +119,7 @@ The installer pins Arc Foundry `v0.8.0-2` by SHA-256 rather than treating upstre
 
 ## Arc Microgrants
 
-The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. SR-04 remains open until public source, hosting and final submission are verified.
+The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. Submission confirmation and public-hosting receipts are in `evidence/sr04/`. The application is under review.
 
 ## License
 
