@@ -102,6 +102,20 @@ jobs:
                   text = text.replace(old, new, 1)
               elif new not in text:
                   raise SystemExit(f'Expected browser harness fragment not found:\n{old}')
+          wait_start = text.index('def wait_status(page: Page, fragment: str) -> None:')
+          wait_end = text.index('\n\ndef add_error_capture', wait_start)
+          text = text[:wait_start] + '''def wait_status(page: Page, fragment: str) -> None:
+              try:
+                  page.wait_for_function(
+                      "fragment => document.querySelector('#status').textContent.includes(fragment)",
+                      arg=fragment,
+                  )
+              except Exception as error:
+                  current = page.locator("#status").inner_text()
+                  raise AssertionError(
+                      f"Status never contained {fragment!r}; current status was {current!r}"
+                  ) from error
+          ''' + text[wait_end:]
           text = text.replace(
               'download(page, "Download instruction",',
               'download(page, "Export instruction",',
