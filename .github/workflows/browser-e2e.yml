@@ -68,33 +68,33 @@ jobs:
           text = path.read_text()
           replacements = [
               (
-                  '''    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})''',
-                  '''    request = urllib.request.Request(
-                  url,
-                  data=payload,
-                  headers={
-                      "Content-Type": "application/json",
-                      "Accept": "application/json",
-                      "User-Agent": "Mozilla/5.0 SettleRef-SR02/1.0",
-                  },
-              )''',
+                  '    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})',
+                  '    request = urllib.request.Request(\n'
+                  '        url,\n'
+                  '        data=payload,\n'
+                  '        headers={\n'
+                  '            "Content-Type": "application/json",\n'
+                  '            "Accept": "application/json",\n'
+                  '            "User-Agent": "Mozilla/5.0 SettleRef-SR02/1.0",\n'
+                  '        },\n'
+                  '    )',
               ),
               (
-                  '''    page.wait_for_function(
-                  "fragment => document.querySelector('#status').textContent.includes(fragment)",
-                  fragment,
-              )''',
-                  '''    page.wait_for_function(
-                  "fragment => document.querySelector('#status').textContent.includes(fragment)",
-                  arg=fragment,
-              )''',
+                  '    page.wait_for_function(\n'
+                  '        "fragment => document.querySelector(\'#status\').textContent.includes(fragment)",\n'
+                  '        fragment,\n'
+                  '    )',
+                  '    page.wait_for_function(\n'
+                  '        "fragment => document.querySelector(\'#status\').textContent.includes(fragment)",\n'
+                  '        arg=fragment,\n'
+                  '    )',
               ),
               (
-                  '''            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])''',
-                  '''            raw_hex = raw.hex()
-              if not raw_hex.startswith("0x"):
-                  raw_hex = f"0x{raw_hex}"
-              tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [raw_hex])''',
+                  '            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])',
+                  '            raw_hex = raw.hex()\n'
+                  '            if not raw_hex.startswith("0x"):\n'
+                  '                raw_hex = f"0x{raw_hex}"\n'
+                  '            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [raw_hex])',
               ),
           ]
           for old, new in replacements:
