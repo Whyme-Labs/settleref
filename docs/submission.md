@@ -45,16 +45,18 @@ Run `npm run check:submission` to see missing manifest fields. The checker valid
 
 For a staged hosting package with an operator-pinned deployment file, use `DEPLOYMENT_CONFIG_PATH=path/to/deployment.json npm run check:submission`. The source default remains disabled; the checker reports the exact configuration path it evaluated.
 
-## Suggested submission copy
+## Submission copy
 
 Name: SettleRef
 
 Tagline: Payment to proof.
 
-Description: SettleRef links a structured supplier-payment instruction to a USDC settlement on Arc. A capped, non-upgradeable contract pays the specified beneficiary and rejects duplicate execution of the same instruction by the same payer. The recipient can reconcile the original instruction with the real transaction and contract event, then export JSON and CSV records. Invoice references remain offchain behind a salted commitment. This is a focused payment-operations experiment, not a bank, FX or fiat-remittance service.
+Description: SettleRef ties a native-USDC supplier payment on Arc to its original instruction, so the recipient can check which instruction was settled and whether the exact beneficiary and amount match. A contract capped at 1 USDC rejects repeat execution of the same payer and instruction ID within one deployment; a recipient can verify the real transaction, event and content commitment without a wallet, then export JSON and spreadsheet-safe CSV.
 
-Arc integration: Native USDC settlement and gas, contract-enforced duplicate protection, and chain-backed reconciliation. The verifier checks a pinned deployment and exact sender, beneficiary, amount, instruction commitment and canonical block.
+Arc integration: Native USDC covers payment and gas in one dollar-denominated asset. Business amounts with at most six decimals convert to Arc's 18-decimal native units using integer arithmetic. The settlement contract enforces duplicate protection, and the recipient verifies the actual transaction against the original instruction and pinned deployment.
+
+The detailed description on the existing DoraHacks Build was revised on October 13 to explain what a plain wallet transfer and explorer leave to supplier-payment operations: matching the transaction to the original instruction. The saved copy is in `docs/dorahacks-description.txt`. The public page was reloaded and its complete text and proof links checked. The existing application remains under review; no second Build was submitted. Evidence is in `evidence/sr04/submission-copy-update.json`.
 
 Builder profile: https://github.com/wms2537
 
-Live URL, repository URL, contract address and transaction hashes: fill only after verified deployment. Do not submit placeholder links.
+Live app: https://settleref.pages.dev/ . Public repository: https://github.com/Whyme-Labs/settleref . Verified mainnet contract and transaction links are in the detailed copy and `submission.json`.

@@ -4,6 +4,8 @@ Payment to proof. A small experiment in cross-border payment operations on Arc.
 
 SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer and instruction identity within one deployment, and exports independently recheckable reconciliation records.
 
+A plain wallet transfer and an explorer show that funds moved. Supplier-payment operations also need to match that transaction to the original instruction. SettleRef retains its identity through imports and retries, binds the reviewed contents to the settlement event, and lets the recipient check the beneficiary, amount and commitment without connecting a wallet. Arc's native USDC covers both payment and gas in one dollar-denominated asset.
+
 **Current status: SR-01 through SR-04 are complete. Owner-approved testnet and mainnet deployments and 0.10-USDC payments passed independent verification, reload recovery and duplicate-rejection checks. The source and app are public. DoraHacks confirmed submission on October 13, 2026; organizer review is pending. No security audit or grant approval is claimed. Tracked live writes stay disabled by default.**
 
 [Open the app](https://settleref.pages.dev/) · [Watch the 56-second demo](https://settleref.pages.dev/demo.html) · [DoraHacks submission](https://dorahacks.io/build/49693)

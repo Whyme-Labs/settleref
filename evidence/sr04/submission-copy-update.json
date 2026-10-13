@@ -1,0 +1,25 @@
+{
+  "schema": "settleref.dorahacks-copy-update.v1",
+  "verifiedAt": "2026-10-13T14:03:35.200225+00:00",
+  "buildId": 49693,
+  "buildUrl": "https://dorahacks.io/build/49693",
+  "change": "Clarified supplier-payment instruction reconciliation, duplicate-protection scope and native-USDC payment/gas use on Arc.",
+  "publishedDescription": "docs/dorahacks-description.txt",
+  "descriptionFileSha256": "08720b99952817045570ec1244214640b7627774299bdd6b1b96ac80a7d2b5e9",
+  "completeTextMatchedAfterReload": true,
+  "proofAndDemoLinksPresent": [
+    "https://settleref.pages.dev/demo.html",
+    "https://settleref.pages.dev/",
+    "https://github.com/Whyme-Labs/settleref",
+    "https://settleref.pages.dev/demo.mp4",
+    "https://explorer.arc.io/tx/0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
+    "https://explorer.arc.io/tx/0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a"
+  ],
+  "publicPageScreenshot": "evidence/sr04/dorahacks-copy-updated.png",
+  "managementConfirmation": "This submission is under review.",
+  "status": "SUBMITTED_UNDER_REVIEW",
+  "grantApproved": false,
+  "newBuildSubmitted": false,
+  "transactionsSubmitted": false,
+  "staffContactValuesIncluded": false
+}

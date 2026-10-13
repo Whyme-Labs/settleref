@@ -1,0 +1,31 @@
+Paying a supplier in USDC leaves an operations question: which instruction did this transaction settle?
+
+A plain wallet transfer and an explorer show that funds moved. SettleRef adds a check against the original supplier-payment instruction and contract-enforced protection against the same payer executing that instruction twice within one deployment.
+
+The buyer imports an instruction and reviews its beneficiary, exact amount, invoice reference and expiry before signing. Its stable ID survives imports and retries; changing the amount or reference does not create a new identity. The non-upgradeable contract forwards native USDC directly to the beneficiary and records the instruction ID and a salted content commitment. There are no token allowances, service fees, admin keys or escrow balances. This prototype caps each payment at 1 USDC.
+
+The supplier can import the receipt bundle in another browser without connecting a wallet. SettleRef compares the actual transaction with the original instruction, checks the pinned contract runtime, sender, beneficiary, amount, exact calldata, settlement event and canonical block, then exports JSON and spreadsheet-safe CSV for reconciliation. Invoice details stay offchain; the salted commitment hides them only while the receipt and salt remain private.
+
+Arc's native USDC covers both settlement and gas, so the payer funds the workflow in one dollar-denominated asset. SettleRef converts business amounts with at most six decimals into Arc's 18-decimal native units using integer arithmetic.
+
+The mainnet demo settled 0.10 USDC between two owner-controlled wallets. The original instruction ID and transaction hash survived reload, and a second browser without a wallet verified the exported receipt. A read-only replay returned DuplicateInstruction() without sending a second payment. These are functional checks, not customer traction. Verification also passed 70 application/operator tests and 18 contract tests in each of the standard EVM and Arc Zero8 profiles, with 256 fuzz runs per profile.
+
+Duplicate protection covers the same payer and instruction ID in this contract deployment. Direct transfers, new IDs and other deployments are outside that protection. Receipt verification trusts the configured RPC; it does not authenticate the invoice or prove delivery of goods. No security audit is claimed.
+
+Watch the 56-second demo:
+https://settleref.pages.dev/demo.html
+
+Try the live app:
+https://settleref.pages.dev/
+
+Public source:
+https://github.com/Whyme-Labs/settleref
+
+Arc mainnet contract, chain 5042:
+0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4
+
+Verified deployment transaction:
+https://explorer.arc.io/tx/0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2
+
+Verified 0.10-USDC payment:
+https://explorer.arc.io/tx/0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a
