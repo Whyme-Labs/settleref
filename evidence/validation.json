@@ -18,6 +18,11 @@
       "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38359156807"
     }
   ],
+  "currentMilestone": {
+    "id": "SR-03",
+    "status": "IN_PROGRESS_OWNER_ACTION_REQUIRED",
+    "reason": "All reversible preflight and operator tooling is complete. Genuine Arc deployment and payment evidence still requires an owner-controlled funded wallet and explicit local signing approval."
+  },
   "application": {
     "typecheck": "PASS",
     "productionBuild": "PASS",
@@ -82,10 +87,49 @@
     "Normalized signed raw-transaction prefixes and checksum-formatted transaction targets in the ephemeral test wallet adapter.",
     "Persisted screenshots, exported files and the machine-readable pass report under evidence/browser."
   ],
+  "sr03Preparation": {
+    "networkPreflight": {
+      "status": "PASS",
+      "sourceCommit": "8865d0247d9138ea3dc40e31a3b83a0694708df5",
+      "runId": 38361052258,
+      "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38361052258",
+      "machineReadableEvidence": "evidence/sr03/network-probe.json",
+      "testnetChainIdObserved": 5042002,
+      "mainnetChainIdObserved": 5042,
+      "signingPerformed": false,
+      "transactionSubmitted": false
+    },
+    "boundedFaucetExperiment": {
+      "status": "BLOCKED_FAUCET",
+      "sourceCommit": "00ffca07d7e9b75f705ee2316e403410d8abb469",
+      "runId": 38361501064,
+      "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38361501064",
+      "machineReadableEvidence": "evidence/sr03/testnet/testnet-evidence.json",
+      "screenshots": [
+        "evidence/sr03/testnet/01-faucet-loaded.png",
+        "evidence/sr03/testnet/02-faucet-requested.png"
+      ],
+      "balanceAfterRequestWei": "0",
+      "privateKeyPersisted": false,
+      "privateKeyLogged": false,
+      "customerFunds": false,
+      "mainnetConnected": false,
+      "transactionSubmitted": false,
+      "resolution": "Use Circle's interactive faucet with an owner-controlled Arc testnet wallet. Do not bypass the human-verification boundary."
+    },
+    "ownerTooling": {
+      "deployment": "scripts/deploy.sh uses a locally encrypted Arc Foundry keystore alias, verifies chain and expected owner address, reruns tests and requires an exact mainnet confirmation.",
+      "runtimePinning": "scripts/pin-deployment.mjs requires exact deployed runtime bytecode and leaves writes disabled.",
+      "writeEnableGate": "scripts/enable-reviewed-deployment.mjs rechecks the runtime and exact one-USDC contract cap before enabling writes.",
+      "independentVerifier": "scripts/sr03-verify-live.mjs reads no private key and verifies deployment creation bytecode, runtime, payment receipt, canonical block, duplicate state and the 0.10-USDC smoke ceiling.",
+      "trackedRawPrivateKeyFlags": false,
+      "trackedDefaultWritesEnabled": false
+    }
+  },
   "networkStatus": {
-    "arcTestnetDeployment": "NOT_DEPLOYED: SR-03",
-    "arcTestnetTransaction": "NOT_SUBMITTED: SR-02 used connectivity-only wallet evidence",
-    "arcMainnetDeployment": "NOT_DEPLOYED: SR-03",
+    "arcTestnetDeployment": "NOT_DEPLOYED: owner-controlled funding and signature required under SR-03",
+    "arcTestnetTransaction": "NOT_SUBMITTED: faucet experiment stopped at zero balance",
+    "arcMainnetDeployment": "NOT_DEPLOYED: gated by passing testnet evidence and explicit owner confirmation",
     "arcMainnetTransaction": "NOT_SUBMITTED",
     "publicHosting": "NOT_DEPLOYED: SR-04",
     "grantSubmission": "NOT_SUBMITTED: SR-04"
@@ -99,8 +143,9 @@
     "securityAudit": false
   },
   "nextRequiredEvidence": [
-    "Owner-controlled Arc testnet deployment, wallet payment, receipt reconciliation and duplicate rejection under SR-03",
-    "Reviewed Arc mainnet deployment and tiny self-funded payment under SR-03",
+    "Owner-controlled Arc testnet deployment with exact runtime match",
+    "Owner-funded testnet payment of at most 0.10 USDC, pending recovery, independent receipt reconciliation and duplicate rejection",
+    "Reviewed Arc mainnet deployment and tiny owner-funded payment under both explicit confirmation gates",
     "Public repository, public HTTPS app and DoraHacks submission under SR-04"
   ]
 }
