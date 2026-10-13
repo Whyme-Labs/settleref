@@ -5,7 +5,7 @@ Verified on October 13, 2026, Malaysia time. Recheck before submitting because t
 Primary organizer source: https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq
 Submission destination: https://dorahacks.io/hackathon/arc-microgrants/detail
 
-The DoraHacks detail page returned HTTP 405 to the research tool. Requirements below come from the organizer's Arc House page. The actual logged-in form, upload limits, and any additional form-specific questions have not been inspected. Do not claim that a video, logo, pitch deck or additional form field is mandatory without checking it there.
+The detail page and all logged-in Build wizard steps were inspected in Chrome on October 13. The detail page repeats the working-mainnet requirement and rejects testnet-only builds. The Profile step requires a logo, accepts PNG/JPEG under 2 MB and recommends 480 x 480 px. A repository URL and social link are required; project website and demo video fields are optional. Contact requires Telegram and one backup contact, visible only to DoraHacks staff. The Arc-specific form asks for an email, builder profile, live project link, public repository, two-sentence description, Arc use, prior Arc deployment history and prior funding. Its deployment-evidence field accepts a mainnet contract address or verifiable transaction hash; a separate payment hash is not mandatory for that field. Final action is Submit for Review, with Terms of Use and Participant Agreement acceptance.
 
 ## Required by the organizer
 
@@ -33,11 +33,13 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 ## Current readiness
 
-NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. No public app, mainnet contract, funding wallet or mainnet transaction exists from this work. Application tests run locally. Contract CI and browser E2E checks still need successful execution.
+NOT READY FOR FINAL SUBMISSION. The repository is private and the public app is not published. Owner-approved testnet and mainnet deployment/payment verification passed. The mainnet 0.10-USDC payment is `0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a`; receipt, canonical block, duplicate rejection, reload recovery and verification in a second browser without a wallet passed. The owner confirmed rights to submit, no prior Circle/Arc program funding, and no Arc deployment before this project. Profile, description, team and staff-only contacts are saved in the DoraHacks draft. Arc-specific answers are prepared in the final form. Final publication and Submit for Review require owner authorization.
 
 Repository: https://github.com/Whyme-Labs/settleref. Make it public before inserting it into `submission.json`. The connected builder profile resolves to https://github.com/wms2537.
 
 Run `npm run check:submission` to see missing manifest fields. The checker validates local bookkeeping, not live URL accessibility, organizer eligibility or chain evidence.
+
+For a staged hosting package with an operator-pinned deployment file, use `DEPLOYMENT_CONFIG_PATH=path/to/deployment.json npm run check:submission`. The source default remains disabled; the checker reports the exact configuration path it evaluated.
 
 ## Suggested submission copy
 

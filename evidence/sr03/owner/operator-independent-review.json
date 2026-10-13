@@ -1,0 +1,28 @@
+{
+  "schema": "settleref.operator-independent-review.v1",
+  "generatedAt": "2026-10-13T09:50:28.394076+00:00",
+  "originalReviewedCommit": "fa9c128b49cb19ed328e1378c312ce8f708a23f3",
+  "correctedPageSha256": "cafbaf982750a652f33fcef64f17da5049b51a69f8777eb596261de8bb642dfe",
+  "contractSourceChanged": false,
+  "standards": {
+    "status": "PASS",
+    "reviewer": "independent standards sub-agent",
+    "regressionTestsPassed": 15,
+    "findingsResolved": [
+      "Concurrent deployment preflight could allow a second wallet request"
+    ]
+  },
+  "spec": {
+    "status": "PASS",
+    "reviewer": "independent specification sub-agent",
+    "regressionTestsPassed": 4,
+    "findingsResolved": [
+      "Overlapping deployment requests",
+      "Manually recovered hash was not persisted",
+      "Stale verification could replace a newer pending identity"
+    ]
+  },
+  "repair": "Shared synchronous operation guard across Connect, Deploy and Verify; verified original hash is persisted and restored.",
+  "permanentRegressionTests": "tests/browser-deploy-page.test.mjs",
+  "totalNodeTestsPassed": 70
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "settleref.instruction.v1",
+  "chainId": 5042,
+  "endToEndId": "fc221c1a-275a-4a0e-bb4b-b198ee5ee31b",
+  "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+  "beneficiary": "0xe6e31c4551e86f4d695b3569ddd44f3b4de6ef18",
+  "asset": "USDC",
+  "amount": "0.100000",
+  "reference": "SR03-OWNER-MAINNET-001",
+  "expiresAt": 1791976764,
+  "privacySalt": "0x6caa01c80e11ebd0c971871a5f2fe7dcfb361a9ace022e73e542156a1c5be41a"
+}

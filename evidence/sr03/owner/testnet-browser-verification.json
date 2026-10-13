@@ -1,0 +1,27 @@
+{
+  "schema": "settleref.testnet-browser-verification.v1",
+  "status": "PASS",
+  "reviewedSourceCommit": "fa9c128b49cb19ed328e1378c312ce8f708a23f3",
+  "network": "testnet",
+  "chainId": 5042002,
+  "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+  "beneficiary": "0xe6e31c4551e86f4d695b3569ddd44f3b4de6ef18",
+  "amount": "0.100000",
+  "originalEndToEndId": "63f9e5ed-0093-4129-a042-908c9c21bc4c",
+  "transactionHash": "0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f",
+  "originalIdAndHashRecoveredAfterReloadBeforeVerification": true,
+  "browserReceiptVerifiedAgainstRpc": true,
+  "instructionExportedBeforePayment": true,
+  "actualReceiptJsonExported": true,
+  "actualReconciliationCsvExported": true,
+  "duplicateFlagObservedInBrowser": true,
+  "contractDuplicateRevertProof": "evidence/sr03/owner/testnet-duplicate-proof.json",
+  "independentBrowser": {
+    "status": "PASS",
+    "scope": "Arc testnet independent browser receipt import",
+    "walletPresent": false,
+    "transactionHash": "0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f",
+    "receipt": "Receipt reconciled against Arc RPC\n\nVerified 0.100000 USDC at block 66966772. Sender, recipient, amount, identity, commitment and canonical block match.\n\nOpen transaction in explorer"
+  },
+  "mainnetClaimed": false
+}

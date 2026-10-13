@@ -4,7 +4,7 @@ Payment to proof. A small experiment in cross-border payment operations on Arc.
 
 SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer and instruction identity within one deployment, and exports independently recheckable reconciliation records.
 
-**Current status: SR-01 contract validation and SR-02 real-browser validation are complete. SR-03 network preflight and owner tooling are complete, but no Arc testnet or mainnet deployment has been made. The repository remains private, live writes remain disabled, and no audit or grant submission is claimed.**
+**Current status: SR-01, SR-02 and SR-03 are complete. Owner-approved testnet and mainnet deployments and 0.10-USDC payments passed independent verification, reload recovery and duplicate-rejection checks. Publication and final submission remain. The repository is private, tracked live writes stay disabled, and no security audit or grant submission is claimed.**
 
 ## Run
 
@@ -22,7 +22,7 @@ Open http://127.0.0.1:4173. The default local walkthrough needs no wallet. Choos
 
 ## Verified behavior
 
-- 53 Node tests pass for domain rules and mocked RPC and wallet boundaries.
+- 70 Node tests pass for domain rules, mocked RPC and wallet boundaries, and deployment-operator recovery and concurrency.
 - 18 Solidity tests pass under the standard EVM profile and another 18 pass under Arc execution semantics, each with 256 fuzz runs.
 - Real Chromium automation records 17 passed checks, 0 failed checks and eight screenshots.
 - Desktop and 390 x 844 mobile flows pass without browser JavaScript errors or horizontal overflow.
@@ -32,6 +32,8 @@ Open http://127.0.0.1:4173. The default local walkthrough needs no wallet. Choos
 - HTML-looking invoice text renders as text rather than executable markup.
 - A private-key-backed EIP-1193 provider connected to Arc testnet for read-only chain verification without submitting a public-network transaction.
 - One isolated Arc-Anvil transaction completed the live application path, survived reload, reconciled against RPC, exposed the duplicate flag and was independently reverified in a second browser.
+- Genuine owner-approved Arc testnet and mainnet 0.10-USDC payments reconciled against the original instructions. Both retained the original identity/hash across reload and were independently verified in a browser without a wallet.
+- Exact original-calldata replay on each network returns `DuplicateInstruction()` through read-only `eth_call`; no second payment was broadcast.
 
 Machine-readable results are under `evidence/validation.json`, `evidence/browser/` and `evidence/sr03/`.
 
@@ -43,21 +45,22 @@ Machine-readable results are under `evidence/validation.json`, `evidence/browser
 - An EIP-1193 browser-wallet adapter with chain, payer, duplicate, balance and runtime-bytecode checks. Owner-enabled deployment configuration is required.
 - Receipt reconciliation using transaction data, a unique contract event and canonical-block checks against a configured RPC.
 - JSON receipt bundles and spreadsheet-safe CSV exports. Imported receipt claims never select a contract or RPC.
-- Owner-safe deployment tooling based on a locally encrypted Arc Foundry keystore alias.
+- Owner deployment through a browser wallet or locally encrypted Arc Foundry keystore alias.
 - Exact runtime pinning that leaves writes disabled.
 - A separate write-enable gate that rechecks runtime and the one-USDC contract cap.
 - A read-only live verifier for deployment creation bytecode, runtime, receipt, canonical block and duplicate state.
 
 ## SR-03 owner gate
 
-A no-key preflight confirmed reachable Arc testnet and mainnet endpoints. A bounded faucet experiment then reached Circle's public faucet in real Chromium, but the fresh address remained unfunded at the human-verification boundary. No CAPTCHA bypass, public development key, customer funds or mainnet action was used. The one-off signing experiment was removed after evidence capture.
+The owner completed the browser-wallet deployment and payment flow on both networks. Mainnet contract: [`0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4`](https://explorer.arc.io/address/0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4). Mainnet [deployment](https://explorer.arc.io/tx/0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2) and [0.10-USDC payment](https://explorer.arc.io/tx/0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a) have exact bytecode, receipt, calldata, event and canonical-block evidence under `evidence/sr03/owner/`.
 
-The remaining public-network steps require an owner-controlled funded wallet and local signing approval. Read `docs/deployment.md` before doing anything irreversible. The runbook contains separate testnet, mainnet, runtime-pinning, write-enable and independent-verification gates.
+Read `docs/deployment.md` for reproduction. The runbook contains separate testnet, mainnet, runtime-pinning, write-enable and independent-verification gates. Signing keys stay in the owner's wallet.
 
 Useful operator commands:
 
 ```sh
 npm run sr03:probe
+npm run sr03:deploy:browser -- testnet
 npm run sr03:pin -- 0xCONTRACT_ADDRESS 5042002
 CONFIRM_ENABLE_WRITES=ENABLE_OWNER_TESTNET_WRITES \
   npm run sr03:enable -- testnet
@@ -92,6 +95,7 @@ Keep payment files private. Instructions are stored in the current browser tab's
 | `docs/architecture.md` | Decisions and trust boundaries |
 | `docs/next-tasks.md` | Milestone state and remaining owner actions |
 | `scripts/deploy.sh` | Encrypted-keystore deployment gate |
+| `scripts/prepare-browser-deploy.sh` | Local browser-wallet deployment preparation |
 | `scripts/pin-deployment.mjs` | Exact remote-runtime pinning, writes stay disabled |
 | `scripts/enable-reviewed-deployment.mjs` | Runtime and contract-cap write-enable gate |
 | `scripts/sr03-verify-live.mjs` | Independent read-only live-chain verifier |
@@ -113,7 +117,7 @@ The installer pins Arc Foundry `v0.8.0-2` by SHA-256 rather than treating upstre
 
 ## Arc Microgrants
 
-The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. The current repository is not eligible by itself because SR-03 and SR-04 remain open.
+The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. SR-04 remains open until public source, hosting and final submission are verified.
 
 ## License
 

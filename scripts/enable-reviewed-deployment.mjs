@@ -52,7 +52,7 @@ const maxValue = await rpc.request('eth_call', [
   'latest',
 ]);
 if (typeof maxValue !== 'string' || !/^0x[0-9a-fA-F]{64}$/.test(maxValue)) {
-  throw new Error('Contract returned a malformed MAX_NATIVE value.');
+  throw new Error('Contract returned a malformed MAX_PAYMENT value.');
 }
 const maxNative = BigInt(maxValue);
 if (maxNative !== 1_000_000_000_000_000_000n) {

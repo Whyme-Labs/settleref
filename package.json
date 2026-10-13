@@ -17,6 +17,7 @@
     "check:abi": "FORGE_BIN=arc-forge node scripts/check-abi.mjs",
     "check:submission": "node scripts/check-submission.mjs",
     "sr03:probe": "node scripts/sr03-network-probe.mjs",
+    "sr03:deploy:browser": "bash scripts/prepare-browser-deploy.sh",
     "sr03:pin": "node scripts/pin-deployment.mjs",
     "sr03:enable": "node scripts/enable-reviewed-deployment.mjs",
     "sr03:verify": "node scripts/sr03-verify-live.mjs"

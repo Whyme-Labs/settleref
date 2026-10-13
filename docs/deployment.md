@@ -6,7 +6,7 @@ SR-01 and SR-02 are complete. SR-03 is not complete until genuine Arc testnet an
 
 Repository automation proved Arc testnet and mainnet RPC connectivity without signing. A separate attempt to fund a fresh CI wallet through Circle's public faucet reached the faucet page but received no funds because the human verification boundary was not completed. That bounded result is retained under `evidence/sr03/testnet/`. Do not automate around the faucet's human-verification control.
 
-All live deployment and payment actions therefore use an owner-controlled wallet and a locally encrypted Arc Foundry keystore. No private key belongs in chat, GitHub, shell history, `.env`, CI variables, screenshots, or evidence files.
+Live deployment uses either an owner-controlled browser wallet or a locally encrypted Arc Foundry keystore. No private key belongs in chat, GitHub, shell history, `.env`, CI variables, screenshots, or evidence files.
 
 ## Network endpoints
 
@@ -40,6 +40,8 @@ The standard and Arc profiles must both pass. The Arc profile selects the `arc` 
 
 ## Prepare the owner wallet
 
+If your wallet is a browser extension, use the browser deployment path below. You do not need to export or import its key into Foundry. Keep the encrypted-keystore commands for owners who already use a Foundry account.
+
 Create or import a keystore locally using Arc Foundry's encrypted keystore support. The remaining examples assume the alias is `settleref-owner` and that the expected public address is known independently.
 
 For testnet, visit Circle's faucet in a normal interactive browser and fund that owner address with Arc testnet USDC. USDC is Arc's native gas token, so the same test balance funds deployment, gas and the tiny smoke payment. Confirm the balance before deployment:
@@ -50,6 +52,34 @@ arc-cast balance 0xYOUR_OWNER_ADDRESS \
 ```
 
 Use only owner-controlled test funds. Never use customer funds or a publicly known development key.
+
+## Deploy with a browser wallet
+
+On Apple Silicon, the checksum-pinned installer supports macOS. Keep its tools local to the checkout:
+
+```sh
+npm ci
+bash scripts/install-arc-foundry.sh "$PWD/.tools/arc-foundry"
+export PATH="$PWD/.tools/arc-foundry:$PATH"
+npm run sr03:deploy:browser -- testnet
+node scripts/serve.mjs
+```
+
+The preparation command reruns application, type, standard EVM, Arc execution and ABI checks. It refuses a dirty source tree and requires the Arc Zero8 profile. Open `http://127.0.0.1:4173/deploy/index.html` in the browser where your wallet is installed. Enter the expected owner public address and switch the wallet to Arc testnet, chain `5042002`.
+
+Connect and review the displayed owner, network, source commit and gas ceiling. The deployment sends zero native value and pays only gas. Choose the deployment button and approve the transaction in your wallet. The page makes one signing request, retains its pending state before signing, and never retries a broadcast automatically. After reload, check the original transaction hash. If the wallet disconnected before returning a hash, inspect the wallet's activity and paste the original hash rather than redeploying.
+
+Check the receipt and export `deployment-testnet.json`. The verifier checks the actual creation input, owner, zero value, successful receipt, exact runtime and canonical block. Save the export under `evidence/sr03/owner/`, then use the runtime-pinning and write-enable commands below. Deployment alone does not enable payments or complete SR-03.
+
+After the independent testnet payment verifier produces `evidence/sr03/owner/testnet-verified.json`, the same browser path supports mainnet with the explicit gate:
+
+```sh
+CONFIRM_MAINNET=DEPLOY_CAPPED_EXPERIMENT npm run sr03:deploy:browser -- mainnet
+```
+
+It refuses mainnet without a passing testnet report matching the current runtime. Complete mainnet pinning, write enabling, a tiny payment and independent verification as described below. Mainnet approval remains in the owner wallet.
+
+The generated operator files exist only in ignored `dist/deploy/`. Run `npm run build` before publishing `dist/` to remove the local operator page. The tracked deployment configuration stays disabled.
 
 ## Arc testnet deployment
 
@@ -88,7 +118,7 @@ The pinning command refuses a chain mismatch, empty runtime or bytecode mismatch
 
 ## Enable the reviewed testnet deployment
 
-A separate command rechecks the pinned runtime and reads `MAX_NATIVE` from the deployed contract. It enables writes only when the contract still matches and the cap is exactly one native USDC:
+A separate command rechecks the pinned runtime and reads `MAX_PAYMENT` from the deployed contract. It enables writes only when the contract still matches and the cap is exactly one native USDC:
 
 ```sh
 npm run build

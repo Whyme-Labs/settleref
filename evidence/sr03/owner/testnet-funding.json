@@ -1,0 +1,33 @@
+{
+  "schema": "settleref.owner-testnet-funding.v1",
+  "generatedAt": "2026-10-13T09:13:28.569Z",
+  "sourceCommit": "fa9c128b49cb19ed328e1378c312ce8f708a23f3",
+  "status": "PASS",
+  "network": "testnet",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.network",
+  "ownerPublicAddress": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+  "faucetUrl": "https://faucet.circle.com/",
+  "transactionHash": "0x61cfd94952bccc999eed7c24f39bfc874bb4feab7010189d087bba55eb3dd697",
+  "explorerUrl": "https://testnet.arcscan.app/tx/0x61cfd94952bccc999eed7c24f39bfc874bb4feab7010189d087bba55eb3dd697",
+  "receiptStatus": "0x1",
+  "blockNumber": "0x3fdd037",
+  "blockHash": "0x677c4e2eb683e28dab411513ce856731a7987cac96de8d7eb8cb0a6ce7acab0d",
+  "canonicalBlockVerified": true,
+  "nativeFundingUsdc": "20",
+  "nativeFundingWei": "20000000000000000000",
+  "balanceWei": "20000000000000000000",
+  "deploymentGasReview": {
+    "gasEstimate": "293423",
+    "gasLimit": "352108",
+    "maxFeePerGas": "50000000000",
+    "feeCeilingWei": "17605400000000000",
+    "valueWei": "0"
+  },
+  "claims": {
+    "ownerSignatureRequested": false,
+    "ownerTransactionSubmitted": false,
+    "arcContractDeployed": false,
+    "mainnetTransactionSubmitted": false
+  }
+}

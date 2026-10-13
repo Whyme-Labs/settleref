@@ -1,0 +1,33 @@
+{
+  "schema": "settleref.browser-settlement-evidence.v1",
+  "network": "mainnet",
+  "chainId": 5042,
+  "status": "PASS",
+  "originalPendingRecoveredAfterReload": {
+    "endToEndId": "fc221c1a-275a-4a0e-bb4b-b198ee5ee31b",
+    "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+    "status": "A submitted payment exists in this tab. Switch to Arc payment mode, review the same instruction and verify the saved hash. Do not create a new ID."
+  },
+  "ownerBrowser": {
+    "status": "Onchain settled flag is true. The contract rejects another execution with this payer and instruction ID.",
+    "receiptStatus": "RPC verified",
+    "endToEndId": "fc221c1a-275a-4a0e-bb4b-b198ee5ee31b",
+    "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a"
+  },
+  "independentBrowserWithoutWallet": {
+    "status": "Payment reconciled against the configured Arc RPC.",
+    "receiptStatus": "RPC verified",
+    "endToEndId": "fc221c1a-275a-4a0e-bb4b-b198ee5ee31b",
+    "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+    "walletProviderPresent": false
+  },
+  "exports": [
+    "mainnet-receipt.json",
+    "mainnet-reconciliation.csv"
+  ],
+  "screenshots": [
+    "mainnet-receipt-verified.png",
+    "mainnet-independent-receipt.png"
+  ],
+  "secondTransactionSubmitted": false
+}

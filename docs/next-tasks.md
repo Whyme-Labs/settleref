@@ -43,7 +43,7 @@ Machine-readable evidence is in `evidence/browser/browser-tests.json`.
 
 ## SR-03: Deploy the capped Arc experiment
 
-Status: in progress. Reversible engineering work is complete. Owner-controlled signing and funding remain.
+Status: completed on October 13, 2026. Genuine owner-approved testnet and mainnet deployments and 0.10-USDC payments passed independent verification.
 
 Completed preparation:
 
@@ -54,28 +54,45 @@ Completed preparation:
 - Preserved screenshots and a machine report under `evidence/sr03/testnet/` when the wallet remained unfunded at the human-verification boundary.
 - Retired the one-off faucet and transient-key automation after the bounded experiment.
 - Hardened `scripts/deploy.sh` around a locally encrypted owner keystore alias, chain-ID checks, expected-address checks and explicit mainnet confirmation.
+- Added a localhost browser-wallet deployment path for owners using wallet extensions, with exact owner and chain checks, a gas ceiling, pending recovery, no automatic retries and independent deployment verification.
+- Replaced Bash 4-only address normalization so the keystore script runs with macOS Bash 3.2.
 - Hardened `scripts/pin-deployment.mjs` to require an exact remote-runtime match while leaving writes disabled.
 - Added `scripts/enable-reviewed-deployment.mjs`, which rechecks runtime and the exact one-USDC cap before enabling writes.
 - Added `scripts/sr03-verify-live.mjs`, a read-only verifier for deployment creation bytecode, runtime, payment receipt, canonical block and duplicate state.
 - Added CI gates that reject raw `--private-key` command flags in tracked operator tooling and require the tracked deployment configuration to fail closed.
 - Updated the CSP to permit the current Arc testnet RPC hostname.
 
-Remaining testnet gate:
+Completed testnet gate on October 13, 2026:
+
+- Owner-funded wallet: `0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e`, funded with 20 testnet USDC through Circle's faucet.
+- Contract: `0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4`.
+- Deployment: `0x6bdfc211f18d148cdfc948ac5cd11b7e2277230a98aeaaee05c98f369522ae85`.
+- Payment: `0x8c62d3c3cb589d524127413946f8a47e992619c105403be11e6ce91a03ff1a4f`, exactly 0.10 USDC to the second owner-controlled wallet.
+- Exact creation/runtime bytecode, receipt, calldata, event, canonical block and consumed state independently verified in `evidence/sr03/owner/testnet-verified.json`.
+- Original instruction identity and submitted hash survived reload before receipt verification.
+- Actual JSON and CSV exports were captured; a separate Chromium browser without a wallet imported and verified the receipt.
+- An `eth_call` replay produced the exact `DuplicateInstruction()` revert, without another transaction.
+- Independent Standards and Spec reviews found and resolved operator-page concurrency/recovery issues. Four permanent page regressions pass. No contract source changed.
+
+Testnet reproduction:
 
 1. Fund an owner-controlled Arc testnet wallet through Circle's interactive faucet.
-2. Deploy with the locally encrypted keystore using `scripts/deploy.sh`.
+2. Deploy with the browser wallet using `npm run sr03:deploy:browser -- testnet`, or with a locally encrypted keystore using `scripts/deploy.sh`.
 3. Pin the exact runtime and enable the reviewed testnet configuration through the separate confirmation gate.
 4. Execute one owner-funded payment of at most `0.10 USDC` in the real browser UI.
 5. Export the receipt bundle and reconciliation CSV.
 6. Run `scripts/sr03-verify-live.mjs` and commit a `PASS` report.
 
-Remaining mainnet gate:
+Completed mainnet gate:
 
-1. Freeze and review the exact source commit that passed testnet.
-2. Use a funded owner-controlled mainnet wallet and a second owner-controlled beneficiary.
-3. Deploy only with `CONFIRM_MAINNET=DEPLOY_CAPPED_EXPERIMENT`.
-4. Pin runtime, enable writes only with `CONFIRM_ENABLE_WRITES=ENABLE_CAPPED_MAINNET_WRITES`, and execute one payment of at most `0.10 USDC`.
-5. Independently verify and commit the public deployment and payment evidence.
+- Reviewed source/operator candidate: `a5b3807b94bd8407f3e5fcb99100e2acd945bfcf`; CI and independent Standards/Spec reviews passed.
+- Owner-approved deployment: `0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2`, chain `5042`, contract `0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4`.
+- Owner-funded 0.10-USDC payment: `0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a`.
+- Exact creation/runtime, payment calldata, event, canonical block and consumed state: `evidence/sr03/owner/mainnet-verified.json`, PASS.
+- Original instruction ID and submitted hash survived reload before verification.
+- Actual JSON receipt and CSV exports were imported and verified in a second browser without a wallet: `mainnet-browser-verification.json`, PASS.
+- Exact original-calldata replay returned `DuplicateInstruction()` through read-only `eth_call`: `mainnet-duplicate-proof.json`, PASS. No second transaction was submitted.
+- The testnet and mainnet contract addresses happen to match because both deployments used the same payer and nonce; they are separate chain deployments.
 
 Acceptance remains unchanged:
 
@@ -86,11 +103,11 @@ Acceptance remains unchanged:
 - Arc mainnet has genuine deployment and tiny owner-funded payment evidence.
 - No customer funds or credentials enter the repository.
 
-Do not close SR-03 or claim a public-network deployment until these owner actions produce genuine transaction hashes and verifier reports.
+The owner actions produced genuine transaction hashes and verifier reports. No security audit is claimed.
 
 ## SR-04: Publish and submit
 
-Status: blocked by SR-03.
+Status: submission preparation in progress. Mainnet evidence is complete. Public repository, hosting and final submission authorization remain.
 
 Change the repository from private to public, host the static app, inspect the actual DoraHacks form, complete ownership and prior-funding attestations truthfully, and validate every public link while signed out.
 
