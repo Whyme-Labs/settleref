@@ -11,12 +11,19 @@
     "localHttpServer": "PASS: built index returned HTTP 200 on loopback",
     "browserE2E": "BLOCKED: Chromium navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. No browser-flow pass is claimed."
   },
+  "githubActions": {
+    "runNumber": 1,
+    "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38342655396",
+    "status": "FAILURE_BEFORE_RUNNER_ALLOCATION",
+    "observation": "Both application and contracts jobs had zero steps, runner_id 0, a blank runner name, and no downloadable logs.",
+    "cause": "UNKNOWN_FROM_AVAILABLE_API. Check repository or organization Actions policy, hosted-runner availability, and billing. Re-run after public visibility or policy correction."
+  },
   "contracts": {
     "testsWritten": 18,
     "tooling": "CI installs checksum-pinned circlefin/arc-foundry v0.8.0-2.",
-    "standardEvmTests": "PENDING_GITHUB_CI",
-    "arcExecutionTests": "PENDING_GITHUB_CI",
-    "selectors": "PENDING_GITHUB_CI: check-abi uses arc-forge inspect against browser constants."
+    "standardEvmTests": "BLOCKED_GITHUB_RUNNER: no steps executed",
+    "arcExecutionTests": "BLOCKED_GITHUB_RUNNER: no steps executed",
+    "selectors": "BLOCKED_GITHUB_RUNNER: check-abi did not execute"
   },
   "arcTestnet": "NOT_DEPLOYED",
   "arcMainnet": "NOT_DEPLOYED",
@@ -24,7 +31,7 @@
   "publicHosting": "NOT_DEPLOYED: no authenticated deployment credentials",
   "grantSubmission": "NOT_READY_NOT_SUBMITTED",
   "nextRequiredEvidence": [
-    "Green GitHub application and Arc Foundry jobs",
+    "Executed GitHub application and Arc Foundry jobs",
     "Browser end-to-end pass",
     "Arc testnet smoke",
     "Public repo and app",
