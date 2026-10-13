@@ -12,3 +12,4 @@ runs = 256
 
 [profile.arc]
 network = "arc"
+hardfork = "arc:zero8"

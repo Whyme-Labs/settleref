@@ -2,49 +2,122 @@ name: Verify
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: settleref-verify-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  application:
-    runs-on: ubuntu-latest
+  verify:
+    runs-on: [self-hosted, Linux, X64, homeserver]
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+      ARC_FOUNDRY_VERSION: v0.8.0-2
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm test
-      - run: npm run typecheck
-      - uses: actions/upload-artifact@v4
+          clean: true
+          persist-credentials: false
+
+      - name: Verify controlled runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = "home-ci-01"
+          test "$RUNNER_OS" = "Linux"
+          test "$RUNNER_ARCH" = "X64"
+          printf 'runner=%s\nos=%s\narch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
+
+      - name: Verify Node toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          npm --version
+          node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 22) { throw new Error(`Node 22+ required, found ${process.version}`); }'
+
+      - name: Install application dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Test and build application
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/ci
+          npm test 2>&1 | tee evidence/ci/application-tests.txt
+          npm run typecheck 2>&1 | tee evidence/ci/typecheck.txt
+
+      - name: Install checksum-pinned Arc Foundry
+        shell: bash
+        run: |
+          set -euo pipefail
+          destination="$RUNNER_TEMP/settleref-arc-foundry-$ARC_FOUNDRY_VERSION"
+          rm -rf "$destination"
+          bash scripts/install-arc-foundry.sh "$destination"
+          echo "$destination" >> "$GITHUB_PATH"
+
+      - name: Prove Arc profile selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          arc-forge --version | tee evidence/ci/arc-foundry-version.txt
+          arc-forge config --json > evidence/ci/foundry-default-config.json
+          FOUNDRY_PROFILE=arc arc-forge config --json > evidence/ci/foundry-arc-config.json
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('evidence/ci/foundry-arc-config.json', 'utf8'));
+          if (config.network !== 'arc') {
+            throw new Error(`Arc profile did not select Arc execution semantics: ${JSON.stringify(config.network)}`);
+          }
+          const hardfork = config.arc_hardfork ?? config.hardfork;
+          if (hardfork !== 'arc:zero8') {
+            throw new Error(`Arc profile did not pin arc:zero8: ${JSON.stringify(hardfork)}`);
+          }
+          console.log(`Arc profile active: network=${config.network}, hardfork=${hardfork}`);
+          NODE
+
+      - name: Test standard EVM logic
+        shell: bash
+        run: |
+          set -euo pipefail
+          arc-forge test -vvv 2>&1 | tee evidence/ci/contracts-standard.txt
+
+      - name: Test Arc execution semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          FOUNDRY_PROFILE=arc arc-forge test -vvv 2>&1 | tee evidence/ci/contracts-arc.txt
+
+      - name: Check browser ABI constants
+        shell: bash
+        run: |
+          set -euo pipefail
+          FORGE_BIN=arc-forge node scripts/check-abi.mjs 2>&1 | tee evidence/ci/abi-check.txt
+
+      - name: Confirm verification did not rewrite tracked sources
+        run: git diff --exit-code
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: settleref-verification-evidence
+          path: evidence/ci
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload static site
+        uses: actions/upload-artifact@v4
         with:
           name: settleref-static-site
           path: dist
+          retention-days: 14
 
-  contracts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm ci --ignore-scripts && npm run build
-      - name: Install pinned Arc Foundry
-        run: |
-          bash scripts/install-arc-foundry.sh "$RUNNER_TEMP/arc-foundry"
-          echo "$RUNNER_TEMP/arc-foundry" >> "$GITHUB_PATH"
-      - name: Report Arc Foundry version
-        run: arc-forge --version
-      - name: Test standard EVM logic
-        run: arc-forge test -vvv
-      - name: Test Arc execution semantics
-        run: FOUNDRY_PROFILE=arc arc-forge test -vvv
-      - name: Check browser ABI constants
-        run: FORGE_BIN=arc-forge node scripts/check-abi.mjs
-
-# Public repository jobs use isolated GitHub-hosted runners and no signing secrets.
 # Live-chain smoke tests remain owner-operated because they move USDC.
