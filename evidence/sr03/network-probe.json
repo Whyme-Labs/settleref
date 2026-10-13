@@ -1,0 +1,97 @@
+{
+  "schema": "settleref.sr03-network-probe.v1",
+  "generatedAt": "2026-10-13T07:09:23.380Z",
+  "sourceCommit": "c82c1f35481ab602068ec15e2e8db4ee6dab0fa2",
+  "rpcResults": [
+    {
+      "name": "arc-testnet-current",
+      "rpcUrl": "https://rpc.testnet.arc.network",
+      "expectedChainId": 5042002,
+      "reachable": true,
+      "matchesExpectedChain": true,
+      "chainId": 5042002,
+      "blockNumber": 66951221,
+      "latestBlockTimestamp": 1791875361,
+      "latestBlockIso": "2026-10-13T07:09:21.000Z",
+      "gasPrice": "25000000000",
+      "clientVersion": "arc/v1",
+      "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
+      "usdcRuntimeBytes": 1798,
+      "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
+      "latencyMs": 462
+    },
+    {
+      "name": "arc-testnet-legacy",
+      "rpcUrl": "https://rpc.testnet.arc.io",
+      "expectedChainId": 5042002,
+      "reachable": true,
+      "matchesExpectedChain": true,
+      "chainId": 5042002,
+      "blockNumber": 66951221,
+      "latestBlockTimestamp": 1791875361,
+      "latestBlockIso": "2026-10-13T07:09:21.000Z",
+      "gasPrice": "25000000000",
+      "clientVersion": "arc/v1",
+      "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
+      "usdcRuntimeBytes": 1798,
+      "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
+      "latencyMs": 466
+    },
+    {
+      "name": "arc-mainnet-current",
+      "rpcUrl": "https://rpc.mainnet.arc.network",
+      "expectedChainId": 5042,
+      "reachable": false,
+      "matchesExpectedChain": false,
+      "error": "fetch failed",
+      "latencyMs": 52
+    },
+    {
+      "name": "arc-mainnet-legacy",
+      "rpcUrl": "https://rpc.mainnet.arc.io",
+      "expectedChainId": 5042,
+      "reachable": true,
+      "matchesExpectedChain": true,
+      "chainId": 5042,
+      "blockNumber": 25714406,
+      "latestBlockTimestamp": 1791875361,
+      "latestBlockIso": "2026-10-13T07:09:21.000Z",
+      "gasPrice": "20000001152",
+      "clientVersion": "arc/v1",
+      "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
+      "usdcRuntimeBytes": 1798,
+      "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
+      "latencyMs": 494
+    }
+  ],
+  "explorerResults": [
+    {
+      "url": "https://testnet.arcscan.app",
+      "reachable": true,
+      "status": 200,
+      "finalUrl": "https://explorer.testnet.arc.io/",
+      "latencyMs": 813
+    },
+    {
+      "url": "https://arcscan.app",
+      "reachable": false,
+      "error": "fetch failed",
+      "latencyMs": 122
+    },
+    {
+      "url": "https://explorer.arc.io",
+      "reachable": true,
+      "status": 200,
+      "finalUrl": "https://explorer.arc.io/",
+      "latencyMs": 474
+    }
+  ],
+  "conclusions": {
+    "testnetReachable": true,
+    "preferredTestnetRpc": "https://rpc.testnet.arc.network",
+    "mainnetReachable": true,
+    "preferredMainnetRpc": "https://rpc.mainnet.arc.io",
+    "signingPerformed": false,
+    "transactionSubmitted": false
+  }
+}
