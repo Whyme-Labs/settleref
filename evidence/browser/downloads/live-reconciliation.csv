@@ -1,0 +1,2 @@
+"status","reference","endToEndId","asset","amount","payer","beneficiary","chainId","transactionHash","blockNumber"
+"RPC_VERIFIED","'=SUM(1,1)","fc598cb7-f082-4e52-a58f-7b24efb54163","USDC","0.100000","0x3598020db18a35dbe5d01fe828b236441477ae74","0xcf8cc926973a9e9f87e6f0a6532aa5e058ae3180","31337","0x19d46ccb783933a31ff1ed01e9c994b4d468feb688ec4c450b9e81388160674f","2"

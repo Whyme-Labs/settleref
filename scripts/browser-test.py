@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from eth_account import Account
+from eth_utils import to_checksum_address
 from playwright.sync_api import BrowserContext, Page, sync_playwright
 
 BASE_URL = os.environ.get("SETTLEREF_BASE_URL", "http://127.0.0.1:4173/")
@@ -50,7 +51,15 @@ def pass_check(name: str, detail: str) -> None:
 
 def rpc_call(url: str, method: str, params: list[Any]) -> Any:
     payload = json.dumps({"jsonrpc": "2.0", "id": 1, "method": method, "params": params}).encode()
-    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+    request = urllib.request.Request(
+        url,
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "Mozilla/5.0 SettleRef-SR02/1.0",
+        },
+    )
     try:
         with urllib.request.urlopen(request, timeout=15) as response:
             body = json.loads(response.read())
@@ -68,10 +77,16 @@ def set_deployment(path: Path) -> None:
 
 
 def wait_status(page: Page, fragment: str) -> None:
-    page.wait_for_function(
-        "fragment => document.querySelector('#status').textContent.includes(fragment)",
-        fragment,
-    )
+    try:
+        page.wait_for_function(
+            "fragment => document.querySelector('#status').textContent.includes(fragment)",
+            arg=fragment,
+        )
+    except Exception as error:
+        current = page.locator("#status").inner_text()
+        raise AssertionError(
+            f"Status never contained {fragment!r}; current status was {current!r}"
+        ) from error
 
 
 def add_error_capture(page: Page, label: str) -> None:
@@ -125,7 +140,7 @@ def attach_wallet(page: Page, state: dict[str, Any]) -> None:
                 "type": 2,
                 "chainId": chain_id,
                 "nonce": nonce,
-                "to": tx["to"],
+                "to": to_checksum_address(tx["to"]),
                 "value": int(tx.get("value", "0x0"), 16),
                 "data": tx.get("data", "0x"),
                 "gas": int(tx["gas"], 16),
@@ -136,7 +151,10 @@ def attach_wallet(page: Page, state: dict[str, Any]) -> None:
             raw = getattr(signed, "raw_transaction", getattr(signed, "rawTransaction", None))
             if raw is None:
                 raise RuntimeError("Wallet could not obtain signed transaction bytes")
-            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])
+            raw_hex = raw.hex()
+            if not raw_hex.startswith("0x"):
+                raw_hex = f"0x{raw_hex}"
+            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [raw_hex])
             state["send_count"] += 1
             state["transaction_hashes"].append(tx_hash)
             return tx_hash
@@ -227,7 +245,7 @@ with sync_playwright() as playwright:
     page.wait_for_function("document.querySelector('#t-review').classList.contains('complete')")
     assert page.get_by_role("button", name="Simulate settlement").is_disabled()
     demo_identity = page.locator("#payment-summary dd").nth(3).inner_text()
-    instruction_file = download(page, "Download instruction", DOWNLOADS / "demo-instruction.json")
+    instruction_file = download(page, "Export instruction", DOWNLOADS / "demo-instruction.json")
     page.screenshot(path=str(OUT / "03-desktop-review.png"), full_page=True)
     page.locator("#confirm").check()
     page.get_by_role("button", name="Simulate settlement").click()
@@ -298,7 +316,7 @@ with sync_playwright() as playwright:
     page.get_by_role("button", name="Review instruction").click()
     page.wait_for_function("document.querySelector('#t-review').classList.contains('complete')")
     live_identity = page.locator("#payment-summary dd").nth(3).inner_text()
-    live_instruction_file = download(page, "Download instruction", DOWNLOADS / "live-instruction.json")
+    live_instruction_file = download(page, "Export instruction", DOWNLOADS / "live-instruction.json")
     page.locator("#confirm").check()
 
     live_state["account_override"] = BENEFICIARY

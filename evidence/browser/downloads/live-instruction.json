@@ -1,0 +1,12 @@
+{
+  "schema": "settleref.instruction.v1",
+  "chainId": 31337,
+  "endToEndId": "fc598cb7-f082-4e52-a58f-7b24efb54163",
+  "payer": "0x3598020db18a35dbe5d01fe828b236441477ae74",
+  "beneficiary": "0xcf8cc926973a9e9f87e6f0a6532aa5e058ae3180",
+  "asset": "USDC",
+  "amount": "0.100000",
+  "reference": "=SUM(1,1)",
+  "expiresAt": 1791960755,
+  "privacySalt": "0x8bdc184a1064a8a1798aec028b4baa8c881da8a9ad5df24a9fada5f07c45dad1"
+}

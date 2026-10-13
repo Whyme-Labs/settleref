@@ -1,0 +1,124 @@
+{
+  "schema": "settleref.browser-evidence.v1",
+  "generatedAt": 1791874357,
+  "status": "PASS",
+  "passed": 17,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Untrusted deployment fails closed",
+      "detail": "Live payment remained disabled when writes lacked a pinned runtime hash."
+    },
+    {
+      "name": "EIP-1193 wallet connects to Arc testnet",
+      "detail": "The wallet reported chain 5042002 from the live Arc testnet RPC; writes stayed disabled."
+    },
+    {
+      "name": "Local walkthrough completes in Chromium",
+      "detail": "Explicit confirmation, one simulated settlement, duplicate rejection and simulation labelling all passed."
+    },
+    {
+      "name": "Simulation cannot masquerade as a receipt",
+      "detail": "The live receipt importer rejected the simulation schema."
+    },
+    {
+      "name": "Instruction JSON round trip preserves identity",
+      "detail": "Exporting, importing and reviewing produced the same instruction commitment."
+    },
+    {
+      "name": "Untrusted reference renders as text",
+      "detail": "The browser created no image element or event handler from the supplied HTML string."
+    },
+    {
+      "name": "Excess precision is rejected",
+      "detail": "The UI rejected seven decimal places instead of rounding."
+    },
+    {
+      "name": "390 px layout has no horizontal overflow",
+      "detail": "The document scroll width did not exceed the viewport."
+    },
+    {
+      "name": "Wrong wallet account is rejected before signing",
+      "detail": "No eth_sendTransaction request occurred for the wrong account."
+    },
+    {
+      "name": "Wrong wallet network is rejected before signing",
+      "detail": "No transaction request occurred when the wallet reported chain 1."
+    },
+    {
+      "name": "Pending transaction survives reload",
+      "detail": "The original transaction hash and instruction identity survived reload and mode switching."
+    },
+    {
+      "name": "Private-key-backed EIP-1193 payment verifies",
+      "detail": "One signed transaction settled on Arc Anvil and reconciled against the RPC receipt."
+    },
+    {
+      "name": "Onchain duplicate protection is visible in the UI",
+      "detail": "The settled mapping was true for the original payer and instruction identity."
+    },
+    {
+      "name": "Receipt JSON round trip preserves payment identity",
+      "detail": "The bundle retained the original end-to-end ID and verified instruction commitment."
+    },
+    {
+      "name": "CSV export is spreadsheet-safe",
+      "detail": "A formula-prefixed reference was neutralized with a leading apostrophe."
+    },
+    {
+      "name": "A second browser independently verifies the receipt",
+      "detail": "The imported bundle was rechecked against RPC; claimed receipt fields were not trusted."
+    },
+    {
+      "name": "No browser JavaScript errors",
+      "detail": "All desktop, mobile, wallet and receipt-verification pages completed without page or console errors."
+    }
+  ],
+  "observations": {
+    "arcTestnet": {
+      "rpc": "https://rpc.testnet.arc.io",
+      "chainId": 5042002,
+      "walletAddress": "0x3598020db18a35dbe5d01fe828b236441477ae74",
+      "transactionSubmitted": false
+    },
+    "localArcExecution": {
+      "chainId": 31337,
+      "payer": "0x3598020db18a35dbe5d01fe828b236441477ae74",
+      "beneficiary": "0xcf8cc926973a9e9f87e6f0a6532aa5e058ae3180",
+      "transactionHash": "0x19d46ccb783933a31ff1ed01e9c994b4d468feb688ec4c450b9e81388160674f",
+      "walletRequests": [
+        "eth_accounts",
+        "eth_accounts",
+        "eth_chainId",
+        "eth_accounts",
+        "eth_chainId",
+        "eth_sendTransaction"
+      ],
+      "sendCount": 1,
+      "mainnetTransaction": false
+    }
+  },
+  "scope": {
+    "browser": "Headless Chromium over the real HTTP application",
+    "testnet": "Private-key-backed EIP-1193 provider connected to the live Arc testnet RPC; no transaction submitted",
+    "liveTransaction": "Signed raw transaction on local Arc Anvil using Arc execution semantics",
+    "mainnet": "No connection or transaction"
+  },
+  "screenshots": [
+    "01-untrusted-config.png",
+    "02-arc-testnet-wallet.png",
+    "03-desktop-review.png",
+    "04-desktop-demo-complete.png",
+    "05-mobile-review.png",
+    "06-local-transaction-submitted.png",
+    "07-local-payment-verified.png",
+    "08-independent-receipt-verification.png"
+  ],
+  "downloads": [
+    "demo-instruction.json",
+    "live-instruction.json",
+    "live-receipt.json",
+    "live-reconciliation.csv",
+    "simulation-receipt.json"
+  ]
+}
