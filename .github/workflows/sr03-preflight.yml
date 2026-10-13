@@ -62,18 +62,11 @@ jobs:
       - name: Publish summary
         if: always()
         run: |
-          {
-            echo '## SR-03 network preflight'
-            echo
-            echo '- No key loaded'
-            echo '- No transaction signed'
-            echo '- No transaction submitted'
-            if [[ -f evidence/sr03/network-probe.json ]]; then
-              node - <<'NODE'
-              const report = require('./evidence/sr03/network-probe.json');
-              for (const entry of report.rpcResults) {
-                console.log(`- ${entry.name}: ${entry.reachable ? `chain ${entry.chainId}, block ${entry.blockNumber}` : `unreachable, ${entry.error}`}`);
-              }
-              NODE
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo '## SR-03 network preflight' >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo '- No key loaded' >> "$GITHUB_STEP_SUMMARY"
+          echo '- No transaction signed' >> "$GITHUB_STEP_SUMMARY"
+          echo '- No transaction submitted' >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f evidence/sr03/network-probe.json ]]; then
+            node -e "const r=require('./evidence/sr03/network-probe.json'); for(const e of r.rpcResults){ console.log('- '+e.name+': '+(e.reachable?('chain '+e.chainId+', block '+e.blockNumber):('unreachable, '+e.error))); }" >> "$GITHUB_STEP_SUMMARY"
+          fi
