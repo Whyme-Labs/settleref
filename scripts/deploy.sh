@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 : "${DEPLOYER_ACCOUNT:?Set DEPLOYER_ACCOUNT to your locally encrypted Arc Foundry keystore alias. Never paste a private key into chat, shell history, CI variables, or this repository.}"
 
 FORGE_BIN="${FORGE_BIN:-arc-forge}"
+CAST_BIN="${CAST_BIN:-arc-cast}"
 NETWORK="${NETWORK:-testnet}"
 OUTPUT_DIR="${OUTPUT_DIR:-evidence/sr03/owner}"
 
@@ -30,15 +31,16 @@ case "$NETWORK" in
 esac
 
 command -v "$FORGE_BIN" >/dev/null
+command -v "$CAST_BIN" >/dev/null
 mkdir -p "$OUTPUT_DIR"
 
-actual_chain="$($FORGE_BIN chain-id --rpc-url "$RPC")"
+actual_chain="$($CAST_BIN chain-id --rpc-url "$RPC")"
 [[ "$actual_chain" == "$CHAIN" ]] || {
   echo "RPC chain mismatch: expected $CHAIN, received $actual_chain." >&2
   exit 1
 }
 
-account_address="$($FORGE_BIN wallet address --account "$DEPLOYER_ACCOUNT")"
+account_address="$($CAST_BIN wallet address --account "$DEPLOYER_ACCOUNT")"
 if [[ -n "${EXPECTED_DEPLOYER_ADDRESS:-}" ]]; then
   [[ "${account_address,,}" == "${EXPECTED_DEPLOYER_ADDRESS,,}" ]] || {
     echo "Encrypted keystore alias resolved to $account_address, not EXPECTED_DEPLOYER_ADDRESS." >&2
@@ -46,7 +48,7 @@ if [[ -n "${EXPECTED_DEPLOYER_ADDRESS:-}" ]]; then
   }
 fi
 
-balance="$($FORGE_BIN balance "$account_address" --rpc-url "$RPC")"
+balance="$($CAST_BIN balance "$account_address" --rpc-url "$RPC")"
 echo "Network: $NETWORK"
 echo "Chain ID: $CHAIN"
 echo "RPC: $RPC"
