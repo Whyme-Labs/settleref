@@ -1,0 +1,150 @@
+name: SR-03 Arc testnet experiment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sr03-testnet-experiment.yml'
+      - 'scripts/sr03-testnet-experiment.py'
+      - 'scripts/install-arc-foundry.sh'
+      - 'scripts/build.mjs'
+      - 'scripts/serve.mjs'
+      - 'contracts/**'
+      - 'src/**'
+      - 'public/**'
+      - 'foundry.toml'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: settleref-sr03-testnet-experiment
+  cancel-in-progress: true
+
+jobs:
+  testnet-experiment:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.16.0
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install locked application and browser dependencies
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python -m pip install --disable-pip-version-check playwright==1.55.0 eth-account==0.13.7
+          python -m playwright install --with-deps chromium
+
+      - name: Install checksum-pinned Arc Foundry
+        run: |
+          destination="$RUNNER_TEMP/settleref-arc-foundry-v0.8.0-2"
+          bash scripts/install-arc-foundry.sh "$destination"
+          echo "$destination" >> "$GITHUB_PATH"
+
+      - name: Validate source before touching testnet
+        run: |
+          npm test
+          arc-forge test -vvv
+          FOUNDRY_PROFILE=arc arc-forge test -vvv
+          FOUNDRY_PROFILE=arc arc-forge build
+          FORGE_BIN=arc-forge node scripts/check-abi.mjs
+          python -m py_compile scripts/sr03-testnet-experiment.py
+
+      - name: Run isolated Arc testnet experiment
+        id: experiment
+        shell: bash
+        run: |
+          set +e
+          rm -rf evidence/sr03/testnet
+          python scripts/sr03-testnet-experiment.py
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit bounded testnet evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -d evidence/sr03/testnet ]]; then
+            echo 'No testnet evidence directory was produced.' >&2
+            exit 1
+          fi
+          git add evidence/sr03/testnet
+          if git diff --cached --quiet; then
+            echo 'Testnet evidence is unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'test: capture SR-03 Arc testnet evidence [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Enforce testnet acceptance gate
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report_path = Path('evidence/sr03/testnet/testnet-evidence.json')
+          if not report_path.exists():
+              raise SystemExit('Missing SR-03 testnet report')
+          report = json.loads(report_path.read_text())
+          if report.get('status') != 'PASS':
+              raise SystemExit(f"SR-03 testnet experiment did not pass: {report.get('status')} at {report.get('stage')}: {report.get('error')}")
+          deployment = report.get('deployment', {})
+          payment = report.get('payment', {})
+          if not deployment.get('transactionHash') or not payment.get('transactionHash'):
+              raise SystemExit('Missing deployment or payment transaction hash')
+          if deployment.get('runtimeBytes', 0) <= 0:
+              raise SystemExit('No verified deployed runtime')
+          if payment.get('sendCount') != 1:
+              raise SystemExit('Expected exactly one payment broadcast')
+          if not payment.get('pendingRecovery') or not payment.get('duplicateFlagObserved'):
+              raise SystemExit('Pending recovery or duplicate proof missing')
+          if not payment.get('independentBrowserVerification'):
+              raise SystemExit('Independent browser verification missing')
+          safety = report.get('safety', {})
+          if safety.get('privateKeyPersisted') or safety.get('privateKeyLogged'):
+              raise SystemExit('Private-key safety invariant failed')
+          if safety.get('mainnetTransaction'):
+              raise SystemExit('Testnet job must not submit a mainnet transaction')
+          print(json.dumps({
+              'contractAddress': deployment['contractAddress'],
+              'deploymentTransaction': deployment['transactionHash'],
+              'paymentTransaction': payment['transactionHash'],
+              'checks': len(report.get('checks', [])),
+          }, indent=2))
+          PY
+          test "${{ steps.experiment.outputs.exit_code }}" = '0'
+
+      - name: Publish summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## SR-03 Arc testnet experiment' >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo '- Fresh ephemeral CI wallet: yes' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Private key persisted or printed: no' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Customer funds: none' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Arc mainnet connection or transaction: none' >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f evidence/sr03/testnet/testnet-evidence.json ]]; then
+            python -c "import json; r=json.load(open('evidence/sr03/testnet/testnet-evidence.json')); print('- Status: '+str(r.get('status'))); print('- Stage: '+str(r.get('stage'))); print('- Contract: '+str(r.get('deployment',{}).get('contractAddress'))); print('- Deployment transaction: '+str(r.get('deployment',{}).get('transactionHash'))); print('- Payment transaction: '+str(r.get('payment',{}).get('transactionHash'))); print('- Error: '+str(r.get('error')))" >> "$GITHUB_STEP_SUMMARY"
+          fi
