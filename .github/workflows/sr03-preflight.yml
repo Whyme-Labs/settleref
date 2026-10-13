@@ -1,0 +1,79 @@
+name: SR-03 network preflight
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sr03-preflight.yml'
+      - 'scripts/sr03-network-probe.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: settleref-sr03-network-preflight
+  cancel-in-progress: true
+
+jobs:
+  network-preflight:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.16.0
+
+      - name: Probe candidate Arc endpoints
+        run: node scripts/sr03-network-probe.mjs
+
+      - name: Validate bounded evidence
+        run: |
+          node - <<'NODE'
+          const report = require('./evidence/sr03/network-probe.json');
+          if (report.schema !== 'settleref.sr03-network-probe.v1') throw new Error('Unexpected report schema');
+          if (!report.conclusions.testnetReachable) throw new Error('Arc testnet is not reachable');
+          if (report.conclusions.signingPerformed !== false) throw new Error('Preflight must not sign');
+          if (report.conclusions.transactionSubmitted !== false) throw new Error('Preflight must not submit');
+          const good = report.rpcResults.filter((entry) => entry.reachable && entry.matchesExpectedChain);
+          if (good.length === 0) throw new Error('No candidate endpoint matched its expected chain');
+          console.log(JSON.stringify(report.conclusions, null, 2));
+          NODE
+
+      - name: Commit network evidence
+        run: |
+          set -euo pipefail
+          git add evidence/sr03/network-probe.json
+          if git diff --cached --quiet; then
+            echo 'Network evidence is unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'test: capture SR-03 network preflight [skip ci]'
+          git push origin HEAD:main
+
+      - name: Publish summary
+        if: always()
+        run: |
+          {
+            echo '## SR-03 network preflight'
+            echo
+            echo '- No key loaded'
+            echo '- No transaction signed'
+            echo '- No transaction submitted'
+            if [[ -f evidence/sr03/network-probe.json ]]; then
+              node - <<'NODE'
+              const report = require('./evidence/sr03/network-probe.json');
+              for (const entry of report.rpcResults) {
+                console.log(`- ${entry.name}: ${entry.reachable ? `chain ${entry.chainId}, block ${entry.blockNumber}` : `unreachable, ${entry.error}`}`);
+              }
+              NODE
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
