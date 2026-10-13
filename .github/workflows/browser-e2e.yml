@@ -57,6 +57,55 @@ jobs:
           bash scripts/install-arc-foundry.sh "$destination"
           echo "$destination" >> "$GITHUB_PATH"
 
+      - name: Apply deterministic harness compatibility repairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/browser-test.py')
+          text = path.read_text()
+          replacements = [
+              (
+                  '''    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})''',
+                  '''    request = urllib.request.Request(
+                  url,
+                  data=payload,
+                  headers={
+                      "Content-Type": "application/json",
+                      "Accept": "application/json",
+                      "User-Agent": "Mozilla/5.0 SettleRef-SR02/1.0",
+                  },
+              )''',
+              ),
+              (
+                  '''    page.wait_for_function(
+                  "fragment => document.querySelector('#status').textContent.includes(fragment)",
+                  fragment,
+              )''',
+                  '''    page.wait_for_function(
+                  "fragment => document.querySelector('#status').textContent.includes(fragment)",
+                  arg=fragment,
+              )''',
+              ),
+              (
+                  '''            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])''',
+                  '''            raw_hex = raw.hex()
+              if not raw_hex.startswith("0x"):
+                  raw_hex = f"0x{raw_hex}"
+              tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [raw_hex])''',
+              ),
+          ]
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+              elif new not in text:
+                  raise SystemExit(f'Expected browser harness fragment not found:\n{old}')
+          path.write_text(text)
+          PY
+          python -m py_compile scripts/browser-test.py
+
       - name: Run real-browser and wallet validation
         shell: bash
         run: |
@@ -85,17 +134,7 @@ jobs:
             cat "$work/server.log" >&2
             exit 1
           fi
-          python - <<'PY'
-          import runpy
-          import urllib.request
-          opener = urllib.request.build_opener()
-          opener.addheaders = [
-              ('User-Agent', 'Mozilla/5.0 SettleRef-SR02/1.0'),
-              ('Accept', 'application/json'),
-          ]
-          urllib.request.install_opener(opener)
-          runpy.run_path('scripts/browser-test.py', run_name='__main__')
-          PY
+          python scripts/browser-test.py
           test -f evidence/browser/browser-tests.json
           python - <<'PY'
           import json
@@ -111,13 +150,13 @@ jobs:
           print(json.dumps({'passed': report['passed'], 'screenshots': len(report['screenshots'])}, indent=2))
           PY
 
-      - name: Commit bounded browser evidence
+      - name: Commit bounded browser evidence and tested harness
         shell: bash
         run: |
           set -euo pipefail
-          git add evidence/browser
+          git add scripts/browser-test.py evidence/browser
           if git diff --cached --quiet; then
-            echo 'Browser evidence is unchanged.'
+            echo 'Browser evidence and harness are unchanged.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
