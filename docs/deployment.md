@@ -118,7 +118,7 @@ The pinning command refuses a chain mismatch, empty runtime or bytecode mismatch
 
 ## Enable the reviewed testnet deployment
 
-A separate command rechecks the pinned runtime and reads `MAX_NATIVE` from the deployed contract. It enables writes only when the contract still matches and the cap is exactly one native USDC:
+A separate command rechecks the pinned runtime and reads `MAX_PAYMENT` from the deployed contract. It enables writes only when the contract still matches and the cap is exactly one native USDC:
 
 ```sh
 npm run build

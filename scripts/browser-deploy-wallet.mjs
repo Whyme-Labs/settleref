@@ -47,7 +47,9 @@ export async function submitDeployment(wallet, rpc, config, review, beforeSend =
   await checkWallet(wallet, rpc, config, review.owner);
   const tx = review.transaction;
   if (tx.from !== review.owner || tx.to !== undefined || tx.value !== '0x0' ||
-      tx.data !== config.creationBytecode || BigInt(tx.chainId) !== BigInt(config.chainId)) {
+      tx.data !== config.creationBytecode || BigInt(tx.chainId) !== BigInt(config.chainId) ||
+      BigInt(tx.gas) <= 0n || BigInt(tx.maxFeePerGas) <= 0n ||
+      BigInt(tx.gas) * BigInt(tx.maxFeePerGas) !== BigInt(review.feeCeilingWei)) {
     throw new Error('Deployment review changed. Review again before signing.');
   }
   if (BigInt(await rpc('eth_getBalance', [review.owner, 'pending'])) < BigInt(tx.gas) * BigInt(tx.maxFeePerGas)) {

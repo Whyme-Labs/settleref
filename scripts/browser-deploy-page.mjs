@@ -46,11 +46,12 @@ el('connect').onclick = async () => {
 
 el('deploy').onclick = async () => {
   if (!review || pending) return;
+  const selectedReview = review;
   el('deploy').disabled = true;
   try {
-    const transactionHash = await submitDeployment(window.ethereum, rpc, config, review, () => {
+    const transactionHash = await submitDeployment(window.ethereum, rpc, config, selectedReview, () => {
       // Save before requesting a signature. A reload during the request must not resend.
-      pending = { owner: review.owner, transactionHash: null, status: 'WALLET_REQUESTED' };
+      pending = { owner: selectedReview.owner, transactionHash: null, status: 'WALLET_REQUESTED' };
       save();
     });
     pending.transactionHash = transactionHash;

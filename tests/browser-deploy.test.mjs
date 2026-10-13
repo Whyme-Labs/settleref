@@ -91,8 +91,18 @@ test('changed deployment data or balance prevents a signing request', async () =
   review.transaction.value = '0x1';
   await assert.rejects(submitDeployment(f.wallet, f.rpc, config, review), /review changed/);
   review.transaction.value = '0x0';
+  const originalGas = review.transaction.gas;
+  review.transaction.gas = '0xffffff';
+  await assert.rejects(submitDeployment(f.wallet, f.rpc, config, review), /review changed/);
+  review.transaction.gas = originalGas;
   f.state.balance = 0n;
   await assert.rejects(submitDeployment(f.wallet, f.rpc, config, review), /below the reviewed gas ceiling/);
+  assert.equal(sends(f).length, 0);
+});
+test('pending persistence failure stops before requesting a deployment signature', async () => {
+  const f = fixture();
+  const review = await reviewDeployment(f.wallet, f.rpc, config, owner);
+  await assert.rejects(submitDeployment(f.wallet, f.rpc, config, review, () => { throw new Error('storage unavailable'); }), /storage unavailable/);
   assert.equal(sends(f).length, 0);
 });
 test('deployment receipt verifies actual creation data, runtime and canonical block without a signer', async () => {
