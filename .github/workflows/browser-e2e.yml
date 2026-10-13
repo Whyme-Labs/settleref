@@ -57,82 +57,8 @@ jobs:
           bash scripts/install-arc-foundry.sh "$destination"
           echo "$destination" >> "$GITHUB_PATH"
 
-      - name: Apply deterministic harness compatibility repairs
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path('scripts/browser-test.py')
-          text = path.read_text()
-          replacements = [
-              (
-                  'from eth_account import Account\n',
-                  'from eth_account import Account\nfrom eth_utils import to_checksum_address\n',
-              ),
-              (
-                  '    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})',
-                  '    request = urllib.request.Request(\n'
-                  '        url,\n'
-                  '        data=payload,\n'
-                  '        headers={\n'
-                  '            "Content-Type": "application/json",\n'
-                  '            "Accept": "application/json",\n'
-                  '            "User-Agent": "Mozilla/5.0 SettleRef-SR02/1.0",\n'
-                  '        },\n'
-                  '    )',
-              ),
-              (
-                  '    page.wait_for_function(\n'
-                  '        "fragment => document.querySelector(\'#status\').textContent.includes(fragment)",\n'
-                  '        fragment,\n'
-                  '    )',
-                  '    page.wait_for_function(\n'
-                  '        "fragment => document.querySelector(\'#status\').textContent.includes(fragment)",\n'
-                  '        arg=fragment,\n'
-                  '    )',
-              ),
-              (
-                  '                "to": tx["to"],\n',
-                  '                "to": to_checksum_address(tx["to"]),\n',
-              ),
-              (
-                  '            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])',
-                  '            raw_hex = raw.hex()\n'
-                  '            if not raw_hex.startswith("0x"):\n'
-                  '                raw_hex = f"0x{raw_hex}"\n'
-                  '            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [raw_hex])',
-              ),
-          ]
-          for old, new in replacements:
-              if old in text:
-                  text = text.replace(old, new, 1)
-              elif new not in text:
-                  raise SystemExit(f'Expected browser harness fragment not found:\n{old}')
-          wait_start = text.index('def wait_status(page: Page, fragment: str) -> None:')
-          wait_end = text.index('\n\ndef add_error_capture', wait_start)
-          text = text[:wait_start] + '''def wait_status(page: Page, fragment: str) -> None:
-              try:
-                  page.wait_for_function(
-                      "fragment => document.querySelector('#status').textContent.includes(fragment)",
-                      arg=fragment,
-                  )
-              except Exception as error:
-                  current = page.locator("#status").inner_text()
-                  raise AssertionError(
-                      f"Status never contained {fragment!r}; current status was {current!r}"
-                  ) from error
-          ''' + text[wait_end:]
-          text = text.replace(
-              'download(page, "Download instruction",',
-              'download(page, "Export instruction",',
-          )
-          if 'download(page, "Download instruction",' in text:
-              raise SystemExit('Obsolete instruction button label remains in browser harness')
-          path.write_text(text)
-          PY
-          python -m py_compile scripts/browser-test.py
+      - name: Validate committed browser harness
+        run: python -m py_compile scripts/browser-test.py
 
       - name: Run real-browser and wallet validation
         shell: bash
@@ -178,13 +104,13 @@ jobs:
           print(json.dumps({'passed': report['passed'], 'screenshots': len(report['screenshots'])}, indent=2))
           PY
 
-      - name: Commit bounded browser evidence and tested harness
+      - name: Commit bounded browser evidence
         shell: bash
         run: |
           set -euo pipefail
-          git add scripts/browser-test.py evidence/browser
+          git add evidence/browser
           if git diff --cached --quiet; then
-            echo 'Browser evidence and harness are unchanged.'
+            echo 'Browser evidence is unchanged.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
