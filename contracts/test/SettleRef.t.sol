@@ -63,7 +63,7 @@ contract SettleRefTest {
     function testRejectZeroRecipient() public { vm.expectRevert(SettleRef.InvalidBeneficiary.selector); vm.prank(payer); s.settle{value: 0.1 ether}(ID,payable(address(0)),0.1 ether,CONTENT,EXPIRY); }
     function testRejectSelfRecipient() public { vm.expectRevert(SettleRef.InvalidBeneficiary.selector); vm.prank(payer); s.settle{value: 0.1 ether}(ID,payable(payer),0.1 ether,CONTENT,EXPIRY); }
     function testRejectContractRecipient() public { vm.expectRevert(SettleRef.InvalidBeneficiary.selector); vm.prank(payer); s.settle{value: 0.1 ether}(ID,payable(address(s)),0.1 ether,CONTENT,EXPIRY); }
-    function testFailedTransferRollsBackAndAllowsRetry() public {
+    function testTransferFailureRollsBackAndAllowsRetry() public {
         RejectPayment reject = new RejectPayment(); uint256 beforeBalance = payer.balance;
         vm.expectRevert(SettleRef.TransferFailed.selector); vm.prank(payer);
         s.settle{value: 0.1 ether}(ID,payable(address(reject)),0.1 ether,CONTENT,EXPIRY);
