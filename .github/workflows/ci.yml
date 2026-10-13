@@ -15,42 +15,45 @@ concurrency:
 
 jobs:
   verify:
-    runs-on: self-hosted
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 30
     env:
       CI: 'true'
       ARC_FOUNDRY_VERSION: v0.8.0-2
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           clean: true
           persist-credentials: false
 
-      - name: Verify controlled runner
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.16.0
+          cache: npm
+
+      - name: Record runner and source identity
         shell: bash
         run: |
           set -euo pipefail
-          test "$RUNNER_NAME" = "home-ci-01"
+          mkdir -p evidence/ci
           test "$RUNNER_OS" = "Linux"
           test "$RUNNER_ARCH" = "X64"
-          printf 'runner=%s\nos=%s\narch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
-
-      - name: Verify Node toolchain
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --version
-          npm --version
-          node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 22) { throw new Error(`Node 22+ required, found ${process.version}`); }'
+          {
+            printf 'runner=%s\nos=%s\narch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
+            printf 'repository=%s\ncommit=%s\nrun_id=%s\nrun_attempt=%s\n' "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT"
+            node --version
+            npm --version
+          } | tee evidence/ci/source-and-runner.txt
 
       - name: Install application dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Test and build application
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p evidence/ci
           npm test 2>&1 | tee evidence/ci/application-tests.txt
           npm run typecheck 2>&1 | tee evidence/ci/typecheck.txt
 
@@ -70,7 +73,7 @@ jobs:
           arc-forge --version | tee evidence/ci/arc-foundry-version.txt
           arc-forge config --json > evidence/ci/foundry-default-config.json
           FOUNDRY_PROFILE=arc arc-forge config --json > evidence/ci/foundry-arc-config.json
-          node --input-type=module - <<'NODE'
+          node --input-type=module - <<'NODE' | tee evidence/ci/arc-profile-check.txt
           import fs from 'node:fs';
           const config = JSON.parse(fs.readFileSync('evidence/ci/foundry-arc-config.json', 'utf8'));
           if (config.network !== 'arc') {
