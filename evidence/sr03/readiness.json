@@ -1,0 +1,91 @@
+{
+  "schema": "settleref.sr03-readiness.v1",
+  "dateMalaysia": "2026-10-13",
+  "status": "OWNER_ACTION_REQUIRED",
+  "repositoryHeadBeforeManifest": "7f135ab73e0892d0d91538ddf0e5e425f3a78cba",
+  "verifiedSourceCommit": "d493475e57fdcc690680adc28e0b1f04a8defbdb",
+  "verification": {
+    "runId": 38363668545,
+    "status": "SUCCESS",
+    "applicationTests": {
+      "passed": 53,
+      "failed": 0
+    },
+    "contractTests": {
+      "standardEvmPassed": 18,
+      "arcExecutionPassed": 18,
+      "fuzzRunsPerProfile": 256
+    },
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "abiSelectors": "PASS",
+    "ownerToolingSyntax": "PASS",
+    "encryptedAccountCliSurface": "PASS",
+    "trackedRawPrivateKeyFlagsInOperatorTools": false,
+    "trackedDeploymentWritesEnabled": false,
+    "trackedDeploymentAddress": null
+  },
+  "browserRegression": {
+    "runId": 38363668650,
+    "status": "SUCCESS",
+    "sourceCommit": "d493475e57fdcc690680adc28e0b1f04a8defbdb",
+    "evidenceCommit": "7f135ab73e0892d0d91538ddf0e5e425f3a78cba",
+    "checksPassed": 17,
+    "checksFailed": 0,
+    "screenshots": 8,
+    "arcTestnetConnection": true,
+    "arcTestnetTransactionSubmitted": false,
+    "localArcTransactionVerified": true,
+    "mainnetTransactionSubmitted": false
+  },
+  "networkPreflight": {
+    "runId": 38361052258,
+    "status": "PASS",
+    "testnetChainId": 5042002,
+    "mainnetChainId": 5042,
+    "signingPerformed": false,
+    "transactionSubmitted": false,
+    "evidence": "evidence/sr03/network-probe.json"
+  },
+  "boundedFaucetExperiment": {
+    "runId": 38361501064,
+    "status": "BLOCKED_FAUCET",
+    "freshAddressBalanceWei": "0",
+    "transactionSubmitted": false,
+    "privateKeyPersisted": false,
+    "privateKeyLogged": false,
+    "customerFunds": false,
+    "mainnetConnected": false,
+    "evidence": "evidence/sr03/testnet/testnet-evidence.json"
+  },
+  "ownerTooling": {
+    "deployment": "scripts/deploy.sh",
+    "runtimePinning": "scripts/pin-deployment.mjs",
+    "writeEnableGate": "scripts/enable-reviewed-deployment.mjs",
+    "independentVerifier": "scripts/sr03-verify-live.mjs",
+    "runbook": "docs/deployment.md"
+  },
+  "remainingOwnerActions": {
+    "testnet": [
+      "Create or import a locally encrypted Arc Foundry keystore alias for an owner-controlled wallet.",
+      "Fund that public address through Circle's interactive Arc testnet faucet.",
+      "Deploy the reviewed contract and record the genuine deployment transaction.",
+      "Pin the exact runtime, separately enable the reviewed configuration, and execute one payment of at most 0.10 testnet USDC.",
+      "Export the receipt bundle and run the independent verifier until it reports PASS."
+    ],
+    "mainnet": [
+      "Review the exact testnet-passing commit and both owner-controlled wallet addresses.",
+      "Explicitly approve the mainnet deployment gate and the separate write-enable gate.",
+      "Deploy and execute one owner-funded payment of at most 0.10 USDC.",
+      "Commit genuine explorer-linked deployment, payment and verifier evidence."
+    ]
+  },
+  "claims": {
+    "arcTestnetDeployment": false,
+    "arcTestnetPayment": false,
+    "arcMainnetDeployment": false,
+    "arcMainnetPayment": false,
+    "securityAudit": false,
+    "sr03Complete": false
+  }
+}
