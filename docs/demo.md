@@ -35,3 +35,5 @@ Use two owner-controlled wallets and a tiny amount such as 0.10 USDC. Fund suffi
 Say: "SettleRef ties this instruction to this USDC payment and prevents this payer from executing the same ID twice in this deployment."
 
 Do not say: "We settled a bank transfer", "ISO 20022 compliant", "international remittance is regulated automatically", "guaranteed safe", or "all possible duplicate payments are prevented".
+
+The latest cut adds focused camera moves, highlights on the actual instruction and receipt fields, step progress, short transitions, and 14 action captions. The previously approved trimmed looping soundtrack is copied unchanged into the new delivery.

@@ -1,0 +1,23 @@
+{
+  "schema": "settleref.demo-design-update.v1",
+  "generatedAt": "2026-10-13T13:24:09.020Z",
+  "status": "PASS",
+  "origin": "https://settleref.pages.dev",
+  "deploymentUrl": "https://74ba5eec.settleref.pages.dev",
+  "videoBytes": 19926906,
+  "videoSha256": "16818f7025fd13bd81c4322b5107377ebc2a11d7e7142b9f3df4b3d523898e65",
+  "captionCount": 14,
+  "publishedVideoMatchesReviewedExport": true,
+  "publishedCaptionsUpdated": true,
+  "soundtrackUnchanged": true,
+  "audioStreamSha256": "bc16f8ea5fc83398a080361940daf9ae41652a527f3aad55f77a56ff0e2329ad",
+  "browserPlayback": {
+    "duration": 55.787007,
+    "width": 1920,
+    "height": 1080,
+    "currentTime": 1.025771,
+    "readyState": 4,
+    "error": null,
+    "src": "https://settleref.pages.dev/demo.mp4?v=16818f7025fd"
+  }
+}

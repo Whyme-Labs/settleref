@@ -8,20 +8,19 @@
   "fps": 30,
   "videoCodec": "h264",
   "audioCodec": "aac",
-  "bytes": 14738284,
-  "sha256": "5e7bb3b5c80f01e525ec8be9d5c24f1b7b92dda2a88fc369cbc840eb8272a2b0",
+  "bytes": 19926906,
+  "sha256": "16818f7025fd13bd81c4322b5107377ebc2a11d7e7142b9f3df4b3d523898e65",
   "captions": "settleref-demo.srt",
   "source": "settleref-remotion-source.zip",
   "mainnetPaymentTransactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
   "recordingScope": "Read-only verification of an already executed owner-funded payment, settled-flag check and actual exports in a browser without a wallet.",
   "newPaymentSentForRecording": false,
-  "visualReview": "Six scene frames inspected from the final MP4.",
+  "visualReview": "Six scene frames inspected from the final dynamic MP4. Field-label crop corrected before final render.",
   "audioReview": "Loop matches the trimmed user audio through both full cycles and the final partial cycle; decoded peak 0.8589, below clipping.",
   "audioSource": "User-provided MP4 audio, last 2 seconds removed and looped.",
   "narration": false,
   "audioGainDb": -3,
   "trimmedAudioSeconds": 27.186009070294784,
-  "videoStreamUnchanged": true,
   "loopVerification": [
     {
       "section": "first_cycle",
@@ -36,6 +35,17 @@
       "correlationToTrimmedInput": 0.999371
     }
   ],
-  "videoStreamSha256": "429b1951d19e1fb56f4ac01485934b5d826d3828fc48392d79eae7b32b3581aa",
-  "audioReplacement": "FFmpeg stream copy of the Remotion picture; original narration audio discarded."
+  "audioReplacement": "Remotion picture re-rendered; exact approved trimmed and looping AAC soundtrack copied unchanged.",
+  "pictureReRendered": true,
+  "motion": [
+    "Focused camera moves across real product fields",
+    "Teal field highlights",
+    "Staggered step checklists",
+    "Short scene wipes and chapter progress",
+    "Animated proof and final call to action"
+  ],
+  "captionCount": 14,
+  "captionStyle": "Complete concise statements synchronized to the demonstrated action.",
+  "audioStreamUnchanged": true,
+  "audioStreamSha256": "bc16f8ea5fc83398a080361940daf9ae41652a527f3aad55f77a56ff0e2329ad"
 }
