@@ -43,18 +43,50 @@ Machine-readable evidence is in `evidence/browser/browser-tests.json`.
 
 ## SR-03: Deploy the capped Arc experiment
 
-Status: next.
+Status: in progress. Reversible engineering work is complete. Owner-controlled signing and funding remain.
 
-Use an owner-controlled wallet for Arc testnet deployment and a small self-funded test. Pin runtime bytecode, compare it with the reviewed artifact, collect settlement and duplicate-rejection evidence, and test pending recovery with the original instruction identity. Only after those gates pass should the same capped contract be considered for Arc mainnet, with explicit owner review of the deployment and payment transactions.
+Completed preparation:
 
-Acceptance:
+- Probed current and legacy Arc RPC candidates without loading a key or submitting a transaction.
+- Confirmed reachable Arc testnet chain `5042002` and Arc mainnet chain `5042` endpoints.
+- Recorded the probe in `evidence/sr03/network-probe.json`.
+- Attempted a fresh CI-wallet testnet funding flow through Circle's public faucet in real Chromium.
+- Preserved screenshots and a machine report under `evidence/sr03/testnet/` when the wallet remained unfunded at the human-verification boundary.
+- Retired the one-off faucet and transient-key automation after the bounded experiment.
+- Hardened `scripts/deploy.sh` around a locally encrypted owner keystore alias, chain-ID checks, expected-address checks and explicit mainnet confirmation.
+- Hardened `scripts/pin-deployment.mjs` to require an exact remote-runtime match while leaving writes disabled.
+- Added `scripts/enable-reviewed-deployment.mjs`, which rechecks runtime and the exact one-USDC cap before enabling writes.
+- Added `scripts/sr03-verify-live.mjs`, a read-only verifier for deployment creation bytecode, runtime, payment receipt, canonical block and duplicate state.
+- Added CI gates that reject raw `--private-key` command flags in tracked operator tooling and require the tracked deployment configuration to fail closed.
+- Updated the CSP to permit the current Arc testnet RPC hostname.
+
+Remaining testnet gate:
+
+1. Fund an owner-controlled Arc testnet wallet through Circle's interactive faucet.
+2. Deploy with the locally encrypted keystore using `scripts/deploy.sh`.
+3. Pin the exact runtime and enable the reviewed testnet configuration through the separate confirmation gate.
+4. Execute one owner-funded payment of at most `0.10 USDC` in the real browser UI.
+5. Export the receipt bundle and reconciliation CSV.
+6. Run `scripts/sr03-verify-live.mjs` and commit a `PASS` report.
+
+Remaining mainnet gate:
+
+1. Freeze and review the exact source commit that passed testnet.
+2. Use a funded owner-controlled mainnet wallet and a second owner-controlled beneficiary.
+3. Deploy only with `CONFIRM_MAINNET=DEPLOY_CAPPED_EXPERIMENT`.
+4. Pin runtime, enable writes only with `CONFIRM_ENABLE_WRITES=ENABLE_CAPPED_MAINNET_WRITES`, and execute one payment of at most `0.10 USDC`.
+5. Independently verify and commit the public deployment and payment evidence.
+
+Acceptance remains unchanged:
 
 - Arc testnet contract runtime exactly matches the reviewed artifact.
-- One small owner-controlled testnet payment succeeds and reconciles in a second browser.
+- One small owner-controlled testnet payment succeeds and reconciles independently.
 - The same payer and instruction ID cannot execute twice.
 - Pending recovery retains the original identity and transaction hash.
-- Mainnet, if performed, uses two owner-controlled wallets and a tiny amount such as 0.10 USDC.
+- Arc mainnet has genuine deployment and tiny owner-funded payment evidence.
 - No customer funds or credentials enter the repository.
+
+Do not close SR-03 or claim a public-network deployment until these owner actions produce genuine transaction hashes and verifier reports.
 
 ## SR-04: Publish and submit
 
