@@ -4,7 +4,7 @@ All four milestones passed. SettleRef is public and was submitted to Arc Microgr
 
 - Repository: https://github.com/Whyme-Labs/settleref
 - App: https://settleref.pages.dev/
-- 56-second narrated 1080p Remotion demo: https://settleref.pages.dev/demo.html
+- 56-second 1080p Remotion demo with a looped soundtrack: https://settleref.pages.dev/demo.html
 - Reproducible video source: https://settleref.pages.dev/remotion-source.zip
 - DoraHacks Build: https://dorahacks.io/build/49693
 - Reviewed PR #5: merged as `9a90046d56267ca5baf5447e1267b8f0c1fafe65`.

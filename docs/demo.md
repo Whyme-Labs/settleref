@@ -1,6 +1,6 @@
 # Demonstration
 
-Published Remotion demo: https://settleref.pages.dev/demo.html . The 56-second 1080p video has narration and captions, and records read-only verification of the genuine owner-funded mainnet payment in a browser without a wallet. It includes the consumed flag, actual JSON/CSV downloads and the independent `DuplicateInstruction()` replay result. No additional payment was broadcast to make the video.
+Published Remotion demo: https://settleref.pages.dev/demo.html . The 56-second 1080p video uses the owner-provided soundtrack, trimmed by two seconds and looped, with explanatory text on screen, and records read-only verification of the genuine owner-funded mainnet payment in a browser without a wallet. It includes the consumed flag, actual JSON/CSV downloads and the independent `DuplicateInstruction()` replay result. No additional payment was broadcast to make the video.
 
 Reproducible Remotion source with recorded assets: https://settleref.pages.dev/remotion-source.zip . The watch page provides the public receipt bundle for repeating the verification.
 

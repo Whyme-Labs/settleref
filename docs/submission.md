@@ -35,7 +35,7 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 SUBMITTED UNDER REVIEW on October 13, 2026. DoraHacks Build: https://dorahacks.io/build/49693 . The owner approved merging the reviewed PR, public repository visibility, Cloudflare Pages hosting and final submission under the Terms of Use and Participant Agreement. The confirmation says Build Submitted and the management view independently says this submission is under review. No organizer approval or grant funding is claimed.
 
-Public app: https://settleref.pages.dev/ . Optional 56-second narrated Remotion demo: https://settleref.pages.dev/demo.html . The form's video link points to https://settleref.pages.dev/demo.mp4 . The public watch page also provides the intentionally public demo receipt for verification without a wallet.
+Public app: https://settleref.pages.dev/ . Optional 56-second Remotion demo with a looped soundtrack: https://settleref.pages.dev/demo.html . The form's video link points to https://settleref.pages.dev/demo.mp4 . The public watch page also provides the intentionally public demo receipt for verification without a wallet.
 
 Owner-approved testnet and mainnet deployment/payment verification passed. The mainnet 0.10-USDC payment is `0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a`; receipt, canonical block, duplicate rejection, reload recovery and independent browser verification passed. The owner confirmed rights to submit, no prior Circle/Arc program funding, and first Arc deployment. Private staff-contact values stay outside this repository.
 

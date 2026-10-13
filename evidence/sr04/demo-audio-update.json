@@ -1,0 +1,14 @@
+{
+  "schema": "settleref.demo-audio-update.v1",
+  "generatedAt": "2026-10-13T13:03:37.956Z",
+  "status": "PASS",
+  "origin": "https://settleref.pages.dev",
+  "deploymentUrl": "https://37f2d718.settleref.pages.dev",
+  "publishedVideoSha256": "5e7bb3b5c80f01e525ec8be9d5c24f1b7b92dda2a88fc369cbc840eb8272a2b0",
+  "publishedBytes": 14738284,
+  "watchPageUsesNewVideoVersion": true,
+  "trimmedLastSeconds": 2,
+  "looped": true,
+  "narrationRemoved": true,
+  "pictureUnchanged": true
+}

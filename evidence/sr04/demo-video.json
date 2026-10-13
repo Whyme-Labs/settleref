@@ -8,13 +8,34 @@
   "fps": 30,
   "videoCodec": "h264",
   "audioCodec": "aac",
-  "bytes": 14478067,
-  "sha256": "295fc706ad3a0183f58f2e1d4b23c803e39bb973ef6c192510e71eb48adc4ab3",
+  "bytes": 14738284,
+  "sha256": "5e7bb3b5c80f01e525ec8be9d5c24f1b7b92dda2a88fc369cbc840eb8272a2b0",
   "captions": "settleref-demo.srt",
   "source": "settleref-remotion-source.zip",
   "mainnetPaymentTransactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
   "recordingScope": "Read-only verification of an already executed owner-funded payment, settled-flag check and actual exports in a browser without a wallet.",
   "newPaymentSentForRecording": false,
   "visualReview": "Six scene frames inspected from the final MP4.",
-  "audioReview": "AAC stream detected, max volume -1.9 dB, no clipping."
+  "audioReview": "Loop matches the trimmed user audio through both full cycles and the final partial cycle; decoded peak 0.8589, below clipping.",
+  "audioSource": "User-provided MP4 audio, last 2 seconds removed and looped.",
+  "narration": false,
+  "audioGainDb": -3,
+  "trimmedAudioSeconds": 27.186009070294784,
+  "videoStreamUnchanged": true,
+  "loopVerification": [
+    {
+      "section": "first_cycle",
+      "correlationToTrimmedInput": 0.994971
+    },
+    {
+      "section": "second_cycle",
+      "correlationToTrimmedInput": 0.996929
+    },
+    {
+      "section": "third_cycle_tail",
+      "correlationToTrimmedInput": 0.999371
+    }
+  ],
+  "videoStreamSha256": "429b1951d19e1fb56f4ac01485934b5d826d3828fc48392d79eae7b32b3581aa",
+  "audioReplacement": "FFmpeg stream copy of the Remotion picture; original narration audio discarded."
 }

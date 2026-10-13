@@ -3,7 +3,7 @@
   "status": "PASS",
   "hostingProvider": "Cloudflare Pages",
   "project": "settleref",
-  "deploymentUrl": "https://6606956d.settleref.pages.dev",
+  "deploymentUrl": "https://37f2d718.settleref.pages.dev",
   "repository": "https://github.com/Whyme-Labs/settleref",
   "publicRepoHttpStatus": 200,
   "reviewedCompiledSource": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
@@ -63,11 +63,12 @@
     ],
     "video": {
       "status": 200,
-      "bytes": 14478067,
-      "sha256": "295fc706ad3a0183f58f2e1d4b23c803e39bb973ef6c192510e71eb48adc4ab3",
+      "bytes": 14738284,
+      "sha256": "5e7bb3b5c80f01e525ec8be9d5c24f1b7b92dda2a88fc369cbc840eb8272a2b0",
       "matchesLocalArtifact": true,
       "rangeRequestResponseStatus": 200,
-      "rangeRequestResponse": "FULL_ASSET"
+      "rangeRequestResponse": "FULL_ASSET",
+      "verifiedAt": "2026-10-13T13:03:37.956Z"
     }
   },
   "browser": {
@@ -90,5 +91,19 @@
     "pageErrors": []
   },
   "operatorPagesPublished": false,
-  "staffContactsPublished": false
+  "staffContactsPublished": false,
+  "audioUpdate": {
+    "schema": "settleref.demo-audio-update.v1",
+    "generatedAt": "2026-10-13T13:03:37.956Z",
+    "status": "PASS",
+    "origin": "https://settleref.pages.dev",
+    "deploymentUrl": "https://37f2d718.settleref.pages.dev",
+    "publishedVideoSha256": "5e7bb3b5c80f01e525ec8be9d5c24f1b7b92dda2a88fc369cbc840eb8272a2b0",
+    "publishedBytes": 14738284,
+    "watchPageUsesNewVideoVersion": true,
+    "trimmedLastSeconds": 2,
+    "looped": true,
+    "narrationRemoved": true,
+    "pictureUnchanged": true
+  }
 }
