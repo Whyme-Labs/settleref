@@ -1,0 +1,16 @@
+node_modules/
+public/app/
+dist/
+out/
+cache/
+broadcast/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+playwright-report/
+test-results/
+
+__pycache__/
+*.pyc

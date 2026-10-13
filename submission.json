@@ -1,0 +1,21 @@
+{
+  "projectName": "SettleRef",
+  "tagline": "Payment to proof.",
+  "description": "SettleRef links a structured supplier-payment instruction to a USDC settlement on Arc. The payer signs the exact beneficiary and amount. A capped settlement contract rejects duplicate execution of the same instruction by the same payer. A recipient can import the original instruction and verify the actual transaction and settlement event, then export JSON and CSV reconciliation records. Invoice references and a random commitment salt remain offchain. The experiment does not provide fiat payouts, FX, custody accounts or a bank integration.",
+  "targetChainId": 5042,
+  "deadlineUtc": "2026-10-15T03:59:00Z",
+  "deadlineMalaysia": "2026-10-15T11:59:00+08:00",
+  "publicRepo": null,
+  "liveApp": null,
+  "builderProfile": "https://github.com/wms2537",
+  "deploymentTransactionHash": null,
+  "paymentTransactionHash": null,
+  "contractTestsPassed": false,
+  "arcTestnetSmokePassed": false,
+  "duplicateRejectionEvidence": null,
+  "mainnetReceiptVerified": false,
+  "submissionStatus": "NOT_READY",
+  "rightsToSubmitConfirmed": false,
+  "priorCircleOrArcFundingConfirmedAbsent": false,
+  "programRulesSource": "https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq"
+}

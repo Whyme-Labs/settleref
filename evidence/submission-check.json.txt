@@ -1,0 +1,22 @@
+
+> settleref@0.1.0 check:submission
+> node scripts/check-submission.mjs
+
+{
+  "status": "NOT_READY",
+  "blockers": [
+    "publicRepo is missing.",
+    "liveApp is missing.",
+    "deploymentTransactionHash is missing.",
+    "paymentTransactionHash is missing.",
+    "Mainnet contract address is missing.",
+    "Runtime bytecode pin is missing.",
+    "contractTestsPassed is not confirmed.",
+    "arcTestnetSmokePassed is not confirmed.",
+    "mainnetReceiptVerified is not confirmed.",
+    "rightsToSubmitConfirmed is not confirmed.",
+    "priorCircleOrArcFundingConfirmedAbsent is not confirmed.",
+    "Duplicate rejection evidence is missing."
+  ],
+  "note": "This checks a local manifest only. Independently open the app/repo/explorer, verify chain data and recheck organizer rules."
+}

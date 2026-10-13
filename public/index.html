@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="Reference-linked USDC payments and verifiable reconciliation on Arc." name="description"/>
+  <meta content="light" name="color-scheme"/>
+  <title>
+   SettleRef | Payment to proof
+  </title>
+  <link href="/styles.css" rel="stylesheet"/>
+  <script src="/app/app.js" type="module">
+  </script>
+ </head>
+ <body>
+  <div class="shell">
+   <aside class="sidebar">
+    <a aria-label="SettleRef home" class="brand" href="/">
+     <span class="mark">
+      SR
+     </span>
+     <span>
+      SettleRef
+      <small>
+       PAYMENT TO PROOF
+      </small>
+     </span>
+    </a>
+    <div class="nav-label">
+     PAYMENT OPERATIONS
+    </div>
+    <nav aria-label="Workflow">
+     <a class="nav-active" href="#prepare">
+      <span>
+       01
+      </span>
+      Payment instruction
+     </a>
+     <a href="#settle">
+      <span>
+       02
+      </span>
+      Settle once
+     </a>
+     <a href="#verify">
+      <span>
+       03
+      </span>
+      Reconcile
+     </a>
+    </nav>
+    <div class="side-note">
+     <span class="dot">
+     </span>
+     Arc settlement experiment
+     <p>
+      One network. One asset.
+      <br/>
+      No custody balance.
+     </p>
+     <div class="micro">
+      v0.1 · Prototype
+      <br/>
+      Not a bank or a remittance service.
+     </div>
+    </div>
+   </aside>
+   <main>
+    <header class="topbar">
+     <span>
+      Workspace
+      <b>
+       / Supplier payments
+      </b>
+     </span>
+     <span class="chip" id="network-chip">
+      Arc · configuration loading
+     </span>
+    </header>
+    <div class="content">
+     <div class="heading">
+      <div>
+       <p class="eyebrow">
+        CROSS-BORDER PAYMENT OPERATIONS
+       </p>
+       <h1>
+        A payment with a paper trail.
+       </h1>
+       <p class="intro">
+        Keep the instruction, settlement and receipt tied to the same reference.
+       </p>
+      </div>
+      <span class="cap">
+       MAX PAYMENT
+       <strong>
+        1 USDC
+       </strong>
+      </span>
+     </div>
+     <div class="modebar">
+      <div aria-label="Execution mode" class="segmented">
+       <button aria-pressed="true" class="selected" id="mode-demo">
+        Local walkthrough
+       </button>
+       <button aria-pressed="false" id="mode-live">
+        Arc payment
+       </button>
+      </div>
+      <p id="mode-help">
+       No wallet needed. No money moves. This is not onchain evidence.
+      </p>
+     </div>
+     <div class="notice" hidden="" id="deployment-notice">
+     </div>
+     <div aria-live="polite" class="status" id="status" role="status">
+      Load an example or import an instruction to begin.
+     </div>
+     <div class="workspace">
+      <div class="main-column">
+       <section class="card" id="prepare">
+        <div class="card-title">
+         <div>
+          <span class="step">
+           01
+          </span>
+          <h2>
+           Prepare the instruction
+          </h2>
+         </div>
+         <button class="text-button" id="load-sample">
+          Load example
+         </button>
+        </div>
+        <p class="section-copy">
+         A supplier invoice paid in USDC. No bank account or foreign exchange is implied.
+        </p>
+        <div class="import-row">
+         <label class="file-button" for="instruction-file">
+          Import instruction JSON
+         </label>
+         <input accept="application/json,.json" class="file-input" id="instruction-file" type="file"/>
+         <span>
+          Files stay in this browser.
+         </span>
+        </div>
+        <form id="instruction-form">
+         <div class="form-grid">
+          <label>
+           Invoice reference
+           <input autocomplete="off" id="reference" maxlength="140" placeholder="INV-DEMO-001" required=""/>
+          </label>
+          <label>
+           Amount in USDC
+           <input autocomplete="off" id="amount" inputmode="decimal" placeholder="0.10" required=""/>
+           <small>
+            Up to 6 decimal places. Gas is separate.
+           </small>
+          </label>
+          <label class="span2">
+           Payer wallet
+           <input autocomplete="off" class="mono" id="payer" placeholder="0x..." required="" spellcheck="false"/>
+          </label>
+          <label class="span2">
+           Beneficiary wallet
+           <input autocomplete="off" class="mono" id="beneficiary" placeholder="0x..." required="" spellcheck="false"/>
+          </label>
+          <label class="span2">
+           End-to-end instruction ID
+           <input class="mono" id="instruction-id" maxlength="64" required="" spellcheck="false"/>
+           <small>
+            Keep this ID when retrying. A new ID is a new payment.
+           </small>
+          </label>
+          <label class="span2">
+           Expires at, your local time
+           <input id="expiry" required="" type="datetime-local"/>
+          </label>
+         </div>
+         <div class="actions">
+          <button class="primary" id="review" type="submit">
+           Review instruction
+           <span>
+            →
+           </span>
+          </button>
+          <button class="secondary" disabled="" id="export-instruction" type="button">
+           Export instruction
+          </button>
+         </div>
+        </form>
+       </section>
+       <section class="card" id="settle">
+        <div class="card-title">
+         <div>
+          <span class="step">
+           02
+          </span>
+          <h2>
+           Settle once
+          </h2>
+         </div>
+         <span class="tag" id="settlement-status">
+          Awaiting review
+         </span>
+        </div>
+        <div class="empty-state" id="payment-summary">
+         Review an instruction before making a payment.
+        </div>
+        <label class="confirmation">
+         <input disabled="" id="confirm" type="checkbox"/>
+         <span>
+          I checked the beneficiary and amount. Payments cannot be reversed by SettleRef.
+         </span>
+        </label>
+        <div class="actions">
+         <button class="secondary" hidden="" id="connect">
+          Connect wallet
+         </button>
+         <button class="primary" disabled="" id="pay">
+          Simulate settlement
+         </button>
+         <button class="secondary" disabled="" id="retry">
+          Test duplicate protection
+         </button>
+        </div>
+        <p class="fine">
+         No standing allowance. No service fee. The contract forwards the payment in the same transaction.
+        </p>
+       </section>
+       <section class="card" id="verify">
+        <div class="card-title">
+         <div>
+          <span class="step">
+           03
+          </span>
+          <h2>
+           Reconcile the receipt
+          </h2>
+         </div>
+         <span class="tag" id="receipt-status">
+          Not verified
+         </span>
+        </div>
+        <p class="section-copy">
+         Match the original instruction to the actual sender, beneficiary, amount and onchain commitment.
+        </p>
+        <label>
+         Transaction hash
+         <input autocomplete="off" class="mono" id="tx-hash" placeholder="0x..." spellcheck="false"/>
+        </label>
+        <div class="actions">
+         <button class="secondary" disabled="" id="verify-button">
+          Verify receipt
+         </button>
+         <label class="file-button" for="receipt-file">
+          Import receipt bundle
+         </label>
+         <input accept="application/json,.json" class="file-input" id="receipt-file" type="file"/>
+        </div>
+        <div class="receipt-result" hidden="" id="receipt-result">
+        </div>
+        <div class="actions">
+         <button class="secondary" disabled="" id="export-receipt">
+          Download JSON receipt
+         </button>
+         <button class="secondary" disabled="" id="export-csv">
+          Download reconciliation CSV
+         </button>
+        </div>
+        <p class="fine">
+         Live verification reads the configured RPC and checks pinned contract code. It is not a bank confirmation or a trustless light-client proof.
+        </p>
+       </section>
+      </div>
+      <aside class="right-column">
+       <section class="card progress-card">
+        <p class="eyebrow">
+         THIS PAYMENT
+        </p>
+        <h2>
+         One instruction.
+         <br/>
+         One execution.
+        </h2>
+        <ol class="timeline">
+         <li id="t-review">
+          <span>
+           1
+          </span>
+          <div>
+           <b>
+            Instruction reviewed
+           </b>
+           <small>
+            Exact parties and amount
+           </small>
+          </div>
+         </li>
+         <li id="t-settle">
+          <span>
+           2
+          </span>
+          <div>
+           <b>
+            Payment executed
+           </b>
+           <small>
+            Same instruction identity
+           </small>
+          </div>
+         </li>
+         <li id="t-duplicate">
+          <span>
+           3
+          </span>
+          <div>
+           <b>
+            Duplicate rejected
+           </b>
+           <small>
+            Safe retries within this contract
+           </small>
+          </div>
+         </li>
+         <li id="t-verify">
+          <span>
+           4
+          </span>
+          <div>
+           <b>
+            Receipt reconciled
+           </b>
+           <small>
+            Instruction matches settlement
+           </small>
+          </div>
+         </li>
+        </ol>
+       </section>
+       <section class="scope-note">
+        <p class="eyebrow">
+         WHAT THIS PROVES
+        </p>
+        <h3>
+         Payment integrity,
+         <br/>
+         not banking access.
+        </h3>
+        <p>
+         The experiment links an instruction to a USDC payment and rejects duplicate execution.
+        </p>
+        <p>
+         No fiat payout, FX quote, SWIFT connection or ISO 20022 certification.
+        </p>
+        <div class="privacy-note">
+         <b>
+          Invoice privacy
+         </b>
+         <p>
+          The invoice reference and random salt stay offchain. Wallet addresses and amounts remain public.
+         </p>
+        </div>
+       </section>
+      </aside>
+     </div>
+     <footer>
+      <span>
+       SettleRef · Arc Microgrants experiment
+      </span>
+      <span id="deployment-footer">
+       Not deployed to Arc mainnet.
+      </span>
+     </footer>
+    </div>
+   </main>
+  </div>
+ </body>
+</html>

@@ -1,0 +1,49 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run typecheck
+      - uses: actions/upload-artifact@v4
+        with:
+          name: settleref-static-site
+          path: dist
+
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts && npm run build
+      - name: Install pinned Arc Foundry
+        run: |
+          bash scripts/install-arc-foundry.sh "$RUNNER_TEMP/arc-foundry"
+          echo "$RUNNER_TEMP/arc-foundry" >> "$GITHUB_PATH"
+      - name: Report Arc Foundry version
+        run: arc-forge --version
+      - name: Test standard EVM logic
+        run: arc-forge test -vvv
+      - name: Test Arc execution semantics
+        run: FOUNDRY_PROFILE=arc arc-forge test -vvv
+      - name: Check browser ABI constants
+        run: FORGE_BIN=arc-forge node scripts/check-abi.mjs
+
+# Public repository jobs use isolated GitHub-hosted runners and no signing secrets.
+# Live-chain smoke tests remain owner-operated because they move USDC.

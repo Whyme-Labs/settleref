@@ -1,0 +1,6 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "settleref",
+  "compatibility_date": "2026-10-13",
+  "assets": { "directory": "./dist" }
+}

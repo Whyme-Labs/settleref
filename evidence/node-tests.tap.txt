@@ -1,0 +1,337 @@
+
+> settleref@0.1.0 test
+> npm run build && node --test tests/*.test.mjs
+
+
+> settleref@0.1.0 build
+> tsc && node scripts/build.mjs
+
+Built dist/. No runtime dependencies or external scripts.
+TAP version 13
+# Subtest: static ABI contains selector and five exact 32-byte arguments
+ok 1 - static ABI contains selector and five exact 32-byte arguments
+  ---
+  duration_ms: 14.350621
+  type: 'test'
+  ...
+# Subtest: verifies matching receipt via RPC with pinned code
+ok 2 - verifies matching receipt via RPC with pinned code
+  ---
+  duration_ms: 5.965386
+  type: 'test'
+  ...
+# Subtest: rejects wrong chain
+ok 3 - rejects wrong chain
+  ---
+  duration_ms: 4.553627
+  type: 'test'
+  ...
+# Subtest: rejects wrong runtime code
+ok 4 - rejects wrong runtime code
+  ---
+  duration_ms: 2.532143
+  type: 'test'
+  ...
+# Subtest: rejects missing contract
+ok 5 - rejects missing contract
+  ---
+  duration_ms: 2.224663
+  type: 'test'
+  ...
+# Subtest: rejects pending receipt
+ok 6 - rejects pending receipt
+  ---
+  duration_ms: 1.107724
+  type: 'test'
+  ...
+# Subtest: rejects reverted receipt
+ok 7 - rejects reverted receipt
+  ---
+  duration_ms: 1.875683
+  type: 'test'
+  ...
+# Subtest: rejects receipt hash mismatch
+ok 8 - rejects receipt hash mismatch
+  ---
+  duration_ms: 3.953076
+  type: 'test'
+  ...
+# Subtest: rejects wrong transaction amount
+ok 9 - rejects wrong transaction amount
+  ---
+  duration_ms: 2.427966
+  type: 'test'
+  ...
+# Subtest: rejects wrong calldata
+ok 10 - rejects wrong calldata
+  ---
+  duration_ms: 5.224608
+  type: 'test'
+  ...
+# Subtest: rejects forged emitting contract
+ok 11 - rejects forged emitting contract
+  ---
+  duration_ms: 2.563778
+  type: 'test'
+  ...
+# Subtest: rejects wrong event beneficiary
+ok 12 - rejects wrong event beneficiary
+  ---
+  duration_ms: 1.216831
+  type: 'test'
+  ...
+# Subtest: rejects wrong content commitment
+ok 13 - rejects wrong content commitment
+  ---
+  duration_ms: 5.417524
+  type: 'test'
+  ...
+# Subtest: rejects no settlement event
+ok 14 - rejects no settlement event
+  ---
+  duration_ms: 1.599537
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous duplicate event
+ok 15 - rejects ambiguous duplicate event
+  ---
+  duration_ms: 1.619951
+  type: 'test'
+  ...
+# Subtest: rejects noncanonical block
+ok 16 - rejects noncanonical block
+  ---
+  duration_ms: 2.088405
+  type: 'test'
+  ...
+# Subtest: rejects wrong transaction block
+ok 17 - rejects wrong transaction block
+  ---
+  duration_ms: 1.113056
+  type: 'test'
+  ...
+# Subtest: rejects settled after expiry
+ok 18 - rejects settled after expiry
+  ---
+  duration_ms: 8.267513
+  type: 'test'
+  ...
+# Subtest: changes to invoice content invalidate original receipt
+ok 19 - changes to invoice content invalidate original receipt
+  ---
+  duration_ms: 1.036198
+  type: 'test'
+  ...
+# Subtest: live writes are disabled without configuration
+ok 20 - live writes are disabled without configuration
+  ---
+  duration_ms: 0.344913
+  type: 'test'
+  ...
+# Subtest: refuses insecure public RPC endpoints
+ok 21 - refuses insecure public RPC endpoints
+  ---
+  duration_ms: 1.046519
+  type: 'test'
+  ...
+# Subtest: signs exactly one transaction after read-only checks
+ok 22 - signs exactly one transaction after read-only checks
+  ---
+  duration_ms: 1.61843
+  type: 'test'
+  ...
+# Subtest: duplicate never reaches wallet signing
+ok 23 - duplicate never reaches wallet signing
+  ---
+  duration_ms: 1.351059
+  type: 'test'
+  ...
+# Subtest: wrong signer never reaches wallet signing
+ok 24 - wrong signer never reaches wallet signing
+  ---
+  duration_ms: 0.970741
+  type: 'test'
+  ...
+# Subtest: wrong wallet chain never reaches wallet signing
+ok 25 - wrong wallet chain never reaches wallet signing
+  ---
+  duration_ms: 2.703181
+  type: 'test'
+  ...
+# Subtest: insufficient funds fail before signing
+ok 26 - insufficient funds fail before signing
+  ---
+  duration_ms: 1.845063
+  type: 'test'
+  ...
+# Subtest: wallet rejection is never automatically retried
+ok 27 - wallet rejection is never automatically retried
+  ---
+  duration_ms: 1.267712
+  type: 'test'
+  ...
+# Subtest: 0.10 USDC uses exact 18-decimal native units
+ok 28 - 0.10 USDC uses exact 18-decimal native units
+  ---
+  duration_ms: 4.387386
+  type: 'test'
+  ...
+# Subtest: minimum unit and demo cap are exact
+ok 29 - minimum unit and demo cap are exact
+  ---
+  duration_ms: 0.144978
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "1.000001"
+ok 30 - rejects unsafe amount "1.000001"
+  ---
+  duration_ms: 0.256534
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "0"
+ok 31 - rejects unsafe amount "0"
+  ---
+  duration_ms: 0.092224
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "-1"
+ok 32 - rejects unsafe amount "-1"
+  ---
+  duration_ms: 0.114996
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "0.0000001"
+ok 33 - rejects unsafe amount "0.0000001"
+  ---
+  duration_ms: 0.10207
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "1e-1"
+ok 34 - rejects unsafe amount "1e-1"
+  ---
+  duration_ms: 0.473786
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "0.1abc"
+ok 35 - rejects unsafe amount "0.1abc"
+  ---
+  duration_ms: 0.142055
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount "00.1"
+ok 36 - rejects unsafe amount "00.1"
+  ---
+  duration_ms: 0.242648
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount " 0.1"
+ok 37 - rejects unsafe amount " 0.1"
+  ---
+  duration_ms: 0.434073
+  type: 'test'
+  ...
+# Subtest: rejects unsafe amount 0.1
+ok 38 - rejects unsafe amount 0.1
+  ---
+  duration_ms: 0.13437
+  type: 'test'
+  ...
+# Subtest: normalizes decimal representations without precision loss
+ok 39 - normalizes decimal representations without precision loss
+  ---
+  duration_ms: 0.268361
+  type: 'test'
+  ...
+# Subtest: same reference identity survives amount, beneficiary and salt edits
+ok 40 - same reference identity survives amount, beneficiary and salt edits
+  ---
+  duration_ms: 12.091731
+  type: 'test'
+  ...
+# Subtest: changing the chain changes the content commitment
+ok 41 - changing the chain changes the content commitment
+  ---
+  duration_ms: 1.906361
+  type: 'test'
+  ...
+# Subtest: export and import retain identity and canonical commitments
+ok 42 - export and import retain identity and canonical commitments
+  ---
+  duration_ms: 3.990024
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"chainId":1}
+ok 43 - rejects invalid instruction {"chainId":1}
+  ---
+  duration_ms: 0.403452
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"payer":"0x0"}
+ok 44 - rejects invalid instruction {"payer":"0x0"}
+  ---
+  duration_ms: 0.146125
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"beneficiary":"0x0000000000000000000000000000000000000000"}
+ok 45 - rejects invalid instruction {"beneficiary":"0x0000000000000000000000000000000000000000"}
+  ---
+  duration_ms: 0.092475
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"asset":"USD"}
+ok 46 - rejects invalid instruction {"asset":"USD"}
+  ---
+  duration_ms: 0.480861
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"extra":true}
+ok 47 - rejects invalid instruction {"extra":true}
+  ---
+  duration_ms: 0.437244
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"reference":"bad\\nreference"}
+ok 48 - rejects invalid instruction {"reference":"bad\\nreference"}
+  ---
+  duration_ms: 0.093965
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"expiresAt":1.5}
+ok 49 - rejects invalid instruction {"expiresAt":1.5}
+  ---
+  duration_ms: 0.196995
+  type: 'test'
+  ...
+# Subtest: rejects invalid instruction {"privacySalt":"0x0000000000000000000000000000000000000000000000000000000000000000"}
+ok 50 - rejects invalid instruction {"privacySalt":"0x0000000000000000000000000000000000000000000000000000000000000000"}
+  ---
+  duration_ms: 0.106747
+  type: 'test'
+  ...
+# Subtest: rejects self payments
+ok 51 - rejects self payments
+  ---
+  duration_ms: 0.195689
+  type: 'test'
+  ...
+# Subtest: blocks expired instructions and unsafe sample addresses for live payments
+ok 52 - blocks expired instructions and unsafe sample addresses for live payments
+  ---
+  duration_ms: 0.408738
+  type: 'test'
+  ...
+# Subtest: CSV output escapes cells and blocks formula injection
+ok 53 - CSV output escapes cells and blocks formula injection
+  ---
+  duration_ms: 0.258801
+  type: 'test'
+  ...
+1..53
+# tests 53
+# suites 0
+# pass 53
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 147.21636

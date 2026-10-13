@@ -1,0 +1,8 @@
+{
+  "chainId": 5042,
+  "rpcUrl": "https://rpc.mainnet.arc.io",
+  "explorerUrl": "https://explorer.arc.io",
+  "contractAddress": null,
+  "runtimeCodeSha256": null,
+  "writesEnabled": false
+}

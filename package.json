@@ -1,0 +1,24 @@
+{
+  "name": "settleref",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reference-linked USDC settlement and reconciliation on Arc",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc && node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "test:contracts": "arc-forge test -vvv",
+    "check:submission": "node scripts/check-submission.mjs",
+    "test:contracts:arc": "FOUNDRY_PROFILE=arc arc-forge test -vvv",
+    "check:abi": "FORGE_BIN=arc-forge node scripts/check-abi.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  },
+  "license": "MIT"
+}
