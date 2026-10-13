@@ -43,7 +43,7 @@ Machine-readable results are under `evidence/validation.json`, `evidence/browser
 - An EIP-1193 browser-wallet adapter with chain, payer, duplicate, balance and runtime-bytecode checks. Owner-enabled deployment configuration is required.
 - Receipt reconciliation using transaction data, a unique contract event and canonical-block checks against a configured RPC.
 - JSON receipt bundles and spreadsheet-safe CSV exports. Imported receipt claims never select a contract or RPC.
-- Owner-safe deployment tooling based on a locally encrypted Arc Foundry keystore alias.
+- Owner deployment through a browser wallet or locally encrypted Arc Foundry keystore alias.
 - Exact runtime pinning that leaves writes disabled.
 - A separate write-enable gate that rechecks runtime and the one-USDC contract cap.
 - A read-only live verifier for deployment creation bytecode, runtime, receipt, canonical block and duplicate state.
@@ -58,6 +58,7 @@ Useful operator commands:
 
 ```sh
 npm run sr03:probe
+npm run sr03:deploy:browser -- testnet
 npm run sr03:pin -- 0xCONTRACT_ADDRESS 5042002
 CONFIRM_ENABLE_WRITES=ENABLE_OWNER_TESTNET_WRITES \
   npm run sr03:enable -- testnet
@@ -92,6 +93,7 @@ Keep payment files private. Instructions are stored in the current browser tab's
 | `docs/architecture.md` | Decisions and trust boundaries |
 | `docs/next-tasks.md` | Milestone state and remaining owner actions |
 | `scripts/deploy.sh` | Encrypted-keystore deployment gate |
+| `scripts/prepare-browser-deploy.sh` | Local browser-wallet deployment preparation |
 | `scripts/pin-deployment.mjs` | Exact remote-runtime pinning, writes stay disabled |
 | `scripts/enable-reviewed-deployment.mjs` | Runtime and contract-cap write-enable gate |
 | `scripts/sr03-verify-live.mjs` | Independent read-only live-chain verifier |

@@ -33,7 +33,7 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 ## Current readiness
 
-NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. No public app, mainnet contract, funding wallet or mainnet transaction exists from this work. Application tests run locally. Contract CI and browser E2E checks still need successful execution.
+NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. Application, contract CI and browser E2E validation passed under SR-01 and SR-02. No public app, mainnet contract or mainnet transaction is recorded. SR-03 still needs owner-controlled funding, signing and independent public-network evidence.
 
 Repository: https://github.com/Whyme-Labs/settleref. Make it public before inserting it into `submission.json`. The connected builder profile resolves to https://github.com/wms2537.
 

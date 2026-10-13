@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SettleRef owner deployment</title>
+<style>
+  body { max-width: 760px; margin: 48px auto; padding: 0 20px; font: 16px/1.55 system-ui; color: #17342b; background: #f6f7f2; }
+  h1 { font-size: 32px; } label, button { display: block; margin-top: 20px; }
+  input { box-sizing: border-box; width: 100%; padding: 12px; font: inherit; }
+  button { padding: 12px 18px; font: inherit; cursor: pointer; } button:disabled { cursor: default; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 16px; background: white; border: 1px solid #ccd5ce; }
+</style>
+<h1>Deploy SettleRef with your wallet</h1>
+<p id="network"></p>
+<p>The deployment sends zero USDC value and pays network gas. Your wallet signs it. Payment writes stay disabled until the runtime is pinned and reviewed.</p>
+<label for="owner">Expected owner public address</label><input id="owner" autocomplete="off" placeholder="0x…">
+<button id="connect">Connect wallet and review deployment</button>
+<pre id="review">Connect your browser wallet to review the network, account and gas ceiling.</pre>
+<button id="deploy" disabled>Approve one deployment in my wallet</button>
+<label for="hash">Deployment transaction hash, also used to recover after reload</label><input id="hash" autocomplete="off" placeholder="0x…">
+<button id="verify">Check deployment receipt</button>
+<button id="export" disabled>Export verified deployment</button>
+<pre id="status" role="status">No transaction requested.</pre>
+<p><a href="/">Open the payment app</a></p>
+<script type="module" src="./browser-deploy-page.mjs"></script>
+</html>

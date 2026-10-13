@@ -62,12 +62,20 @@ jobs:
         run: |
           set -euo pipefail
           bash -n scripts/deploy.sh
+          bash -n scripts/prepare-browser-deploy.sh
+          node --check scripts/prepare-browser-deploy.mjs
+          node --check scripts/browser-deploy-wallet.mjs
+          node --check scripts/browser-deploy-page.mjs
           node --check scripts/pin-deployment.mjs
           node --check scripts/enable-reviewed-deployment.mjs
           node --check scripts/sr03-network-probe.mjs
           node --check scripts/sr03-verify-live.mjs
           operator_files=(
             scripts/deploy.sh
+            scripts/prepare-browser-deploy.sh
+            scripts/prepare-browser-deploy.mjs
+            scripts/browser-deploy-wallet.mjs
+            scripts/browser-deploy-page.mjs
             scripts/pin-deployment.mjs
             scripts/enable-reviewed-deployment.mjs
             scripts/sr03-verify-live.mjs

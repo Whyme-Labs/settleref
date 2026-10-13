@@ -1,7 +1,7 @@
 {
   "schema": "settleref.sr03-network-probe.v1",
-  "generatedAt": "2026-10-13T07:11:05.505Z",
-  "sourceCommit": "8865d0247d9138ea3dc40e31a3b83a0694708df5",
+  "generatedAt": "2026-10-13T08:16:17.809Z",
+  "sourceCommit": null,
   "rpcResults": [
     {
       "name": "arc-testnet-current",
@@ -10,15 +10,15 @@
       "reachable": true,
       "matchesExpectedChain": true,
       "chainId": 5042002,
-      "blockNumber": 66951423,
-      "latestBlockTimestamp": 1791875463,
-      "latestBlockIso": "2026-10-13T07:11:03.000Z",
+      "blockNumber": 66959152,
+      "latestBlockTimestamp": 1791879374,
+      "latestBlockIso": "2026-10-13T08:16:14.000Z",
       "gasPrice": "25000000000",
       "clientVersion": "arc/v1",
       "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
       "usdcRuntimeBytes": 1798,
       "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
-      "latencyMs": 542
+      "latencyMs": 1273
     },
     {
       "name": "arc-testnet-legacy",
@@ -27,15 +27,15 @@
       "reachable": true,
       "matchesExpectedChain": true,
       "chainId": 5042002,
-      "blockNumber": 66951423,
-      "latestBlockTimestamp": 1791875463,
-      "latestBlockIso": "2026-10-13T07:11:03.000Z",
+      "blockNumber": 66959153,
+      "latestBlockTimestamp": 1791879375,
+      "latestBlockIso": "2026-10-13T08:16:15.000Z",
       "gasPrice": "25000000000",
       "clientVersion": "arc/v1",
       "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
       "usdcRuntimeBytes": 1798,
       "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
-      "latencyMs": 362
+      "latencyMs": 1896
     },
     {
       "name": "arc-mainnet-current",
@@ -44,7 +44,7 @@
       "reachable": false,
       "matchesExpectedChain": false,
       "error": "fetch failed",
-      "latencyMs": 47
+      "latencyMs": 79
     },
     {
       "name": "arc-mainnet-legacy",
@@ -53,15 +53,15 @@
       "reachable": true,
       "matchesExpectedChain": true,
       "chainId": 5042,
-      "blockNumber": 25714606,
-      "latestBlockTimestamp": 1791875463,
-      "latestBlockIso": "2026-10-13T07:11:03.000Z",
-      "gasPrice": "20000001152",
+      "blockNumber": 25722315,
+      "latestBlockTimestamp": 1791879374,
+      "latestBlockIso": "2026-10-13T08:16:14.000Z",
+      "gasPrice": "20000001041",
       "clientVersion": "arc/v1",
       "usdcSystemAddress": "0x3600000000000000000000000000000000000000",
       "usdcRuntimeBytes": 1798,
       "usdcRuntimeHexSha256": "0x05a716ca240781d5b6a61f680e05b7d56034f1e59ae107ffee41fc0bac438c8d",
-      "latencyMs": 386
+      "latencyMs": 896
     }
   ],
   "explorerResults": [
@@ -70,20 +70,20 @@
       "reachable": true,
       "status": 200,
       "finalUrl": "https://explorer.testnet.arc.io/",
-      "latencyMs": 703
+      "latencyMs": 1344
     },
     {
       "url": "https://arcscan.app",
       "reachable": false,
       "error": "fetch failed",
-      "latencyMs": 12
+      "latencyMs": 32
     },
     {
       "url": "https://explorer.arc.io",
       "reachable": true,
       "status": 200,
       "finalUrl": "https://explorer.arc.io/",
-      "latencyMs": 365
+      "latencyMs": 718
     }
   ],
   "conclusions": {

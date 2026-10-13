@@ -54,6 +54,8 @@ Completed preparation:
 - Preserved screenshots and a machine report under `evidence/sr03/testnet/` when the wallet remained unfunded at the human-verification boundary.
 - Retired the one-off faucet and transient-key automation after the bounded experiment.
 - Hardened `scripts/deploy.sh` around a locally encrypted owner keystore alias, chain-ID checks, expected-address checks and explicit mainnet confirmation.
+- Added a localhost browser-wallet deployment path for owners using wallet extensions, with exact owner and chain checks, a gas ceiling, pending recovery, no automatic retries and independent deployment verification.
+- Replaced Bash 4-only address normalization so the keystore script runs with macOS Bash 3.2.
 - Hardened `scripts/pin-deployment.mjs` to require an exact remote-runtime match while leaving writes disabled.
 - Added `scripts/enable-reviewed-deployment.mjs`, which rechecks runtime and the exact one-USDC cap before enabling writes.
 - Added `scripts/sr03-verify-live.mjs`, a read-only verifier for deployment creation bytecode, runtime, payment receipt, canonical block and duplicate state.
@@ -63,7 +65,7 @@ Completed preparation:
 Remaining testnet gate:
 
 1. Fund an owner-controlled Arc testnet wallet through Circle's interactive faucet.
-2. Deploy with the locally encrypted keystore using `scripts/deploy.sh`.
+2. Deploy with the browser wallet using `npm run sr03:deploy:browser -- testnet`, or with a locally encrypted keystore using `scripts/deploy.sh`.
 3. Pin the exact runtime and enable the reviewed testnet configuration through the separate confirmation gate.
 4. Execute one owner-funded payment of at most `0.10 USDC` in the real browser UI.
 5. Export the receipt bundle and reconciliation CSV.

@@ -42,7 +42,9 @@ actual_chain="$($CAST_BIN chain-id --rpc-url "$RPC")"
 
 account_address="$($CAST_BIN wallet address --account "$DEPLOYER_ACCOUNT")"
 if [[ -n "${EXPECTED_DEPLOYER_ADDRESS:-}" ]]; then
-  [[ "${account_address,,}" == "${EXPECTED_DEPLOYER_ADDRESS,,}" ]] || {
+  normalized_account="$(printf '%s' "$account_address" | tr '[:upper:]' '[:lower:]')"
+  normalized_expected="$(printf '%s' "$EXPECTED_DEPLOYER_ADDRESS" | tr '[:upper:]' '[:lower:]')"
+  [[ "$normalized_account" == "$normalized_expected" ]] || {
     echo "Encrypted keystore alias resolved to $account_address, not EXPECTED_DEPLOYER_ADDRESS." >&2
     exit 1
   }
