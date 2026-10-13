@@ -1,0 +1,46 @@
+{
+  "schema": "settleref.sr03-owner-verification.v1",
+  "generatedAt": "2026-10-13T11:56:25.233Z",
+  "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
+  "status": "PASS",
+  "network": "mainnet",
+  "chainId": 5042,
+  "rpcUrl": "https://rpc.mainnet.arc.io",
+  "explorerUrl": "https://explorer.arc.io",
+  "contract": {
+    "address": "0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4",
+    "runtimeBytes": 1096,
+    "runtimeCodeSha256": "0x9b574e04f88f06a0a3b116c3d919ae0cd1e6b4f13025928e4cc8ce411cb36a96",
+    "exactRuntimeMatch": true,
+    "exactCreationBytecodeMatch": true,
+    "explorerUrl": "https://explorer.arc.io/address/0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4"
+  },
+  "deployment": {
+    "transactionHash": "0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
+    "blockNumber": "25743558",
+    "blockHash": "0xf4eb92535ae1a54ba9d516896c1bf7a6268c8078049ada1e9fdbabb4796ac055",
+    "deployer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+    "explorerUrl": "https://explorer.arc.io/tx/0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2"
+  },
+  "payment": {
+    "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+    "amount": "0.100000",
+    "amountMicroUsdc": "100000",
+    "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+    "beneficiary": "0xe6e31c4551e86f4d695b3569ddd44f3b4de6ef18",
+    "instructionId": "0xffa8a417c127eb1df0bfaf0d60bc9f8e10567fb2823bdea3eea73da39a7e04db",
+    "contentHash": "0xc8f5a1b554c5ec8979a264d0afd0095a9a3bd04bea7b41d33cec80fc459f1077",
+    "blockNumber": "25746529",
+    "blockHash": "0xdcc0ac98c29e1303f7ab5abfce989b7f1e410a0e4c6d5d9638686823a33b0963",
+    "timestamp": 1791891696,
+    "duplicateFlag": true,
+    "independentlyRpcVerified": true,
+    "explorerUrl": "https://explorer.arc.io/tx/0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a"
+  },
+  "claims": {
+    "privateKeyRead": false,
+    "signerInvoked": false,
+    "customerFunds": false,
+    "securityAudit": false
+  }
+}

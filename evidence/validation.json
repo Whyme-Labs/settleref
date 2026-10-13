@@ -16,35 +16,57 @@
       "runId": 38359156807,
       "jobId": 115168971778,
       "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38359156807"
+    },
+    {
+      "id": "SR-03",
+      "status": "PASS",
+      "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
+      "evidence": "evidence/sr03/owner/mainnet-verified.json",
+      "review": "evidence/sr03/owner/operator-independent-review.json"
     }
   ],
   "currentMilestone": {
-    "id": "SR-03",
-    "status": "IN_PROGRESS_OWNER_ACTION_REQUIRED",
-    "reason": "All reversible preflight and operator tooling is complete. Genuine Arc deployment and payment evidence still requires an owner-controlled funded wallet and explicit local signing approval."
+    "id": "SR-04",
+    "status": "IN_PROGRESS_PUBLICATION_AUTHORIZATION_REQUIRED",
+    "reason": "Verified owner testnet/mainnet deployments and payments are complete. Public source, HTTPS hosting and final DoraHacks submission remain."
   },
   "application": {
     "typecheck": "PASS",
     "productionBuild": "PASS",
     "nodeTests": {
-      "passed": 53,
+      "passed": 70,
       "failed": 0,
-      "scope": "Domain tests plus mocked RPC and wallet boundary tests."
+      "scope": "Domain, mocked RPC/wallet boundaries and browser-deployment operator regressions.",
+      "sourceCommit": "3ab01a313024889ecea13fb8b69772098aa9240c",
+      "runUrl": "https://github.com/Whyme-Labs/settleref/actions/runs/38391363909"
     },
     "browserE2E": {
       "status": "PASS",
       "passed": 17,
       "failed": 0,
       "browser": "Playwright 1.55.0 with headless Chromium 140.0.7339.16",
-      "viewportCoverage": ["1440 px desktop", "390 x 844 mobile"],
+      "viewportCoverage": [
+        "1440 px desktop",
+        "390 x 844 mobile"
+      ],
       "screenshots": 8,
       "machineReadableEvidence": "evidence/browser/browser-tests.json"
     }
   },
   "contracts": {
     "testsWritten": 18,
-    "standardEvm": {"passed": 18, "failed": 0, "fuzzRuns": 256},
-    "arcExecution": {"network": "arc", "hardfork": "Zero8", "passed": 18, "failed": 0, "fuzzRuns": 256},
+    "standardEvm": {
+      "passed": 18,
+      "failed": 0,
+      "fuzzRuns": 256
+    },
+    "arcExecution": {
+      "network": "arc",
+      "hardfork": "Zero8",
+      "passed": 18,
+      "failed": 0,
+      "fuzzRuns": 256
+    },
     "selectors": "PASS: browser constants match compiled Solidity method identifiers"
   },
   "sr02Evidence": {
@@ -127,25 +149,34 @@
     }
   },
   "networkStatus": {
-    "arcTestnetDeployment": "NOT_DEPLOYED: owner-controlled funding and signature required under SR-03",
-    "arcTestnetTransaction": "NOT_SUBMITTED: faucet experiment stopped at zero balance",
-    "arcMainnetDeployment": "NOT_DEPLOYED: gated by passing testnet evidence and explicit owner confirmation",
-    "arcMainnetTransaction": "NOT_SUBMITTED",
+    "arcTestnetDeployment": "PASS: independently verified owner deployment",
+    "arcTestnetTransaction": "PASS: owner-funded 0.10-USDC payment",
+    "arcMainnetDeployment": "PASS: exact creation/runtime and canonical receipt verified",
+    "arcMainnetTransaction": "PASS: owner-funded 0.10-USDC payment independently verified",
     "publicHosting": "NOT_DEPLOYED: SR-04",
     "grantSubmission": "NOT_SUBMITTED: SR-04"
   },
   "claims": {
     "localDevelopmentTransaction": true,
-    "arcTestnetDeployment": false,
-    "arcTestnetPayment": false,
-    "arcMainnetDeployment": false,
-    "arcMainnetPayment": false,
+    "arcTestnetDeployment": true,
+    "arcTestnetPayment": true,
+    "arcMainnetDeployment": true,
+    "arcMainnetPayment": true,
     "securityAudit": false
   },
   "nextRequiredEvidence": [
-    "Owner-controlled Arc testnet deployment with exact runtime match",
-    "Owner-funded testnet payment of at most 0.10 USDC, pending recovery, independent receipt reconciliation and duplicate rejection",
-    "Reviewed Arc mainnet deployment and tiny owner-funded payment under both explicit confirmation gates",
-    "Public repository, public HTTPS app and DoraHacks submission under SR-04"
-  ]
+    "Public repository and public HTTPS app, verified while signed out",
+    "Successful DoraHacks Submit for Review confirmation under SR-04"
+  ],
+  "sr03OwnerEvidence": {
+    "status": "PASS",
+    "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
+    "testnet": "evidence/sr03/owner/testnet-verified.json",
+    "mainnet": "evidence/sr03/owner/mainnet-verified.json",
+    "testnetBrowser": "evidence/sr03/owner/testnet-browser-verification.json",
+    "mainnetBrowser": "evidence/sr03/owner/mainnet-browser-verification.json",
+    "testnetDuplicate": "evidence/sr03/owner/testnet-duplicate-proof.json",
+    "mainnetDuplicate": "evidence/sr03/owner/mainnet-duplicate-proof.json",
+    "independentReview": "evidence/sr03/owner/operator-independent-review.json"
+  }
 }

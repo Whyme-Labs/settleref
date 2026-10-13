@@ -1,0 +1,16 @@
+{
+  "schema": "settleref.duplicate-rejection-proof.v1",
+  "generatedAt": "2026-10-13T11:57:16.987Z",
+  "network": "mainnet",
+  "chainId": 5042,
+  "rpcUrl": "https://rpc.mainnet.arc.io",
+  "transactionHash": "0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a",
+  "contractAddress": "0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4",
+  "payer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+  "method": "eth_call",
+  "replayedExactOriginalCalldata": true,
+  "revertSelector": "0x71e968b8",
+  "error": "DuplicateInstruction()",
+  "secondTransactionSubmitted": false,
+  "status": "PASS"
+}

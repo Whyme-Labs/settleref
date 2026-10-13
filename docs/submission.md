@@ -5,7 +5,7 @@ Verified on October 13, 2026, Malaysia time. Recheck before submitting because t
 Primary organizer source: https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq
 Submission destination: https://dorahacks.io/hackathon/arc-microgrants/detail
 
-The research tool returned HTTP 405, but the detail page and logged-in Build wizard were inspected in Chrome on October 13. The detail page repeats the working-mainnet requirement and rejects testnet-only builds. The Profile step requires a logo, accepts PNG/JPEG under 2 MB and recommends 480 x 480 px. A repository URL is required; project website and demo video fields are optional. At least one social link is required. The wizard also includes Details, Team, Contact and Submission steps. A mandatory transaction-hash field has not yet been observed; that does not waive the working-mainnet requirement.
+The detail page and all logged-in Build wizard steps were inspected in Chrome on October 13. The detail page repeats the working-mainnet requirement and rejects testnet-only builds. The Profile step requires a logo, accepts PNG/JPEG under 2 MB and recommends 480 x 480 px. A repository URL and social link are required; project website and demo video fields are optional. Contact requires Telegram and one backup contact, visible only to DoraHacks staff. The Arc-specific form asks for an email, builder profile, live project link, public repository, two-sentence description, Arc use, prior Arc deployment history and prior funding. Its deployment-evidence field accepts a mainnet contract address or verifiable transaction hash; a separate payment hash is not mandatory for that field. Final action is Submit for Review, with Terms of Use and Participant Agreement acceptance.
 
 ## Required by the organizer
 
@@ -33,7 +33,7 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 ## Current readiness
 
-NOT READY. The repository is private and the public app is not published. Genuine owner-approved testnet deployment/payment verification passed. Arc mainnet deployment `0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2` passes exact bytecode and canonical-receipt verification. The mainnet payment awaits approval. The owner confirmed rights to submit and no prior Circle/Arc program funding. The DoraHacks draft has profile, logo, description, team information and Telegram contact; its Contact step additionally requires a backup Discord, WhatsApp or WeChat contact before the final submission fields can be inspected.
+NOT READY FOR FINAL SUBMISSION. The repository is private and the public app is not published. Owner-approved testnet and mainnet deployment/payment verification passed. The mainnet 0.10-USDC payment is `0x6484698394e23ed188997287e7d2f8685ea962223ce05571a99579f70eb3880a`; receipt, canonical block, duplicate rejection, reload recovery and verification in a second browser without a wallet passed. The owner confirmed rights to submit, no prior Circle/Arc program funding, and no Arc deployment before this project. Profile, description, team and staff-only contacts are saved in the DoraHacks draft. Arc-specific answers are prepared in the final form. Final publication and Submit for Review require owner authorization.
 
 Repository: https://github.com/Whyme-Labs/settleref. Make it public before inserting it into `submission.json`. The connected builder profile resolves to https://github.com/wms2537.
 
