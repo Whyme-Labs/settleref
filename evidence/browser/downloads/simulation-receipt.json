@@ -4,13 +4,13 @@
   "instruction": {
     "schema": "settleref.instruction.v1",
     "chainId": 5042002,
-    "endToEndId": "b5ed7e05-aad7-47a2-a617-146eb03c7825",
+    "endToEndId": "14072859-f687-4a10-a3c0-ad4e2bc2c766",
     "payer": "0x1111111111111111111111111111111111111111",
     "beneficiary": "0x2222222222222222222222222222222222222222",
     "asset": "USDC",
     "amount": "0.100000",
     "reference": "INV-DEMO-001",
-    "expiresAt": 1791960752,
-    "privacySalt": "0xffeebe086a884feb1b846eda1c8ccea74ab774102dce26e7b486c90d7c20f2f5"
+    "expiresAt": 1791963386,
+    "privacySalt": "0x68369101ee244ea9862a6acc765cd1fc07613e8927dcff1b7d373e0a28d8584f"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema": "settleref.browser-evidence.v1",
-  "generatedAt": 1791874357,
+  "generatedAt": 1791876992,
   "status": "PASS",
   "passed": 17,
   "failed": 0,
@@ -78,14 +78,14 @@
     "arcTestnet": {
       "rpc": "https://rpc.testnet.arc.io",
       "chainId": 5042002,
-      "walletAddress": "0x3598020db18a35dbe5d01fe828b236441477ae74",
+      "walletAddress": "0xfc9a729ac629ff7cd5de39d69c394672abec0d72",
       "transactionSubmitted": false
     },
     "localArcExecution": {
       "chainId": 31337,
-      "payer": "0x3598020db18a35dbe5d01fe828b236441477ae74",
-      "beneficiary": "0xcf8cc926973a9e9f87e6f0a6532aa5e058ae3180",
-      "transactionHash": "0x19d46ccb783933a31ff1ed01e9c994b4d468feb688ec4c450b9e81388160674f",
+      "payer": "0xfc9a729ac629ff7cd5de39d69c394672abec0d72",
+      "beneficiary": "0x4c6d9ca3c2da18637733b8dec27db608125af61c",
+      "transactionHash": "0x82078b454a5eea01ebd07665ae37a8a5b95c7515f7fa735d79c04202f13136af",
       "walletRequests": [
         "eth_accounts",
         "eth_accounts",
