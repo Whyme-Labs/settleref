@@ -68,6 +68,10 @@ jobs:
           text = path.read_text()
           replacements = [
               (
+                  'from eth_account import Account\n',
+                  'from eth_account import Account\nfrom eth_utils import to_checksum_address\n',
+              ),
+              (
                   '    request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})',
                   '    request = urllib.request.Request(\n'
                   '        url,\n'
@@ -88,6 +92,10 @@ jobs:
                   '        "fragment => document.querySelector(\'#status\').textContent.includes(fragment)",\n'
                   '        arg=fragment,\n'
                   '    )',
+              ),
+              (
+                  '                "to": tx["to"],\n',
+                  '                "to": to_checksum_address(tx["to"]),\n',
               ),
               (
                   '            tx_hash = rpc_call(state["rpc_url"], "eth_sendRawTransaction", [f"0x{raw.hex()}"])',
