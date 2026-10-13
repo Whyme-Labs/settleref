@@ -13,9 +13,13 @@
     "test": "npm run build && node --test tests/*.test.mjs",
     "dev": "npm run build && node scripts/serve.mjs",
     "test:contracts": "arc-forge test -vvv",
-    "check:submission": "node scripts/check-submission.mjs",
     "test:contracts:arc": "FOUNDRY_PROFILE=arc arc-forge test -vvv",
-    "check:abi": "FORGE_BIN=arc-forge node scripts/check-abi.mjs"
+    "check:abi": "FORGE_BIN=arc-forge node scripts/check-abi.mjs",
+    "check:submission": "node scripts/check-submission.mjs",
+    "sr03:probe": "node scripts/sr03-network-probe.mjs",
+    "sr03:pin": "node scripts/pin-deployment.mjs",
+    "sr03:enable": "node scripts/enable-reviewed-deployment.mjs",
+    "sr03:verify": "node scripts/sr03-verify-live.mjs"
   },
   "devDependencies": {
     "typescript": "5.8.3"
