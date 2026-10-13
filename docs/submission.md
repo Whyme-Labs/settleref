@@ -33,11 +33,13 @@ There are 20 awards of 500 USDC each from a 10,000 USDC pool. Reviews are rollin
 
 ## Current readiness
 
-NOT READY. The source repository exists at `https://github.com/Whyme-Labs/settleref`, but it is private and therefore does not yet satisfy the public-repository requirement. Application, contract CI and browser E2E validation passed under SR-01 and SR-02. The genuine owner-approved Arc testnet deployment and 0.10-USDC payment now pass independent verification. The owner-funded payer has 2 USDC on Arc mainnet. No public app or verified mainnet SettleRef transaction is recorded yet.
+NOT READY. The repository is private and the public app is not published. Genuine owner-approved testnet deployment/payment verification passed. Arc mainnet deployment `0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2` passes exact bytecode and canonical-receipt verification. The mainnet payment awaits approval. The owner confirmed rights to submit and no prior Circle/Arc program funding. The DoraHacks draft has profile, logo, description, team information and Telegram contact; its Contact step additionally requires a backup Discord, WhatsApp or WeChat contact before the final submission fields can be inspected.
 
 Repository: https://github.com/Whyme-Labs/settleref. Make it public before inserting it into `submission.json`. The connected builder profile resolves to https://github.com/wms2537.
 
 Run `npm run check:submission` to see missing manifest fields. The checker validates local bookkeeping, not live URL accessibility, organizer eligibility or chain evidence.
+
+For a staged hosting package with an operator-pinned deployment file, use `DEPLOYMENT_CONFIG_PATH=path/to/deployment.json npm run check:submission`. The source default remains disabled; the checker reports the exact configuration path it evaluated.
 
 ## Suggested submission copy
 

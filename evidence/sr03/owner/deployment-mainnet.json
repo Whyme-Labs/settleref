@@ -1,0 +1,17 @@
+{
+  "schema": "settleref.browser-deployment.v1",
+  "status": "PASS",
+  "network": "mainnet",
+  "chainId": 5042,
+  "sourceCommit": "a5b3807b94bd8407f3e5fcb99100e2acd945bfcf",
+  "transactionHash": "0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
+  "contractAddress": "0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4",
+  "deployer": "0x40e4ccd3db59580b23f5db16e1f9e1bcf6d2bf8e",
+  "runtimeCodeSha256": "0x9b574e04f88f06a0a3b116c3d919ae0cd1e6b4f13025928e4cc8ce411cb36a96",
+  "blockNumber": "0x188d0c6",
+  "blockHash": "0xf4eb92535ae1a54ba9d516896c1bf7a6268c8078049ada1e9fdbabb4796ac055",
+  "exactCreationBytecodeMatch": true,
+  "exactRuntimeMatch": true,
+  "explorerUrl": "https://explorer.arc.io/tx/0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
+  "writesEnabled": false
+}

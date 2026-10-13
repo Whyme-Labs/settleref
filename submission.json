@@ -8,14 +8,14 @@
   "publicRepo": null,
   "liveApp": null,
   "builderProfile": "https://github.com/wms2537",
-  "deploymentTransactionHash": null,
+  "deploymentTransactionHash": "0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2",
   "paymentTransactionHash": null,
   "contractTestsPassed": true,
   "arcTestnetSmokePassed": true,
   "duplicateRejectionEvidence": "evidence/sr03/owner/testnet-duplicate-proof.json",
   "mainnetReceiptVerified": false,
   "submissionStatus": "NOT_READY",
-  "rightsToSubmitConfirmed": false,
-  "priorCircleOrArcFundingConfirmedAbsent": false,
+  "rightsToSubmitConfirmed": true,
+  "priorCircleOrArcFundingConfirmedAbsent": true,
   "programRulesSource": "https://community.arc.io/public/events/arc-microgrants-f8tijfjhyq"
 }

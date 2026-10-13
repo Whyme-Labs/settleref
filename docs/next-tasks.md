@@ -43,7 +43,7 @@ Machine-readable evidence is in `evidence/browser/browser-tests.json`.
 
 ## SR-03: Deploy the capped Arc experiment
 
-Status: in progress. The genuine Arc testnet deployment and 0.10-USDC payment passed independent verification. Mainnet deployment and payment remain.
+Status: in progress. The genuine testnet flow passed independent verification. The mainnet contract is deployed and matches the reviewed artifact; the 0.10-USDC payment awaits owner approval.
 
 Completed preparation:
 
@@ -84,6 +84,8 @@ Testnet reproduction:
 6. Run `scripts/sr03-verify-live.mjs` and commit a `PASS` report.
 
 Remaining mainnet gate:
+
+The owner-approved deployment is `0x879747b8cf1b527d6b47259c206bc58523dbaf912d0cf750875d83fb311f5db2` on chain `5042`, at contract `0xef9cb6e223d4fc63e82e95b1a6cbfe0b31ef3dc4`. `evidence/sr03/owner/deployment-mainnet.json` records the exact creation/runtime and canonical-block PASS. The testnet and mainnet contract addresses happen to match because both deployments used the same payer and nonce; they are separate network deployments.
 
 1. Freeze and review the exact source commit that passed testnet.
 2. Use a funded owner-controlled mainnet wallet and a second owner-controlled beneficiary.
