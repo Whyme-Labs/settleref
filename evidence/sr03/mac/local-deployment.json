@@ -1,0 +1,17 @@
+{
+  "schema": "settleref.browser-deployment.v1",
+  "status": "PASS",
+  "network": "local-arc-anvil",
+  "chainId": 31337,
+  "sourceCommit": "899f1e31986c618f3754cf58d9598a03effd586b",
+  "transactionHash": "0xe19016ad9e040ad1ed9a6d91a6f268f31172e5b47ccad3783a671c5b9a382f63",
+  "contractAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+  "deployer": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "runtimeCodeSha256": "0x9b574e04f88f06a0a3b116c3d919ae0cd1e6b4f13025928e4cc8ce411cb36a96",
+  "blockNumber": "0x2",
+  "blockHash": "0xcb04702420866e01bde22ee2bbe4316eeb07e4aa1476433d96165172a1285b8b",
+  "exactCreationBytecodeMatch": true,
+  "exactRuntimeMatch": true,
+  "explorerUrl": "https://example.invalid/tx/0xe19016ad9e040ad1ed9a6d91a6f268f31172e5b47ccad3783a671c5b9a382f63",
+  "writesEnabled": false
+}

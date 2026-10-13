@@ -1,0 +1,54 @@
+{
+  "schema": "settleref.mac-readiness.v1",
+  "sourceCommit": "899f1e31986c618f3754cf58d9598a03effd586b",
+  "status": "OWNER_ACTION_REQUIRED",
+  "platform": "Darwin-25.2.0-arm64-arm-64bit-Mach-O",
+  "node": "v22.23.0",
+  "applicationTests": {
+    "passed": 66,
+    "failed": 0,
+    "scope": "53 existing application tests, 11 mocked browser deployment checks and 2 mocked Bash deployment checks"
+  },
+  "typecheck": "PASS",
+  "productionBuild": "PASS",
+  "contracts": {
+    "standardEvmPassed": 18,
+    "arcPassed": 18,
+    "fuzzRunsPerProfile": 256,
+    "arcNetwork": "arc",
+    "arcHardfork": "Zero8"
+  },
+  "abi": "PASS",
+  "browserDeployment": {
+    "status": "PASS",
+    "scope": "local Arc Anvil only",
+    "sourceCommit": "899f1e31986c618f3754cf58d9598a03effd586b",
+    "chainId": 31337,
+    "sends": 1,
+    "transactionHash": "0xe19016ad9e040ad1ed9a6d91a6f268f31172e5b47ccad3783a671c5b9a382f63",
+    "contractAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+    "runtimeVerified": true,
+    "pendingRecovered": true,
+    "wrongAccountRejected": true,
+    "wrongChainRejected": true,
+    "mobileOverflow": false,
+    "pageErrors": [],
+    "publicNetworkTransactions": 0
+  },
+  "mainnetPreparationGate": {
+    "withoutConfirmation": "REFUSED",
+    "withoutVerifiedTestnetReport": "REFUSED"
+  },
+  "ownerWallet": {
+    "browser": "Chrome",
+    "extension": "MetaMask",
+    "accountSharedWithLocalApp": false,
+    "chainBeforeOwnerAction": 1
+  },
+  "claims": {
+    "publicNetworkTransactions": 0,
+    "arcTestnetDeployed": false,
+    "arcMainnetDeployed": false,
+    "liveWritesEnabled": false
+  }
+}
