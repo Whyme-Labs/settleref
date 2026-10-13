@@ -1,0 +1,136 @@
+{
+  "schema": "settleref.sr03-testnet-evidence.v1",
+  "generatedAt": 1791875911,
+  "sourceCommit": "00ffca07d7e9b75f705ee2316e403410d8abb469",
+  "status": "BLOCKED_FAUCET",
+  "stage": "faucet",
+  "network": {
+    "chainId": 5042002,
+    "rpcUrl": "https://rpc.testnet.arc.network",
+    "explorerUrl": "https://explorer.testnet.arc.io",
+    "startingBlock": 66951993
+  },
+  "safety": {
+    "wallet": "fresh ephemeral CI wallet",
+    "privateKeyPersisted": false,
+    "privateKeyLogged": false,
+    "customerFunds": false,
+    "mainnetConnected": false,
+    "mainnetTransaction": false
+  },
+  "checks": [
+    {
+      "name": "Arc testnet RPC matches chain 5042002",
+      "detail": "https://rpc.testnet.arc.network"
+    }
+  ],
+  "screenshots": [
+    "01-faucet-loaded.png",
+    "02-faucet-requested.png"
+  ],
+  "downloads": [],
+  "networkObservations": [],
+  "wallets": {
+    "payer": "0x8e13d5d14e66f84367aa1f4e53f1194730bccc61",
+    "beneficiary": "0x868e4edfb11a8d3c941a4b93b41e684cae35650c",
+    "ephemeral": true
+  },
+  "faucet": {
+    "url": "https://faucet.circle.com",
+    "requestedAddress": "0x8e13d5d14e66f84367aa1f4e53f1194730bccc61",
+    "asset": "USDC",
+    "network": "Arc Testnet",
+    "pageMessages": [
+      "Limit: One request per pairing of asset and test network every 2 hours",
+      "A testnet is an instance of a blockchain used specifically for testing. In contrast to a mainnet blockchain, which represents a production environment, testnets allow developers to test their apps and smart contracts without risking assets with real-world value. Testnet tokens are assets that can be freely obtained from testnet faucets to experiment with funds flows on testnets.",
+      "Developers can use Circle's Faucet in the Developer Console to obtain testnet ETH and POL. Testnet tokens generated from the Developer Console will be sent to wallet addresses created with Circle Wallets. Get started for free.",
+      "Why am I seeing an error message of \u201cLimit Exceeded\u201d?",
+      "This means that you have exceeded a limit and you will need to wait to try again. Developers can request 20 USDC on testnet every 2 hours, per address, and per blockchain. If you need more, you can submit a request on Circle's Discord."
+    ],
+    "clickCompleted": true,
+    "circleResponses": [
+      {
+        "url": "https://match.adsrvr.org/track/cei",
+        "status": 200
+      },
+      {
+        "url": "https://bat.bing.com/action/0",
+        "status": 204
+      },
+      {
+        "url": "https://px.ads.linkedin.com/collect",
+        "status": 302
+      },
+      {
+        "url": "https://t.co/1/i/adsct",
+        "status": 200
+      },
+      {
+        "url": "https://px.ads.linkedin.com/collect",
+        "status": 302
+      },
+      {
+        "url": "https://track.hubspot.com/__ptq.gif",
+        "status": 200
+      },
+      {
+        "url": "https://www.linkedin.com/px/li_sync",
+        "status": 302
+      },
+      {
+        "url": "https://cta-service-cms2.hubspot.com/web-interactives/public/v1/embed/combinedConfigs",
+        "status": 200
+      },
+      {
+        "url": "https://px.ads.linkedin.com/collect",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/rmkt/collect/968948978/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect",
+        "status": 204
+      },
+      {
+        "url": "https://www.google.com/ccm/collect",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/ccm/collect",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/ccm/collect",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/rmkt/collect/16725628719/",
+        "status": 200
+      },
+      {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/968948978/",
+        "status": 200
+      },
+      {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/16725628719/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/pagead/1p-user-list/968948978/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/pagead/1p-user-list/16725628719/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect",
+        "status": 204
+      }
+    ],
+    "balanceAfterRequest": "0"
+  },
+  "error": "Circle public faucet did not fund the fresh Arc testnet wallet within the bounded wait"
+}
