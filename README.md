@@ -2,9 +2,9 @@
 
 Payment to proof. A small experiment in cross-border payment operations on Arc.
 
-SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer/instruction identity within one deployment, and exports independently recheckable reconciliation records.
+SettleRef ties one supplier-payment instruction to one native-USDC settlement. It checks exact payment data, rejects repeat execution of the same payer and instruction identity within one deployment, and exports independently recheckable reconciliation records.
 
-**Current status: first scaffold implemented and application-tested. The repository exists at `Whyme-Labs/settleref` but must be made public before submission. Not deployed, not audited, not submitted. Live writes are disabled.**
+**Current status: SR-01 contract validation and SR-02 real-browser validation are complete. SR-03 network preflight and owner tooling are complete, but no Arc testnet or mainnet deployment has been made. The repository remains private, live writes remain disabled, and no audit or grant submission is claimed.**
 
 ## Run
 
@@ -20,6 +20,21 @@ Open http://127.0.0.1:4173. The default local walkthrough needs no wallet. Choos
 
 `dist/` is the static website after `npm run build`. There are no third-party browser runtime dependencies, remote scripts, analytics, server accounts, database or custody wallet. The source uses TypeScript with strict checking and browser-native APIs.
 
+## Verified behavior
+
+- 53 Node tests pass for domain rules and mocked RPC and wallet boundaries.
+- 18 Solidity tests pass under the standard EVM profile and another 18 pass under Arc execution semantics, each with 256 fuzz runs.
+- Real Chromium automation records 17 passed checks, 0 failed checks and eight screenshots.
+- Desktop and 390 x 844 mobile flows pass without browser JavaScript errors or horizontal overflow.
+- Wrong-account and wrong-network states stop before signing.
+- Instruction and receipt JSON round trips preserve identity.
+- CSV exports neutralize spreadsheet formulas.
+- HTML-looking invoice text renders as text rather than executable markup.
+- A private-key-backed EIP-1193 provider connected to Arc testnet for read-only chain verification without submitting a public-network transaction.
+- One isolated Arc-Anvil transaction completed the live application path, survived reload, reconciled against RPC, exposed the duplicate flag and was independently reverified in a second browser.
+
+Machine-readable results are under `evidence/validation.json`, `evidence/browser/` and `evidence/sr03/`.
+
 ## What is implemented
 
 - Strict versioned JSON payment instructions, exact 6-decimal business amounts mapped to 18-decimal native USDC units.
@@ -28,14 +43,35 @@ Open http://127.0.0.1:4173. The default local walkthrough needs no wallet. Choos
 - An EIP-1193 browser-wallet adapter with chain, payer, duplicate, balance and runtime-bytecode checks. Owner-enabled deployment configuration is required.
 - Receipt reconciliation using transaction data, a unique contract event and canonical-block checks against a configured RPC.
 - JSON receipt bundles and spreadsheet-safe CSV exports. Imported receipt claims never select a contract or RPC.
-- 53 passing Node tests at the initial verification checkpoint. See evidence/node-tests.tap.txt.
-- 18 Solidity tests including fuzzing and reentrancy scenarios. CI installs a checksum-pinned Arc Foundry release and runs both standard EVM and Arc execution profiles. See `evidence/validation.json` for observed results.
+- Owner-safe deployment tooling based on a locally encrypted Arc Foundry keystore alias.
+- Exact runtime pinning that leaves writes disabled.
+- A separate write-enable gate that rechecks runtime and the one-USDC contract cap.
+- A read-only live verifier for deployment creation bytecode, runtime, receipt, canonical block and duplicate state.
+
+## SR-03 owner gate
+
+A no-key preflight confirmed reachable Arc testnet and mainnet endpoints. A bounded faucet experiment then reached Circle's public faucet in real Chromium, but the fresh address remained unfunded at the human-verification boundary. No CAPTCHA bypass, public development key, customer funds or mainnet action was used. The one-off signing experiment was removed after evidence capture.
+
+The remaining public-network steps require an owner-controlled funded wallet and local signing approval. Read `docs/deployment.md` before doing anything irreversible. The runbook contains separate testnet, mainnet, runtime-pinning, write-enable and independent-verification gates.
+
+Useful operator commands:
+
+```sh
+npm run sr03:probe
+npm run sr03:pin -- 0xCONTRACT_ADDRESS 5042002
+CONFIRM_ENABLE_WRITES=ENABLE_OWNER_TESTNET_WRITES \
+  npm run sr03:enable -- testnet
+npm run sr03:verify -- \
+  testnet 0xCONTRACT 0xDEPLOYMENT_TX evidence/sr03/owner/testnet-receipt.json
+```
+
+The tracked `public/deployment.json` must remain unconfigured with `writesEnabled: false` until the owner approves a genuine pinned deployment.
 
 ## Limits that matter
 
 This is payment-operations software, not a bank, remittance provider, FX service or SWIFT adapter. It does not move fiat between countries, verify invoice authenticity, determine legal compliance, or prove that a beneficiary delivered goods. There is no ISO 20022 XML support in v0. `endToEndId` is an application field, not a claim of bank interoperability.
 
-Duplicate protection is scoped to payer + instruction ID + contract deployment. A new ID, another payer, another chain, direct transfer or another contract is outside that protection. Wallet-to-wallet native transfers bypass SettleRef. RPC verification trusts the configured RPC and the pinned, non-upgradeable contract. A receipt is an application record, not a bank-issued confirmation.
+Duplicate protection is scoped to payer plus instruction ID plus contract deployment. A new ID, another payer, another chain, direct transfer or another contract is outside that protection. Wallet-to-wallet native transfers bypass SettleRef. RPC verification trusts the configured RPC and the pinned, non-upgradeable contract. A receipt is an application record, not a bank-issued confirmation.
 
 Keep payment files private. Instructions are stored in the current browser tab's session storage after review, and appear in user-requested exports. Public-chain addresses, amounts, hashes, timing and payment identity commitments are public. Salted commitments hide invoice content only while their salt and content remain private.
 
@@ -44,17 +80,21 @@ Keep payment files private. Instructions are stored in the current browser tab's
 | Path | Purpose |
 |---|---|
 | `contracts/SettleRef.sol` | Capped atomic native-USDC settlement |
-| `contracts/test/SettleRef.t.sol` | Contract tests, not yet executed |
+| `contracts/test/SettleRef.t.sol` | Standard EVM and Arc execution contract tests |
 | `src/domain.ts` | Validation, amounts and commitment rules |
 | `src/chain.ts` | Static ABI, wallet transaction and receipt verifier |
 | `src/app.ts` | Browser workflow |
 | `tests/` | Executed domain and mocked-RPC boundary tests |
-| `public/deployment.json` | Trusted deployment config, writes disabled |
+| `public/deployment.json` | Trusted deployment config, writes disabled by default |
+| `docs/deployment.md` | Owner-operated testnet and mainnet runbook |
 | `docs/submission.md` | Verified organizer requirements and readiness checklist |
-| `docs/demo.md` | Clear local and live demonstration scripts |
+| `docs/demo.md` | Local and live demonstration scripts |
 | `docs/architecture.md` | Decisions and trust boundaries |
-| `docs/next-tasks.md` | Remaining milestones and issue-ready work |
-| `scripts/deploy.sh` | Owner-operated, gated Arc deployment |
+| `docs/next-tasks.md` | Milestone state and remaining owner actions |
+| `scripts/deploy.sh` | Encrypted-keystore deployment gate |
+| `scripts/pin-deployment.mjs` | Exact remote-runtime pinning, writes stay disabled |
+| `scripts/enable-reviewed-deployment.mjs` | Runtime and contract-cap write-enable gate |
+| `scripts/sr03-verify-live.mjs` | Independent read-only live-chain verifier |
 | `submission.json` | Submission copy and missing evidence |
 
 ## Contract and release checks
@@ -69,11 +109,11 @@ npm run check:submission
 
 The submission command intentionally exits nonzero until real deployment and submission evidence is filled. It does not infer readiness from screenshots or a simulation.
 
-Read `docs/deployment.md` before broadcasting anything. The installer pins Arc Foundry `v0.8.0-2` by SHA-256 rather than treating upstream Foundry as Arc validation. Use Arc testnet to exercise live network behavior before a tiny owner-controlled mainnet demo. Never share private keys in chat or commit them to this repository.
+The installer pins Arc Foundry `v0.8.0-2` by SHA-256 rather than treating upstream Foundry as Arc validation. Use Arc testnet before a tiny owner-controlled mainnet demo. Never share private keys in chat or commit them to this repository.
 
 ## Arc Microgrants
 
-The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. This local scaffold is not eligible by itself.
+The organizer requires a working mainnet project and public repository. Deadline: October 15, 2026 at 11:59 Malaysia time. See source-backed details in `docs/submission.md`. The current repository is not eligible by itself because SR-03 and SR-04 remain open.
 
 ## License
 
