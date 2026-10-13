@@ -57,6 +57,31 @@ jobs:
           npm test 2>&1 | tee evidence/ci/application-tests.txt
           npm run typecheck 2>&1 | tee evidence/ci/typecheck.txt
 
+      - name: Validate SR-03 owner tooling and safe defaults
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n scripts/deploy.sh
+          node --check scripts/pin-deployment.mjs
+          node --check scripts/enable-reviewed-deployment.mjs
+          node --check scripts/sr03-network-probe.mjs
+          node --check scripts/sr03-verify-live.mjs
+          if grep -R --line-number -- '--private-key' scripts .github/workflows; then
+            echo 'Raw private-key command flags are forbidden in tracked operator tooling.' >&2
+            exit 1
+          fi
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const deployment = JSON.parse(fs.readFileSync('public/deployment.json', 'utf8'));
+          if (deployment.writesEnabled !== false) {
+            throw new Error('Tracked deployment configuration must fail closed with writesEnabled=false.');
+          }
+          if (deployment.contractAddress !== null || deployment.runtimeCodeSha256 !== null) {
+            throw new Error('Tracked default deployment must not claim an unverified live contract.');
+          }
+          console.log('SR-03 owner tooling parses and tracked deployment remains disabled.');
+          NODE
+
       - name: Install checksum-pinned Arc Foundry
         shell: bash
         run: |
