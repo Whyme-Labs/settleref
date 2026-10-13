@@ -80,8 +80,9 @@ jobs:
             throw new Error(`Arc profile did not select Arc execution semantics: ${JSON.stringify(config.network)}`);
           }
           const hardfork = config.arc_hardfork ?? config.hardfork;
-          if (hardfork !== 'arc:zero8') {
-            throw new Error(`Arc profile did not pin arc:zero8: ${JSON.stringify(hardfork)}`);
+          const normalizedHardfork = String(hardfork).toLowerCase().replace(/^arc:/, '');
+          if (normalizedHardfork !== 'zero8') {
+            throw new Error(`Arc profile did not pin zero8: ${JSON.stringify(hardfork)}`);
           }
           console.log(`Arc profile active: network=${config.network}, hardfork=${hardfork}`);
           NODE
@@ -107,20 +108,19 @@ jobs:
       - name: Confirm verification did not rewrite tracked sources
         run: git diff --exit-code
 
-      - name: Upload verification evidence
+      - name: Publish verification summary
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: settleref-verification-evidence
-          path: evidence/ci
-          if-no-files-found: warn
-          retention-days: 14
-
-      - name: Upload static site
-        uses: actions/upload-artifact@v4
-        with:
-          name: settleref-static-site
-          path: dist
-          retention-days: 14
+        shell: bash
+        run: |
+          {
+            echo '## SettleRef verification'
+            echo
+            echo "- Commit: \`$GITHUB_SHA\`"
+            echo "- Run: \`$GITHUB_RUN_ID\` attempt \`$GITHUB_RUN_ATTEMPT\`"
+            echo "- Arc Foundry: \`$ARC_FOUNDRY_VERSION\`"
+            echo "- Runner: \`$RUNNER_NAME\`"
+            echo
+            echo 'The complete command output remains in the immutable job log. Artifact upload is intentionally omitted because the organization storage quota is exhausted.'
+          } >> "$GITHUB_STEP_SUMMARY"
 
 # Live-chain smoke tests remain owner-operated because they move USDC.
