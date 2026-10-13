@@ -1,20 +1,6 @@
 name: SR-03 Arc testnet experiment
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/sr03-testnet-experiment.yml'
-      - 'scripts/sr03-testnet-experiment.py'
-      - 'scripts/install-arc-foundry.sh'
-      - 'scripts/build.mjs'
-      - 'scripts/serve.mjs'
-      - 'contracts/**'
-      - 'src/**'
-      - 'public/**'
-      - 'foundry.toml'
-      - 'package.json'
-      - 'package-lock.json'
   workflow_dispatch:
 
 permissions:
