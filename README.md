@@ -10,6 +10,8 @@ A plain wallet transfer and an explorer show that funds moved. Supplier-payment 
 
 [Open the app](https://settleref.pages.dev/) · [Watch the 56-second demo](https://settleref.pages.dev/demo.html) · [DoraHacks submission](https://dorahacks.io/build/49693)
 
+The live site now also links to a [BOT testnet-only wallet pilot](https://settleref.pages.dev/bot-testnet/). Its chain-968 deploy/payment/return runner has local fake-provider coverage and requires separate owner approval for each wallet transaction. It has not yet passed a real-wallet qualification run. See [hosting and artifact provenance](docs/bot-hosting.md) and the [owner checklist](docs/bot-testnet-owner-run.md).
+
 ## Run
 
 Node.js 22 or later:
