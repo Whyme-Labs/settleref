@@ -1,0 +1,24 @@
+{
+  "schema": "settleref.bot-web-hosting-source.v1",
+  "reviewedRunnerArchiveSha256": "514c0aec30a6e790e1645ebbfaa2fcaa0e1e5b7a8396e62124f45459cecbb9fd",
+  "unchangedBotFiles": {
+    "assets.json": "ee128b61915703e54aeb82e5c2e87386c5b28e9d8493e990fa4c4265d72b4712",
+    "chain.mjs": "afe81006a29097edac34b98ceca4a8d06fc5b589c7027754497b70cf4f436a07",
+    "domain.mjs": "24bc1ef60f562242db4bcc21d8faf6785bb2755fca49073f1f6e67bd08ef2be7",
+    "networks.mjs": "48fc0cf5a1df834c0b4c53dff2352718196b7752d8e6cd928b7130e7532683c3"
+  },
+  "postReviewLocalDelta": {
+    "file": "runner-core.mjs",
+    "reviewedR5Sha256": "7a873e60a086cd6d68d64a0329f46042a4469be9a851cfaa9960bcd16ef3e47e",
+    "candidateSha256": "4f25962e54360b1b2ff4c63d4b015f8845940912bbe07bc042d6ef8d015fcd39",
+    "fakeProviderTestSha256": "374e085d262c48497004fd8dd81f68f40c964dc377d07df8064ac05967f68dfa",
+    "reason": "A wallet account or chain change after completion revokes current-session verification in evidence export. Reconnecting requires a fresh page instance and read-only revalidation of the original hashes.",
+    "qualification": "Local fake-provider tests only; this delta was not included in the independently reviewed R5 archive and has not been tested with a real wallet."
+  },
+  "routeAdaptedFiles": [
+    "app.mjs",
+    "index.html",
+    "style.css"
+  ],
+  "claim": "Four unchanged core files match R5. The runner-core delta is local and needs separate review; adapted hosting files also need review. No live wallet qualification is claimed."
+}

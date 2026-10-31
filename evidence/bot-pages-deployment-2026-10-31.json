@@ -1,0 +1,172 @@
+{
+  "schema": "settleref.bot-pages-deployment.v1",
+  "project": "settleref",
+  "environment": "production",
+  "deploymentId": "b6ee535b-bde1-4892-a67b-44802631703b",
+  "deployedAtUtc": "2026-10-31T02:18:29.357213Z",
+  "dashboardStatus": "success",
+  "productionUrl": "https://settleref.pages.dev/",
+  "deploymentUrl": "https://b6ee535b.settleref.pages.dev/",
+  "archiveName": "settleref-pages-ready-2026-10-30.zip",
+  "archiveSha256": "482bc7e9e4c7acd55421ca5f10bb5a3f85c52e31018ca87810a6cc0522ff6106",
+  "baseCommit": "b881e875ff19604bb77690921cabde531ab33b7d",
+  "files": [
+    {
+      "path": "_headers",
+      "bytes": 489,
+      "sha256": "a52a097c7c1c5a822d2aafb3845979f5757b597f436e18e7041825c1a194db33",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "app/app.js",
+      "bytes": 16969,
+      "sha256": "32b4b4a30f326e00cdab0e9a1aab75e9f24178352130ddd00dd5c27f69a13ae6",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "app/app.js.map",
+      "bytes": 17518,
+      "sha256": "361033d2257f773d66a4397dcc9aaa7006cf8ace61e3aa14014136f8d5ec50ef",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "app/chain.js",
+      "bytes": 10737,
+      "sha256": "8e2c98e0f768be8427f81008e92ccabd9f971df1b5437948a66d5818659a13d8",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "app/chain.js.map",
+      "bytes": 10992,
+      "sha256": "7e9f0226b8cc1979ef783d021b0abeab245ce3c8adb484acc9b0ced0eac67e72",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "app/domain.js",
+      "bytes": 5567,
+      "sha256": "f63390824c9e5935fcbba40c895591f8e7ed0ef2bb1a212f34b1330afa028760",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "app/domain.js.map",
+      "bytes": 5529,
+      "sha256": "d90c67ea8449ec527e550052a48e1a3b6f91664255871c40b68b04d22bce9dc1",
+      "origin": "generated-typescript-output"
+    },
+    {
+      "path": "bot-testnet/app.mjs",
+      "bytes": 7312,
+      "sha256": "1e095615bf292122bd3bf14ddc36441787822a270f020ec1174f8b45fce95983",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/assets.json",
+      "bytes": 5642,
+      "sha256": "ee128b61915703e54aeb82e5c2e87386c5b28e9d8493e990fa4c4265d72b4712",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/chain.mjs",
+      "bytes": 8308,
+      "sha256": "afe81006a29097edac34b98ceca4a8d06fc5b589c7027754497b70cf4f436a07",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/domain.mjs",
+      "bytes": 4048,
+      "sha256": "24bc1ef60f562242db4bcc21d8faf6785bb2755fca49073f1f6e67bd08ef2be7",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/index.html",
+      "bytes": 3605,
+      "sha256": "16f0f5ab37484a45b0b8c4856fa250703248f88bf97cbb89ef06d77a7788d92e",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/networks.mjs",
+      "bytes": 1142,
+      "sha256": "48fc0cf5a1df834c0b4c53dff2352718196b7752d8e6cd928b7130e7532683c3",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/recovery-advice.mjs",
+      "bytes": 2145,
+      "sha256": "ef1e887556e0dd44dc9f556d55af8109fbdf328a0c2a26592afb6b1e4513afd7",
+      "origin": "new-public-source"
+    },
+    {
+      "path": "bot-testnet/runner-core.mjs",
+      "bytes": 30012,
+      "sha256": "4f25962e54360b1b2ff4c63d4b015f8845940912bbe07bc042d6ef8d015fcd39",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "bot-testnet/style.css",
+      "bytes": 1825,
+      "sha256": "c9d9b249702d748cb5817536703688e277bdca20814ea36ec6e8ecd826d7ef5a",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "demo-poster.png",
+      "bytes": 467796,
+      "sha256": "e58785d8147db018a2dd6ecb74a5915f9f8890dbcb94223fece8d2053ee11947",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "demo.css",
+      "bytes": 1422,
+      "sha256": "88eaf2a9fdae3378d9b45e1458eb2ec86fc517357c4212f2fbef5d1c26f21ec1",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "demo.html",
+      "bytes": 2017,
+      "sha256": "2ee1c80c44716fcba2ed63e12f328f9c3377b561773a89707b10e5c29ada7348",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "demo.mp4",
+      "bytes": 19926906,
+      "sha256": "16818f7025fd13bd81c4322b5107377ebc2a11d7e7142b9f3df4b3d523898e65",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "demo.vtt",
+      "bytes": 1167,
+      "sha256": "6c08208f4d5d58082fbb5e1f0c3140e95e44f46b7bf9f447dd55d3a9d3c227c2",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "deployment.json",
+      "bytes": 294,
+      "sha256": "3e9ab72770abccf1b3998bb6d680b7b3e750fef69dc4bdff6dcac6a243554516",
+      "origin": "published-arc-config-overlay"
+    },
+    {
+      "path": "example-receipt.json",
+      "bytes": 1413,
+      "sha256": "f0e8f5d9d504b0155f2eba58866dcde6f20440da1fc3864c365a58cbe46108c2",
+      "origin": "prior-public-asset-overlay"
+    },
+    {
+      "path": "index.html",
+      "bytes": 10741,
+      "sha256": "bef325fbb6ae3d719730772896fc591a9aacccd29ee1eee860e87a025fe9aac8",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "settleref-logo.png",
+      "bytes": 9409,
+      "sha256": "a44b1a10686dff56a1228e2937c083dd5e370aa1fd2269ea3bf96132723df8fa",
+      "origin": "tracked-public-source"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 11833,
+      "sha256": "17a59d065048d9f95007061444ff220b0137506ea5c0f03dfbfdb151048a4fe2",
+      "origin": "tracked-public-source"
+    }
+  ],
+  "note": "Build uses TypeScript output in public/app. The tracked public/deployment.json intentionally remains writes-disabled; the release overlaid the previously published Arc deployment config. Demo media and example receipt were copied from prior public responses. No BOT wallet transaction was performed or live-wallet qualification claimed."
+}

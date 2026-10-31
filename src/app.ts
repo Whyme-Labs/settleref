@@ -23,6 +23,12 @@ let simulated = false;
 let simulatedVerified = false;
 const demoLedger = new Set<string>();
 let busy = false;
+el("bot-link").addEventListener("click", event => {
+  if (busy || sessionStorage.getItem("settleref.pending")) {
+    event.preventDefault();
+    message("An Arc wallet request or original payment hash needs reconciliation. Finish that check before opening the BOT testnet runner.", "error");
+  }
+});
 function sync(): void {
   button("pay").disabled = busy || !reviewed || !input("confirm").checked || (mode === "live" && !deployment?.writesEnabled);
   button("retry").disabled = busy || !reviewed || (!simulated && mode === "demo");

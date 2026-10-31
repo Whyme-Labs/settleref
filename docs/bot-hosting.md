@@ -1,0 +1,19 @@
+# SettleRef chain selector and BOT testnet pilot
+
+The site at https://settleref.pages.dev/ was directly uploaded to the existing Cloudflare Pages project `settleref` on 2026-10-31. Production deployment `b6ee535b-bde1-4892-a67b-44802631703b` reported success. The root page retains the Arc native-USDC workflow and adds a link to `/bot-testnet/`, which is explicitly chain-968 native-tBOT only. Navigation does not switch the wallet network or send a transaction.
+
+The exact ZIP used for this release is `settleref-pages-ready-2026-10-30.zip`, SHA-256 `482bc7e9e4c7acd55421ca5f10bb5a3f85c52e31018ca87810a6cc0522ff6106`. `evidence/bot-pages-deployment-2026-10-31.json` records every uploaded entry's length, SHA-256 and origin. Cloudflare reported 26 files accepted, 25 served assets plus the `_headers` control file. Browser checks confirmed the production selector, the configured Arc contract displayed on `/`, the BOT testnet route, and `/bot-testnet/assets.json` with chain ID 968. No wallet prompt or transaction was used for the publication check.
+
+## Source and release artifact
+
+The BOT route source under `public/bot-testnet/`, the root navigation in `public/index.html` and `public/styles.css`, the Arc navigation guard in `src/app.ts`, and the local HTTP handler in `scripts/serve.mjs` are in this change. Four BOT core files byte-match the independently reviewed R5 archive, while `runner-core.mjs` has the separately tested account/chain-change revocation delta identified in `evidence/bot-hosting-source.json`. The hosted runner remains a candidate for **owner-led testnet qualification**; local fake-provider tests do not establish real-wallet behavior or independent consensus.
+
+`scripts/build.mjs` generates `public/app/*.js` and source maps from TypeScript, then copies `public/` into `dist/`. The tracked `public/deployment.json` deliberately remains a writes-disabled Arc placeholder. The deployed ZIP overlaid the previously published Arc chain-5042 contract configuration after the build, rather than publishing that placeholder. It also included the already public demo video, poster, captions, HTML/CSS and example receipt that are absent from this source checkout. Those byte-level distinctions are recorded in the release manifest; running the ordinary build alone does **not** reproduce the full deployed ZIP. The release ZIP is retained as the exact deployable artifact, and the manifest connects its source-derived files to this branch. The Pages project has no Git connection, so this source PR cannot redeploy it.
+
+The BOT page uses the injected wallet provider and retains its own browser journal. It requires a fresh explicit plan review, a pinned testnet chain/genesis and contract/receiver checks, then three distinct wallet approvals for deploy, payment and owner return. It never imports a private key or automatically re-sends an uncertain request. The app's fee caps are provisional engineering checks, not limits enforced by a wallet. An owner should inspect each wallet prompt. BOT mainnet has no enabled UI path.
+
+The Arc and BOT routes share one origin; route separation is a workflow boundary, not browser security isolation. Arc's inherited unknown-response recovery limit remains: `settleref.pending` is saved only after `sendPayment` returns a hash. The selector does not repair that legacy path. No independent security audit is claimed.
+
+## Validation and owner follow-up
+
+The release source passed TypeScript typecheck, local build and 34 focused Node tests for BOT fake-provider behavior, recovery guidance, navigation and HTTP routing. An earlier bounded full source suite passed 109 Node tests, 18 standard-EVM, 18 Arc-profile and ABI checks; those were local runs, not remote CI or live-wallet qualification. See `docs/bot-testnet-owner-run.md` for the controlled owner testnet checkpoint. No BOT transaction or mainnet action was made during this web deployment.

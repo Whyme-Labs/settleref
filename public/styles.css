@@ -714,3 +714,4 @@ body.busy main {
     font-size:10px!important
   }
 }
+.chain-nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}.chain-nav a{display:inline-flex;align-items:center;padding:8px 13px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:12px;font-weight:600}.chain-nav a[aria-current=page]{background:var(--pale);border-color:#86bfb1;color:var(--green)}.chain-nav a:focus-visible{outline:3px solid #63ac9c;outline-offset:2px}body.busy .chain-nav{pointer-events:none;opacity:.6}
