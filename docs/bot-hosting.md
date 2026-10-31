@@ -16,4 +16,4 @@ The Arc and BOT routes share one origin; route separation is a workflow boundary
 
 ## Validation and owner follow-up
 
-The release source passed TypeScript typecheck, local build and 34 focused Node tests for BOT fake-provider behavior, recovery guidance, navigation and HTTP routing. An earlier bounded full source suite passed 109 Node tests, 18 standard-EVM, 18 Arc-profile and ABI checks; those were local runs, not remote CI or live-wallet qualification. See `docs/bot-testnet-owner-run.md` for the controlled owner testnet checkpoint. No BOT transaction or mainnet action was made during this web deployment.
+The release source passed TypeScript typecheck, local build and 35 focused Node tests for BOT fake-provider behavior, recovery guidance, navigation and HTTP routing. The current full local Node suite passed 114 tests; earlier bounded runs passed 18 standard-EVM tests, 18 Arc-profile tests and ABI checks. These were local runs, not remote CI or live-wallet qualification. See `docs/bot-testnet-owner-run.md` for the controlled owner testnet checkpoint. No BOT transaction or mainnet action was made during this web deployment.
