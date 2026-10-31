@@ -1,0 +1,32 @@
+{
+  "schema": "settleref.bot.rpc-recovery.source.v1",
+  "baseCommit": "ccb8850486ba2db81bdf81587e33cebb07c8add1",
+  "recoveredDeployment": "37f27af4-88d3-4cf6-84f7-4d2a1766202d",
+  "originalR3ArchiveSha256": "df79128e565e8a3a7f85ed1423667e66a843255f925cbb56347f28a747a153d5",
+  "releaseR4ArchiveSha256": "49261cf8ebd62d3900efd3199c91474278c4e5c6e02049db090a7f73daa5558e",
+  "releaseStatus": "prepared and reviewed locally; no deployment performed by this source sync",
+  "files": {
+    "public/bot-testnet/app.mjs": "f8a0f6a415c36de83740e51b9ef6c6eb7324cbd1e3370a0ac8be0c4714cfb244",
+    "public/bot-testnet/index.html": "a035ba4bc726f07395002e5212073b72cfb94d7544bfc49e3f4e93401060db5a",
+    "public/bot-testnet/runner-core.mjs": "d3f33f76b3758377d24b89be6cca50d3ae626a06c507a76a6b3e228b3fc7e669",
+    "public/bot-testnet/recovery-advice.mjs": "b44f13aa625f884e18aa5bccd3a2ee1fb7307e56161e0ffbd252da3ec0337ab6",
+    "public/bot-testnet/chain.mjs": "b47de0597e3249d27cfc28c885d6f634190a1789ed88c62db0af2cc7164588f5",
+    "public/bot-testnet/network-switch.mjs": "95a4887c5101836ffe201f22a1d0d557b284a5258ab53c04f52aa9e39510ab36",
+    "public/bot-testnet/ui-error.mjs": "29cabbf1faf05f88dc402e373ba4777a95deb7ae88be67df3b6f23518da54f6c",
+    "tests/bot-rpc-recovery.test.mjs": "2ecb2f3417b76b1db957165a07130ebc66d6a1246d5e6a0eedc154fb160214e0",
+    "tests/bot-runner.test.mjs": "374e085d262c48497004fd8dd81f68f40c964dc377d07df8064ac05967f68dfa"
+  },
+  "qualification": "Local fake-provider tests and read-only direct RPC evidence; not live browser-wallet qualification. No secrets or owner export included.",
+  "validation": {
+    "localNodeTests": {
+      "passed": 118,
+      "failed": 0
+    },
+    "build": "PASS",
+    "typecheck": "PASS",
+    "syntheticRecoveryTests": 13,
+    "remoteCi": "not run; [skip ci] requested",
+    "contracts": "not rerun; contract sources unchanged",
+    "browserWallet": "not rerun"
+  }
+}

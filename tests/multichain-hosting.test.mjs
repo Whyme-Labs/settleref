@@ -24,11 +24,13 @@ test('Arc remains the default page and BOT uses an isolated route',async()=>{
 
 test('BOT source provenance distinguishes reviewed R5 files from the local runner delta; Arc write gate stays closed',async()=>{
  const provenance=JSON.parse(await read('evidence/bot-hosting-source.json'));
+ const recovery=JSON.parse(await read('evidence/bot-rpc-recovery-source.json'));
+ for(const [path,expected] of Object.entries(recovery.files))assert.equal(digest(await read(path)),expected,path);
  for(const [name,expected] of Object.entries(provenance.unchangedBotFiles)){
-  assert.equal(digest(await read('public/bot-testnet/'+name)),expected,name);
+  assert.equal(digest(await read('public/bot-testnet/'+name)),recovery.files['public/bot-testnet/'+name]??expected,name);
  }
- assert.equal(digest(await read('public/bot-testnet/'+provenance.postReviewLocalDelta.file)),provenance.postReviewLocalDelta.candidateSha256);
- assert.equal(digest(await read('tests/bot-runner.test.mjs')),provenance.postReviewLocalDelta.fakeProviderTestSha256);
+ assert.equal(digest(await read('public/bot-testnet/'+provenance.postReviewLocalDelta.file)),recovery.files['public/bot-testnet/'+provenance.postReviewLocalDelta.file]);
+ assert.equal(digest(await read('tests/bot-runner.test.mjs')),recovery.files['tests/bot-runner.test.mjs']);
  assert.notEqual(provenance.postReviewLocalDelta.reviewedR5Sha256,provenance.postReviewLocalDelta.candidateSha256);
  const arc=JSON.parse(await read('public/deployment.json'));
  const bot=JSON.parse(await read('public/bot-testnet/assets.json'));

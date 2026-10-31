@@ -4,6 +4,12 @@ export const SELECTORS={settle:'0x355b5dd4',settled:'0x86efd7ea',max:'0xb1c1008c
 export const SETTLED_TOPIC='0x62d217e5449ea37cc82d49f6ade136c256d3a8c81b72e30bcd42cd6f611cf876';
 export function hex(n){return '0x'+n.toString(16);}
 export function quantity(v){if(typeof v!=='string'||!/^0x(0|[1-9a-fA-F][0-9a-fA-F]*)$/.test(v))throw Error('Malformed RPC quantity.');return BigInt(v);}
+// Incomplete RPC indexing is not evidence of failure or permission to resend.
+export function requireTransactionMetadata(tx,receipt){
+ const missing=['chainId'].filter(key=>tx[key]==null);
+ if(receipt)for(const key of ['blockNumber','blockHash','transactionIndex'])if(tx[key]==null)missing.push(key);
+ if(missing.length){const error=Error('RPC_TRANSACTION_DATA_INCOMPLETE');error.code='RPC_TRANSACTION_DATA_INCOMPLETE';error.fields=missing;throw error;}
+}
 export function data(v){if(typeof v!=='string'||!/^0x([0-9a-fA-F]{2})*$/.test(v))throw Error('Malformed byte data.');return v.toLowerCase();}
 export function word(v){const s=typeof v==='bigint'?v.toString(16):v.slice(2);if(!/^[0-9a-fA-F]{1,64}$/.test(s))throw Error('Invalid ABI word.');return s.toLowerCase().padStart(64,'0');}
 export async function encodeSettlement(raw){const i=parseInstruction(raw),c=await commitments(i);return SELECTORS.settle+[c.instructionId,i.beneficiary,units(i.amount),c.contentHash,BigInt(i.expiresAt)].map(word).join('');}
@@ -47,6 +53,7 @@ export async function verifyReceipt(rpc,cfg,raw){
   if(r===null)throw Error('Receipt unavailable. Keep the original hash and instruction; do not resend.');
   if(r.status!=='0x1'||hash(r.transactionHash)!==txHash||address(r.from)!==i.payer||address(r.to)!==target)throw Error('Receipt did not succeed or its sender/target differs.');
   const tx=object(await rpc.request('eth_getTransactionByHash',[txHash]));
+  requireTransactionMetadata(tx,r);
   if(hash(tx.hash)!==txHash||quantity(tx.chainId)!==BigInt(i.chainId)||address(tx.from)!==i.payer||address(tx.to)!==target||quantity(tx.value)!==units(i.amount)||data(tx.input)!==await encodeSettlement(i))throw Error('Transaction does not match the committed instruction.');
   const gas=quantity(tx.gas),price=quantity(r.effectiveGasPrice),ceiling=quantity(tx.maxFeePerGas??tx.gasPrice),used=quantity(r.gasUsed);
   if(gas>LIMITS.gas||used===0n||used>gas||price>ceiling||gas*ceiling>LIMITS.fee)throw Error('Transaction gas/fee exceeds reviewed limits.');

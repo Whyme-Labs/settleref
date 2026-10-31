@@ -1,6 +1,6 @@
 import {NETWORKS} from './networks.mjs';
 import {address,hash,sha256,createInstruction,parseInstruction,exportBundle,units} from './domain.mjs';
-import {quantity,data,preparePlan,requireDeployment,verifyReceipt,encodeSettlement,hex,word} from './chain.mjs';
+import {quantity,data,preparePlan,requireDeployment,verifyReceipt,encodeSettlement,hex,word,requireTransactionMetadata} from './chain.mjs';
 
 const KEY='settleref.bot.wallet-runner.testnet.v1';
 const STAGES=['receiver-deploy','payment','principal-return'];
@@ -43,6 +43,48 @@ const rpcOf=(provider,readTimeoutMs,walletTimeoutMs)=>({request:async(method,par
   catch(e){if(e?.code==='RPC_READ_TIMEOUT')throw e;const failure=Error('RPC_UNAVAILABLE');failure.code='RPC_UNAVAILABLE';throw failure;}
 }});
 const fail=code=>{const e=Error(code);e.code=code;throw e;};
+export const eligibleFeeHold=s=>{
+ const stage=STAGES[s?.stageIndex];if(s?.phase!=='hold'||!s.hash||!stage||!Array.isArray(s.checks))return false;
+ let index=s.checks.length-1;
+ while(index>=0){const check=s.checks[index];if(check?.hash!==s.hash||check.stage!==stage||check.outcome!=='error')return false;
+  if(check.reason!=='WALLET_CHANGED_HOLD')return check.reason==='UNSUPPORTED_WALLET_FEE_ENVELOPE';
+  index--;
+ }
+ return false;
+};
+// Eligibility only exposes read-only revalidation; saved observations are never proof.
+export const eligibleRpcDataHold=s=>{
+ const stage=STAGES[s?.stageIndex];
+ if(!['hold','pending'].includes(s?.phase)||!s.hash||!stage||!Array.isArray(s.checks))return false;
+ let index=s.checks.length-1;
+ while(index>=0){
+  const check=s.checks[index--];
+  if(check?.hash!==s.hash||check.stage!==stage)return false;
+  if(s.phase==='pending'&&(check.outcome!=='pending'||check.reason!=='RPC_TRANSACTION_DATA_INCOMPLETE'&&check.readOnlyRecovery!==true))return false;
+  if(s.phase==='pending'&&check.readOnlyRecovery===true)return true;
+  if(s.phase==='hold'&&check.outcome!=='error')return false;
+  if(check.reason==='WALLET_CHANGED_HOLD')continue;
+  if(check.reason!=='VERIFICATION_ERROR'&&check.reason!=='RPC_TRANSACTION_DATA_INCOMPLETE')return false;
+  const tx=check.responses?.transaction,receipt=check.responses?.receipt;
+  return !!tx&&tx.hash===s.hash&&(tx.chainId==null||!!receipt&&['blockNumber','blockHash','transactionIndex'].some(key=>tx[key]==null));
+ }
+ return false;
+};
+// A wallet may encode a legacy gasPrice request as a capped EIP-1559 transaction.
+// Compare the signed maximum, not only the effective price reported after mining.
+const verifyWalletFeeEnvelope=(tx,receipt,intent)=>{
+ const cap=quantity(intent.gasPrice),type=tx.type??'0x0';
+ if(type==='0x0'){
+  if(tx.maxFeePerGas!=null||tx.maxPriorityFeePerGas!=null||receipt?.type&&receipt.type!=='0x0')fail('UNSUPPORTED_WALLET_FEE_ENVELOPE');
+  if(quantity(tx.gasPrice)>cap)fail('WALLET_FEE_CAP_EXCEEDED');
+ }else if(type==='0x2'){
+  if(tx.maxFeePerGas==null||tx.maxPriorityFeePerGas==null||receipt&&receipt.type!=='0x2')fail('UNSUPPORTED_WALLET_FEE_ENVELOPE');
+  const maximum=quantity(tx.maxFeePerGas),priority=quantity(tx.maxPriorityFeePerGas);
+  if(maximum===0n||maximum>cap||priority>maximum||tx.gasPrice!=null&&quantity(tx.gasPrice)>cap)fail('WALLET_FEE_CAP_EXCEEDED');
+  if(receipt&&quantity(receipt.effectiveGasPrice)>maximum)fail('WALLET_FEE_CAP_EXCEEDED');
+ }else fail('UNSUPPORTED_WALLET_FEE_ENVELOPE');
+ if(receipt&&quantity(receipt.effectiveGasPrice)>cap)fail('WALLET_FEE_CAP_EXCEEDED');
+};
 
 export class WalletPilot {
  constructor({provider,storage,assets,withLock,onChange=()=>{},wait=sleep,polls=POLLS,readTimeoutMs=READ_TIMEOUT_MS,walletTimeoutMs=WALLET_TIMEOUT_MS}){
@@ -61,6 +103,7 @@ export class WalletPilot {
  }
  emit(message){this.onChange({message,state:this.snapshot()});}
  snapshot(){return this.state?structuredClone(this.state):null;}
+ canReconcileFeeHold(){return eligibleFeeHold(this.state)||eligibleRpcDataHold(this.state);}
  save(){this.storage.setItem(KEY,JSON.stringify(this.state));this.emit(this.state.message??this.state.phase);}
  load(){const raw=this.storage.getItem(KEY);if(!raw)return null;if(raw.length>1000000)fail('SAVED_RUN_MALFORMED');
   let s;try{s=JSON.parse(raw);}catch{fail('SAVED_RUN_MALFORMED');}
@@ -135,6 +178,15 @@ export class WalletPilot {
   });
  }
  async resume(){return this.withLock(async()=>{this.load();if(!this.state)fail('NO_SAVED_RUN');return this.drive();});}
+ // Recover an eligible fee-envelope or incomplete-RPC hold by checking its original hash only. This
+ // method cannot request a wallet transaction or advance into the next step.
+ async reconcileFeeHold(){return this.withLock(async()=>{
+  this.load();if(!this.canReconcileFeeHold())fail('FEE_HOLD_NOT_ELIGIBLE');
+  await this.context();await this.artifacts();await this.revalidatePast();await this.validateCurrentIntent();
+  try{await this.checkStep({readOnlyRecovery:true});}
+  catch(e){if(['RPC_UNAVAILABLE','RPC_READ_TIMEOUT'].includes(e.code)&&this.state.hash){this.state.phase='pending';this.state.message='RPC unavailable while checking the original hash. Resume read-only verification later; no resend.';this.save();}throw e;}
+  return this.snapshot();
+ });}
  async newRun({evidenceExportConfirmed=false}={}){return this.withLock(async()=>{
   this.load();if(!this.state||this.state.phase!=='complete'||!evidenceExportConfirmed)fail('COMPLETED_EXPORT_REQUIRED');
   const generation=this.generation;
@@ -224,21 +276,31 @@ export class WalletPilot {
   try{this.state.hash=hash(returned);this.state.phase='hash-known';this.state.message='Original transaction hash retained. Checking receipt and finality.';this.save();}
   catch{this.state.phase='unknown';this.state.message='Wallet returned no valid hash. Outcome unknown; do not resend.';this.save();}
  }
- async checkStep(){
+ async checkStep({readOnlyRecovery=false}={}){
   if(!this.state.hash)fail('NO_HASH_NO_RESEND');
+  const generation=this.generation;
   await this.context();
   for(let attempt=0;attempt<this.polls;attempt++){
-   const result=await this.verifyCurrent();
+   const result=await this.verifyCurrent({readOnlyRecovery});
+   if(this.invalidated||this.generation!==generation){
+    const last=this.state.checks?.at(-1);
+    if(last?.hash===this.state.hash&&last.stage===STAGES[this.state.stageIndex]&&last.outcome==='verified'){
+     last.outcome='error';last.reason='WALLET_CHANGED_HOLD';
+     this.state.message='Wallet changed during original-hash verification. Reload with the original account before another read-only check; do not resend.';this.save();
+    }
+    fail('WALLET_CHANGED_HOLD');
+   }
    if(result){
     this.state.receipts.push(result);this.state.stageIndex++;this.state.phase=this.state.stageIndex===STAGES.length?'complete':'ready';this.state.intent=null;this.state.hash=null;
     this.state.message=this.state.phase==='complete'?'Controlled test complete. Export the evidence.':'Step finalized. Next step requires a separate wallet approval.';this.save();return true;
    }
    if(attempt+1<this.polls)await this.wait(2000);
   }
-  this.state.phase='pending';this.state.message='Still pending or not finalized. Original hash retained. Resume read-only checking later; no resend.';this.save();return false;
+  this.state.phase='pending';this.state.message='Still pending, RPC data incomplete, or not finalized. Original hash retained. Resume read-only checking later; no resend.';this.save();return false;
  }
- async verifyCurrent(){
+ async verifyCurrent({readOnlyRecovery=false}={}){
   const observation={at:new Date().toISOString(),stage:STAGES[this.state.stageIndex],hash:this.state.hash,outcome:'pending',responses:Object.create(null)};
+  if(readOnlyRecovery)observation.readOnlyRecovery=true;
   try{
   const intent=this.state.intent,h=this.state.hash,tx=await this.request('eth_getTransactionByHash',[h]);
   observation.responses.transaction=captureRpc('transaction',tx);
@@ -246,11 +308,12 @@ export class WalletPilot {
   observation.responses.receipt=captureRpc('receipt',receipt);
   if(!tx&&receipt)fail('RECEIPT_WITHOUT_TRANSACTION');if(!tx)return null;
   const toMatches=intent.to===null?tx.to===null:sameAddress(tx.to,intent.to);
-  if(tx.type&&tx.type!=='0x0'||tx.maxFeePerGas!=null||tx.maxPriorityFeePerGas!=null||receipt?.type&&receipt.type!=='0x0')fail('UNSUPPORTED_WALLET_FEE_ENVELOPE');
-  if(!sameHash(tx.hash,h)||quantity(tx.chainId)!==968n||!sameAddress(tx.from,intent.from)||!toMatches||quantity(tx.value)!==quantity(intent.value)||asData(tx.input)!==asData(intent.data)||quantity(tx.gas)>quantity(intent.gas)||quantity(tx.gasPrice)>quantity(intent.gasPrice))fail('TRANSACTION_INTENT_MISMATCH');
-  if(!receipt)return null;
+  verifyWalletFeeEnvelope(tx,receipt,intent);
+  if(!sameHash(tx.hash,h)||tx.chainId!=null&&quantity(tx.chainId)!==968n||!sameAddress(tx.from,intent.from)||!toMatches||quantity(tx.value)!==quantity(intent.value)||asData(tx.input)!==asData(intent.data)||quantity(tx.gas)>quantity(intent.gas))fail('TRANSACTION_INTENT_MISMATCH');
+  if(!receipt){requireTransactionMetadata(tx,null);return null;}
   const receiptToMatches=intent.to===null?receipt.to===null:sameAddress(receipt.to,intent.to);
-  if(!sameHash(receipt.transactionHash,h)||!sameAddress(receipt.from,intent.from)||!receiptToMatches||receipt.status!=='0x1'||quantity(receipt.gasUsed)===0n||quantity(receipt.gasUsed)>quantity(intent.gas)||quantity(receipt.effectiveGasPrice)>quantity(intent.gasPrice)||quantity(receipt.blockNumber)!==quantity(tx.blockNumber)||!sameHash(receipt.blockHash,tx.blockHash)||quantity(receipt.transactionIndex)!==quantity(tx.transactionIndex))fail('RECEIPT_INTENT_MISMATCH');
+  if(!sameHash(receipt.transactionHash,h)||!sameAddress(receipt.from,intent.from)||!receiptToMatches||receipt.status!=='0x1'||quantity(receipt.gasUsed)===0n||quantity(receipt.gasUsed)>quantity(intent.gas)||quantity(receipt.effectiveGasPrice)>quantity(intent.gasPrice)||tx.blockNumber!=null&&quantity(receipt.blockNumber)!==quantity(tx.blockNumber)||tx.blockHash!=null&&!sameHash(receipt.blockHash,tx.blockHash)||tx.transactionIndex!=null&&quantity(receipt.transactionIndex)!==quantity(tx.transactionIndex))fail('RECEIPT_INTENT_MISMATCH');
+  requireTransactionMetadata(tx,receipt);
   const block=await this.request('eth_getBlockByNumber',[receipt.blockNumber,false]),final=await this.request('eth_getBlockByNumber',['finalized',false]);
   observation.responses.inclusionBlock=captureRpc('block',block);observation.responses.finalizedHead=captureRpc('block',final);
   if(!block||!final)return null;
@@ -270,7 +333,7 @@ export class WalletPilot {
   const fee=quantity(receipt.gasUsed)*quantity(receipt.effectiveGasPrice);
   observation.outcome='verified';
   return{stage,hash:h,blockHash:hash(receipt.blockHash),blockNumber:quantity(receipt.blockNumber).toString(),gasUsed:quantity(receipt.gasUsed).toString(),actualFeeWei:fee.toString(),maximumFeeWei:intent.maximumFeeWei,intent:structuredClone(intent),verifiedAt:new Date().toISOString(),contractAddress:stage==='receiver-deploy'?this.state.receiverAddress:undefined};
-  }catch(e){observation.outcome='error';observation.reason=typeof e?.code==='string'&&/^[A-Z_]{4,70}$/.test(e.code)?e.code:'VERIFICATION_ERROR';throw e;}
+  }catch(e){if(e?.code==='RPC_TRANSACTION_DATA_INCOMPLETE'){observation.outcome='pending';observation.reason=e.code;observation.missingFields=e.fields;return null;}observation.outcome='error';observation.reason=typeof e?.code==='string'&&/^[A-Z_]{4,70}$/.test(e.code)?e.code:'VERIFICATION_ERROR';throw e;}
   finally{observation.finishedAt=new Date().toISOString();this.recordObservation(observation);}
  }
  recordObservation(entry){
@@ -288,10 +351,10 @@ export class WalletPilot {
    if(saved.maximumFeeWei!==intent.maximumFeeWei)fail('SAVED_FEE_CAP_MISMATCH');
    const tx=await this.request('eth_getTransactionByHash',[saved.hash]),receipt=await this.request('eth_getTransactionReceipt',[saved.hash]);
    if(!tx||!receipt)fail('PRIOR_RECEIPT_UNAVAILABLE_HOLD');
-   if(tx.type&&tx.type!=='0x0'||tx.maxFeePerGas!=null||tx.maxPriorityFeePerGas!=null||receipt.type&&receipt.type!=='0x0')fail('UNSUPPORTED_WALLET_FEE_ENVELOPE');
+   verifyWalletFeeEnvelope(tx,receipt,intent);
    if(!sameHash(tx.hash,saved.hash)||quantity(tx.chainId)!==968n||!sameAddress(tx.from,intent.from)||
       !(intent.to===null?tx.to===null:sameAddress(tx.to,intent.to))||quantity(tx.value)!==quantity(intent.value)||asData(tx.input)!==asData(intent.data)||
-      quantity(tx.gas)>quantity(intent.gas)||quantity(tx.gasPrice)>quantity(intent.gasPrice)||
+      quantity(tx.gas)>quantity(intent.gas)||
       !sameHash(receipt.transactionHash,saved.hash)||!sameAddress(receipt.from,intent.from)||
       !(intent.to===null?receipt.to===null:sameAddress(receipt.to,intent.to))||receipt.status!=='0x1'||
       quantity(receipt.gasUsed)===0n||quantity(receipt.gasUsed)>quantity(intent.gas)||quantity(receipt.effectiveGasPrice)>quantity(intent.gasPrice)||
